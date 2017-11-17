@@ -16,7 +16,7 @@ These are the base requirements to build and use DmxManagerCore
 
 * [CMake](https://cmake.org/download/) - Cmake 2.8.1 or newer
 * [Git](https://git-scm.com/) - Git 2.13 or newer
-* [Qt5](http://doc.qt.io/qt-5/) - Qt5.9 or newer
+* [Qt5](http://doc.qt.io/qt-5/)
   * Qt5Core
   * Qt5Quick
   * Qt5QuickControls2
@@ -36,12 +36,10 @@ mkdir build && cd build
 
 Project can be build with 
 
-* [Microsoft Visual Studio 2017](https://www.visualstudio.com/) - Microsoft Visual C++ v7.1 or newer
-  * Cmake generator will be `-G " Visual Studio 15 2017 Win64"` or `-G " Visual Studio 15 2017 Win32"` depending on toolchain
+* [Microsoft Visual Studio 2017](https://www.visualstudio.com/) - Cmake generator will be `-G " Visual Studio 15 2017 Win64"` or `-G " Visual Studio 15 2017 Win32"` depending on toolchain
 
 
-* [Mingw](http://www.mingw.org/) 
-  * Cmake generator will be `-G "MinGW Makefiles"` *(this will require `mingw32-make`)*
+* [MinGW](http://www.mingw.org/)  - Cmake generator will be `-G "MinGW Makefiles"` *(this will require `mingw32-make` or `mingw64-make`)*
 
 #### How to run CMake
 
@@ -51,18 +49,34 @@ First, you must make sure that the following environment variables are defined:
 
 ```sh
 export QT_DIR=C:/Qt/Qt5.9.2/5.9.2/msvc2017_64/
+export QT_DIR=C:/Qt/Qt5.9.2/5.9.2/msvc2017_32/
+export QT_DIR=C:/Qt/Qt5.9.2/5.9.2/mingw53_64/
 export QT_DIR=C:/Qt/Qt5.9.2/5.9.2/mingw53_32/
 ```
 
-then : 
+You can then run CMake:
 
 ```
 cmake -G <generator> ..
 cmake -G "Visual Studio 15 2017 Win64" ..
+cmake -G .. #"Visual Studio 15 2017 Win32" is the default conf on windows
+cmake -G "MinGW Makefiles" .. && mingw64-make
 cmake -G "MinGW Makefiles" .. && mingw32-make
 ```
 
 **IMPORTANT**  `QTDIR` need to match generator
+
+#### Debug
+
+```
+-DCMAKE_BUILD_TYPE=Debug
+```
+
+#### Release
+
+```
+-DCMAKE_BUILD_TYPE=Release
+```
 
 ### Linux
 
@@ -76,25 +90,19 @@ cmake -G "MinGW Makefiles" .. && mingw32-make
 
 ### MacOs
 
-Install Homebrew & CMake
+#### How to run CMake
 
-```sh
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew install cmake
-```
+First, you must make sure that the following environment variables are defined:
 
-Export Qt toolchain directory into QT_DIR
+- `QT_DIR` : root directory of QtToolchain
 
 ```sh
 export QT_DIR=/Users/paul/Qt/5.9.2/clang_64/
 ```
 
-CMake
+You can then run CMake:
 
 ```Sh
-git clone "https://github.com/OlivierLdff/hci-luminos.git"
-cd ./hci-luminos/
-mkdir build && cd build
 cmake -G Xcode -DCMAKE_PREFIX_PATH=$QT_DIR ..
 ```
 
