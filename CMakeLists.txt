@@ -20,6 +20,8 @@ project(${UI_PROJECT_NAME})
 # -------------------- QT 5 BUILDING ---------------------
 # --------------------------------------------------------
 
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTORCC ON) # https://cmake.org/cmake/help/v3.0/prop_tgt/AUTORCC.html#prop_tgt:AUTORCC
@@ -46,7 +48,8 @@ endif(WIN32)
 # QuickControls2 : 
 # Quick : 
 find_package(Qt5 COMPONENTS Core QuickControls2 Quick REQUIRED)
-
+find_package(Qt5Quick)
+find_package(Qt5QuickControls2)
 if(ANDROID) #in android the executable is loaded as a library by the java activity
 	add_library(${UI_PROJECT_NAME} SHARED "./src/main.cpp" "./qml/qml.qrc")
 else()
