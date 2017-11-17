@@ -20,6 +20,8 @@ project(${UI_PROJECT_NAME})
 # -------------------- QT 5 BUILDING ---------------------
 # --------------------------------------------------------
 
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTORCC ON) # https://cmake.org/cmake/help/v3.0/prop_tgt/AUTORCC.html#prop_tgt:AUTORCC
