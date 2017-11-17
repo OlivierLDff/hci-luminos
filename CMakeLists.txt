@@ -34,6 +34,11 @@ set(UI_PROJECT_NAME Luminos)
 set(UI_APP_NAME LuminosApp)
 set(COMPANY_PROJECT_NAME HCI)
 
+option(ANDROID_TOOLCHAIN "ANDROID_TOOLCHAIN" off) #-DANDROID_TOOLCHAIN
+if(ANDROID_TOOLCHAIN) 
+	set(CMAKE_TOOLCHAIN_FILE "./cmake/toolchain/android.toolchain.cmake")
+endif(ANDROID_TOOLCHAIN)
+
 project(${UI_PROJECT_NAME})
 
 # ┌──────────────────────────────────────────────────────────────────┐
@@ -56,12 +61,12 @@ set (CMAKE_CXX_STANDARD 11) #required by Qt5
 # this is ugly but avoid setting PATH for windows compilation
 
 if(ANDROID) # Arm android toolchain
-	set (CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.9.2\\5.9.2\\android_armv7\\")
+	set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/android_armv7/")
 else(ANDROID)
 	if(MSVC) # Microsoft visual Studio toolchain -G "Visual Studio 15 2017 Win64"
-		set (CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.9.2\\5.9.2\\msvc2017_64\\")
+		set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/msvc2017_64/")
 	elseif(CMAKE_COMPILER_IS_GNUCXX) # Mingw32 toolchain -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND"
-		set (CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.9.2\\5.9.2\\mingw53_32\\")		
+		set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/mingw53_32/")		
 	endif()
 endif(ANDROID)	
 
