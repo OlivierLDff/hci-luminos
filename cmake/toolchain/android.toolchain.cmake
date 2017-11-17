@@ -1120,7 +1120,7 @@ endif()
 
 # Force set compilers because standard identification works badly for us
 include( CMakeForceCompiler )
-CMAKE_FORCE_C_COMPILER( "${CMAKE_C_COMPILER}" GNU )
+set( CMAKE_C_COMPILER "${CMAKE_C_COMPILER}")
 if( ANDROID_COMPILER_IS_CLANG )
  set( CMAKE_C_COMPILER_ID Clang )
 endif()
@@ -1132,7 +1132,7 @@ else()
 endif()
 set( CMAKE_C_HAS_ISYSROOT 1 )
 set( CMAKE_C_COMPILER_ABI ELF )
-CMAKE_FORCE_CXX_COMPILER( "${CMAKE_CXX_COMPILER}" GNU )
+set( CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
 
 # todo oliv : replace deprecated macro
 #set( CMAKE_C_COMPILER "${CMAKE_C_COMPILER} GNU")

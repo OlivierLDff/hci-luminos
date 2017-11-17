@@ -9,10 +9,11 @@ ApplicationWindow
 	width: 640
 	height: 480
 	visible: true
+	title:"Luminos App"
 
 	Text
 	{
-		text:"hello world !"
+		text:"Luminos App!"
 		anchors.centerIn: parent
 	}
 
