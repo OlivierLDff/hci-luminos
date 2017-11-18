@@ -10,12 +10,30 @@ ApplicationWindow
 	height: 480
 	visible: true
 	title:"Luminos App"
-
-	Text
+	minimumWidth: cl.implicitWidth
+	minimumHeight: cl.implicitHeight
+	ColumnLayout
 	{
-		text:"Luminos App!"
+		id: cl
 		anchors.centerIn: parent
+		spacing: 10
+		Text
+		{
+			text:"Luminos App!"
+			anchors.horizontalCenter: parent
+		}
+		Image
+		{
+			sourceSize.width: 64
+       sourceSize.height: 64
+			anchors.horizontalCenter: parent
+			fillMode: Image.PreserveAspectFit
+			source: "AppIcon"
+			smooth : true
+		}
 	}
+
+
 
 	/*StackView
 	{

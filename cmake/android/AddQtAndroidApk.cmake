@@ -93,7 +93,28 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
 
 	# define the application source package directory
 	if(ARG_PACKAGE_SOURCES)
-		set(QT_ANDROID_APP_PACKAGE_SOURCE_ROOT ${ARG_PACKAGE_SOURCES})
+
+		set(ANDROID_APP_PACKAGE_SOURCE_IN ${ARG_PACKAGE_SOURCES} ) 
+		message(--->${ANDROID_APP_PACKAGE_SOURCE_IN})
+		set(QT_ANDROID_APP_PACKAGE_SOURCE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/package/) #final folder with every source copy in it
+## ----------------------------------------------------------------------------------------------------------------------------------------------
+## oliv add
+		# get version code from arguments, or generate a fixed one if not provided
+		set(QT_ANDROID_APP_VERSION_CODE ${ARG_VERSION_CODE})
+		if(NOT QT_ANDROID_APP_VERSION_CODE)
+			set(QT_ANDROID_APP_VERSION_CODE 1)
+		endif()
+
+		# try to extract the app version from the target properties, or use the version code if not provided
+		get_property(QT_ANDROID_APP_VERSION TARGET ${SOURCE_TARGET} PROPERTY VERSION)
+		if(NOT QT_ANDROID_APP_VERSION)
+			set(QT_ANDROID_APP_VERSION ${QT_ANDROID_APP_VERSION_CODE})
+		endif()
+
+		set(ANDROID_MANIFEST_IN_PATH ${CMAKE_CURRENT_BINARY_DIR}/packagein/AndroidManifest.xml)
+
+		configure_file(${QT_ANDROID_SOURCE_DIR}/AndroidManifest.xml.in ${ANDROID_MANIFEST_IN_PATH} @ONLY)
+## ----------------------------------------------------------------------------------------------------------------------------------------------
 	else()
 		# get version code from arguments, or generate a fixed one if not provided
 		set(QT_ANDROID_APP_VERSION_CODE ${ARG_VERSION_CODE})
@@ -169,11 +190,22 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
 		${TARGET}
 		ALL
 		DEPENDS ${SOURCE_TARGET}	
+
+		COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT} # Remove every file in our dependencies
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT} # Create the directory
+		
+		COMMAND ${CMAKE_COMMAND} -E echo package source in :  ${ANDROID_APP_PACKAGE_SOURCE_IN} 
+		COMMAND ${CMAKE_COMMAND} -E copy ${ANDROID_MANIFEST_IN_PATH} ${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${ANDROID_APP_PACKAGE_SOURCE_IN} ${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT} #will erase the first AndroidManifest if another one exist
+		
 		COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libs/${ANDROID_ABI} # it seems that recompiled libraries are not copied if we don't remove them first
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/libs/${ANDROID_ABI}
-		COMMAND ${CMAKE_COMMAND} -P ${QT_ANDROID_SOURCE_DIR}/FinishQtDeployConfiguration.cmake $<TARGET_FILE:${SOURCE_TARGET}> #finish qtdeploy 
+		COMMAND ${CMAKE_COMMAND} -P ${QT_ANDROID_SOURCE_DIR}/FinishQtDeployConfiguration.cmake $<TARGET_FILE:${SOURCE_TARGET}> ${PROJECT_SOURCE_DIR}/android-src/ #finish qtdeploy 
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${SOURCE_TARGET}> ${CMAKE_CURRENT_BINARY_DIR}/libs/${ANDROID_ABI}		
-		COMMAND ${QT_ANDROID_QT_ROOT}/bin/androiddeployqt --verbose --output ${CMAKE_CURRENT_BINARY_DIR} --input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json --gradle ${TARGET_LEVEL_OPTIONS} ${INSTALL_OPTIONS} ${SIGN_OPTIONS}
+		COMMAND ${QT_ANDROID_QT_ROOT}/bin/androiddeployqt --verbose 
+		--output ${CMAKE_CURRENT_BINARY_DIR} 
+		--input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json 
+		--gradle ${TARGET_LEVEL_OPTIONS} ${INSTALL_OPTIONS} ${SIGN_OPTIONS}
 		)
 
 

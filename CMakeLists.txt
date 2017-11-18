@@ -99,12 +99,25 @@ file(
 	${CMAKE_CURRENT_SOURCE_DIR}/${QML_DIR}/*.qml
 )
 
+if(WIN32)
+	set(UI_OS_DEPENDENCY ${IM_DIR}/windows/icon.rc)
+elseif(APPLE)
+	#todo Cales
+elseif(UNIX)
+	#todo linux http://doc.qt.io/qt-5/appicon.html
+elseif(ANDROID)
+	#todo android
+elseif(IOS)
+	#todo ios
+endif()
+
 set(UI_FILE_DEPENDANCIES 
 	 ${UI_SRC} 
 	 ${UI_INC} 
 	 ${UI_QML}
 	 ./${QML_DIR}/qml.qrc
 	 ./${IM_DIR}/images.qrc 
+	 ${UI_OS_DEPENDENCY}
  )
 
 # ┌──────────────────────────────────────────────────────────────────┐
@@ -127,6 +140,7 @@ if(ANDROID)
 		NAME ${UI_APP_NAME}
 		VERSION_CODE 1
 		PACKAGE_NAME org.${COMPANY_PROJECT_NAME}.${UI_APP_NAME}
+		PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android-src/
 		BUILDTOOLS_REVISION "27.0.1")
 elseif(WIN32) # Check if we are on Windows
 	if(MSVC) # Check if we are using the Visual Studio compiler
