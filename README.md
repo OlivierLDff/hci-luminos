@@ -103,7 +103,7 @@ export QT_DIR=/Users/paul/Qt/5.9.2/clang_64/
 You can then run CMake:
 
 ```Sh
-cmake -G Xcode -DCMAKE_PREFIX_PATH=$QT_DIR ..
+cmake -G Xcode ..
 ```
 
 ### Android
@@ -124,6 +124,10 @@ Build is based on [Qt Android CMake utility](https://github.com/OSSIA/score/tree
 * `ANDROID_SDK` : todo
 * `ANDROID_NDK` : todo
 * `JAVA_HOME` : todo
+
+##### Windows
+
+* `ANDROID_MAKE` : 
 
 ```
 cmake -G "MinGW Makefiles" -DANDROID_TOOLCHAIN=ON -DCMAKE_MAKE_PROGRAM="C:/Users/olivi/AppData/Local/Android/Sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe" -DANDROID_NATIVE_API_LEVEL=27 ..

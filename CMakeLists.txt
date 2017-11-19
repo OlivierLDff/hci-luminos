@@ -34,6 +34,9 @@ set(UI_PROJECT_NAME Luminos)
 set(UI_APP_NAME LuminosApp)
 set(COMPANY_PROJECT_NAME HCI)
 
+#Use solution folders.
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 option(ANDROID_TOOLCHAIN "ANDROID_TOOLCHAIN" off) #-DANDROID_TOOLCHAIN
 if(ANDROID_TOOLCHAIN) 
 	set(CMAKE_TOOLCHAIN_FILE "./cmake/toolchain/android.toolchain.cmake")
@@ -99,6 +102,18 @@ file(
 	${CMAKE_CURRENT_SOURCE_DIR}/${QML_DIR}/*.qml
 )
 
+file(
+	GLOB UI_RES
+	LIST_DIRECTORIES false
+	./${QML_DIR}/qml.qrc
+	./${IM_DIR}/images.qrc 
+)
+
+set(SRC_ROOT_PATH ${PROJECT_SOURCE_DIR}/src)
+set(INC_ROOT_PATH ${PROJECT_SOURCE_DIR}/include)
+set(QML_ROOT_PATH ${PROJECT_SOURCE_DIR}/qml)
+set(IM_ROOT_PATH ${PROJECT_SOURCE_DIR}/images)
+
 if(WIN32)
 	set(UI_OS_DEPENDENCY ${IM_DIR}/windows/icon.rc)
 elseif(APPLE)
@@ -112,13 +127,39 @@ elseif(IOS)
 endif()
 
 set(UI_FILE_DEPENDANCIES 
-	 ${UI_SRC} 
-	 ${UI_INC} 
-	 ${UI_QML}
-	 ./${QML_DIR}/qml.qrc
-	 ./${IM_DIR}/images.qrc 
-	 ${UI_OS_DEPENDENCY}
- )
+	${UI_SRC} 
+	${UI_INC} 
+	${UI_QML}
+	${UI_RES}
+	${UI_OS_DEPENDENCY}
+)
+
+## CREATE FOLDER
+
+foreach(_source IN ITEMS ${UI_SRC})
+	get_filename_component(_source_path "${_source}" PATH)
+	file(RELATIVE_PATH _source_path_rel ${SRC_ROOT_PATH} "${_source_path}")
+	string(REPLACE "/" "\\" _group_path "${_source_path_rel}")
+	source_group("${_group_path}" FILES "${_source}")
+endforeach()
+
+foreach(_source IN ITEMS ${UI_INC})
+	get_filename_component(_source_path "${_source}" PATH)
+	file(RELATIVE_PATH _source_path_rel  ${INC_ROOT_PATH} "${_source_path}")
+	string(REPLACE "/" "\\" _group_path "${_source_path_rel}")
+	source_group("${_group_path}" FILES "${_source}")
+endforeach()
+
+foreach(_source IN ITEMS ${UI_QML})
+	get_filename_component(_source_path "${_source}" PATH)
+	file(RELATIVE_PATH _source_path_rel ${PROJECT_SOURCE_DIR} "${_source_path}")
+	string(REPLACE "/" "\\" _group_path "${_source_path_rel}")
+	source_group("${_group_path}" FILES "${_source}")
+	MESSAGE("${_group_path}")
+endforeach()
+
+source_group(res FILES ${UI_RES})
+source_group(os FILES ${UI_OS_DEPENDENCY})
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  CREATE EXECUTABLE 						 │
