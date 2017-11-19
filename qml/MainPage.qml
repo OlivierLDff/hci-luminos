@@ -9,15 +9,14 @@ RowLayout
 	{
 		Layout.fillWidth: true
 		Layout.fillHeight: true
-		//Layout.minimumWidth: 250
-		//Layout.minimumHeight: 150	
+		Layout.minimumWidth: 250
 	}
 	MapPane
 	{
-		//Layout.fillWidth: true
-		//Layout.fillHeight: true
+		Layout.fillWidth: true
+		Layout.fillHeight: true
 		Layout.minimumWidth: 100
-		//Layout.preferredWidth: 200
+		Layout.preferredWidth: parent.width*2/3
 		Layout.preferredHeight: parent.height
 	}
 }

@@ -11,8 +11,8 @@ ApplicationWindow
 	height: 480
 	visible: true
 	title:"Luminos App"
-	minimumWidth: toolbar.implicitWidth + mainLayout.implicitWidth
-	minimumHeight: toolbar.implicitHeight + mainLayout.implicitHeight
+	minimumWidth: toolbar.implicitWidth
+	minimumHeight: toolbar.implicitHeight
 
 	Material.primary : Material.color(Material.Red)
 	Material.accent : Material.color(Material.Orange)
@@ -82,7 +82,7 @@ ApplicationWindow
 
         initialItem: MainPage
 		{
-			//id: control
+			id: mainPage
 			anchors.fill: parent
 		}
     }

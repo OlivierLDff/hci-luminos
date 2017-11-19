@@ -1,52 +1,62 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 Pane
 {
-	implicitWidth: root.implicitWidth
-	implicitHeight: root.implicitHeight
+	id:pane
 	ColumnLayout
 	{
-		id: root
-		spacing: 2
-		Image
-		{
-			id: weatherImage
+		id:root
+		anchors.fill: parent	
 
-			//image attribute
-			sourceSize.width: 64
-			sourceSize.height: 64
-			fillMode: Image.PreserveAspectFit
-			source: "Sun"
-
-			//layout attribyte
-			Layout.alignment: Qt.AlignCenter
-		}
-		Label
+		WeatherWidget
 		{
-			id: locationText
-			text: "Budapest"
-			font.bold : true
-			font.capitalization: Font.AllUppercase
-			horizontalAlignment : Text.AlignHCenter
-		
-			Layout.alignment: Qt.AlignCenter
+			Layout.alignment: Qt.AlignHCenter
 		}
-		Label
-		{
-			id: weatherText
-			text: "Sunny - 19C"
 
-			Layout.alignment: Qt.AlignCenter
-		}
-		Text
+		RowLayout
 		{
-			id: lumText
-			text: "Luminosity - 90000 lux"
-
-			Layout.alignment: Qt.AlignCenter
+			id: row
+			Layout.alignment: Qt.AlignHCenter
+			Layout.fillWidth: true	
+			Frame
+			{
+				id: group
+				Layout.fillWidth: true	
+				Column 
+				{
+					anchors.horizontalCenter: parent.horizontalCenter
+					RadioButton 
+					{
+						text: "Weather"
+						checked: true
+					}
+					RadioButton 
+					{
+						text: "Eco"						
+					}
+					RadioButton 
+					{
+						text: "Full"
+					}
+				}
+			}	
+			Frame
+			{
+				Layout.maximumHeight: group.height
+				//Layout.fillWidth: true
+				Slider 
+				{		
+				//anchors.fill: parent
+					height: parent.height
+					orientation: Qt.Vertical
+					value: 1
+					anchors.horizontalCenter: parent.horizontalCenter
+					onValueChanged:
+						console.log("value is " + value)
+				}			
+			}				
 		}
-	}
-	
+	}	
 }

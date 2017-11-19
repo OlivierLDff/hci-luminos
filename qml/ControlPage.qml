@@ -6,37 +6,29 @@ Page
 {
     id: page
 
-	SwipeView {
+	SwipeView 
+	{
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Repeater {
-            model: 3
+		InfoPage
+		{
+			//width: swipeView.width
+            //height: swipeView.height
+		}
 
-            Pane {
-                width: swipeView.width
-                height: swipeView.height
+		ColorPage
+		{
+			//width: swipeView.width
+            //height: swipeView.height
+		}
 
-                Column {
-                    spacing: 40
-                    width: parent.width
-
-                    Label {
-                        width: parent.width
-                        wrapMode: Label.Wrap
-                        horizontalAlignment: Qt.AlignHCenter
-                        text: "TabBar is a bar with icons or text which allows the user"
-                              + "to switch between different subtasks, views, or modes."
-                    }
-
-                    Image {
-                        source: "../images/arrows.png"
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-            }
-        }
+		EffectPage
+		{
+			//width: swipeView.width
+			//height: swipeView.height
+		}
 	}
 
 	footer: TabBar {
@@ -44,7 +36,7 @@ Page
         currentIndex: swipeView.currentIndex
 
         TabButton {
-            text: "Main"
+            text: "Info"
         }
         TabButton {
             text: "Color"
