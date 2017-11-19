@@ -31,6 +31,12 @@
 
     <!-- BACKGROUND -->
     <file alias="RestaurantMap">RestaurantMap.png</file>
+
+    <!-- EFFECT -->
+    <file alias="Wave">effects/audio-wave.png</file>
+    <file alias="Level">effects/levels.png</file>
+    <file alias="Rainbow">effects/rainbow.png</file>
+    <file alias="Shuffle">effects/shuffle.png</file>
     
   </qresource>
 </RCC>
