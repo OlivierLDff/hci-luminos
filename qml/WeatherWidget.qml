@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 Pane
 {
 	//implicitWidth: root.implicitWidth
-	//implicitHeight: root.implicitHeight
+	implicitHeight: root.implicitHeight + 10
 	RowLayout
 	{
 		id: root

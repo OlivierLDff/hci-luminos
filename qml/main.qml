@@ -11,8 +11,8 @@ ApplicationWindow
 	height: 480
 	visible: true
 	title:"Luminos App"
-	minimumWidth: toolbar.implicitWidth
-	minimumHeight: toolbar.implicitHeight
+	minimumWidth: Math.max(toolbar.implicitWidth, mainPage.implicitWidth)
+	minimumHeight: toolbar.implicitHeight + mainPage.implicitHeight//toolbar.implicitHeight + mainPage.minimumHeight
 
 	Material.primary : Material.color(Material.Red)
 	Material.accent : Material.color(Material.Orange)
@@ -66,16 +66,16 @@ ApplicationWindow
                         text: "About"
                         onTriggered: aboutDialog.open()
                     }
+					MenuItem 
+					{
+                        text: "Quit"
+                        onTriggered: Qt.quit()
+                    }
                 }
             }
 		}
 	}
 
-	/*ControlPage
-	{
-		id: control
-		anchors.fill: parent
-	}*/
 	StackView {
         id: stackView
         anchors.fill: parent

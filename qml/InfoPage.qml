@@ -45,10 +45,8 @@ Pane
 			Frame
 			{
 				Layout.maximumHeight: group.height
-				//Layout.fillWidth: true
 				Slider 
-				{		
-				//anchors.fill: parent
+				{
 					height: parent.height
 					orientation: Qt.Vertical
 					value: 1

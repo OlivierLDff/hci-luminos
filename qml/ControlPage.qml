@@ -5,7 +5,8 @@ import QtQuick.Layouts 1.3
 Page 
 {
     id: page
-
+	implicitWidth: info.implicitWidth// Math.max(tabBar.implicitWidth + 20, swipeView.implicitWidth) // oliv: why +20 is needed?
+	implicitHeight: tabBar.implicitHeight + info.implicitHeight
 	SwipeView 
 	{
         id: swipeView
@@ -14,20 +15,17 @@ Page
 
 		InfoPage
 		{
-			//width: swipeView.width
-            //height: swipeView.height
+			id: info
 		}
 
 		ColorPage
 		{
-			//width: swipeView.width
-            //height: swipeView.height
+			id: color
 		}
 
 		EffectPage
 		{
-			//width: swipeView.width
-			//height: swipeView.height
+			id: effect
 		}
 	}
 

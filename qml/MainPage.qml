@@ -7,16 +7,16 @@ RowLayout
 {
 	ControlPage
 	{
+		id: control
 		Layout.fillWidth: true
 		Layout.fillHeight: true
-		Layout.minimumWidth: 250
+		Layout.minimumWidth: implicitWidth
 	}
 	MapPane
 	{
+		id: map
+		implicitHeight: 0 //todo: remove this and find a better way
 		Layout.fillWidth: true
 		Layout.fillHeight: true
-		Layout.minimumWidth: 100
-		Layout.preferredWidth: parent.width*2/3
-		Layout.preferredHeight: parent.height
 	}
 }
