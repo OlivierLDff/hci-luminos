@@ -1,5 +1,18 @@
 <RCC>
 	<qresource prefix="/">
 		<file>main.qml</file>
+    
+	  <file>MainPage.qml</file>
+	  <file>ControlPage.qml</file>
+    <!-- INFO PAGE -->
+    <file>InfoPage.qml</file>
+      <file>WeatherWidget.qml</file>
+	  <!-- COLOR PAGE -->
+    <file>ColorPage.qml</file>
+	    <file>ColorPicker.qml</file>
+	  <!-- EFFECT PAGE -->
+    <file>EffectPage.qml</file>
+    
+	  <file>MapPane.qml</file> 
 	</qresource>
 </RCC>

@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
+import QtQuick.Controls.Material 2.1
 
 ApplicationWindow
 {
@@ -10,35 +11,112 @@ ApplicationWindow
 	height: 480
 	visible: true
 	title:"Luminos App"
-	minimumWidth: cl.implicitWidth
-	minimumHeight: cl.implicitHeight
-	ColumnLayout
+	minimumWidth: toolbar.implicitWidth + mainLayout.implicitWidth
+	minimumHeight: toolbar.implicitHeight + mainLayout.implicitHeight
+
+	Material.primary : Material.color(Material.Red)
+	Material.accent : Material.color(Material.Orange)
+
+	header: ToolBar
 	{
-		id: cl
-		anchors.centerIn: parent
-		spacing: 10
-		Text
+		Material.foreground: "white"
+		RowLayout //Toolbar don't come with a layout, most frequent used layout is row layout
 		{
-			text:"Luminos App!"
-			anchors.horizontalCenter: parent
-		}
-		Image
-		{
-			sourceSize.width: 64
-       sourceSize.height: 64
-			anchors.horizontalCenter: parent
-			fillMode: Image.PreserveAspectFit
-			source: "AppIcon"
-			smooth : true
+			id: toolbar
+			anchors.fill: parent
+
+			Label 
+			{
+                id: titleLabel
+                text: "LuminosApp"
+                font.pixelSize: 20
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+				Layout.leftMargin: 20
+				Layout.rightMargin: 20
+            }
+
+            ToolButton 
+			{
+				anchors.right: parent.right
+                contentItem: Image 
+				{
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "menu"
+                }
+                onClicked: optionsMenu.open()
+
+                Menu 
+				{
+                    id: optionsMenu
+                    x: parent.width - width
+                    transformOrigin: Menu.TopRight
+
+                    MenuItem 
+					{
+                        text: "Settings"
+                        onTriggered: settingsDialog.open()
+                    }
+                    MenuItem 
+					{
+                        text: "About"
+                        onTriggered: aboutDialog.open()
+                    }
+                }
+            }
 		}
 	}
 
-
-
-	/*StackView
+	/*ControlPage
 	{
-		id: stackView
+		id: control
 		anchors.fill: parent
-		initialItem: ContactPage {}
 	}*/
+	StackView {
+        id: stackView
+        anchors.fill: parent
+
+        initialItem: MainPage
+		{
+			//id: control
+			anchors.fill: parent
+		}
+    }
+
+
+	Dialog {
+        id: aboutDialog
+        modal: true
+        focus: true
+        title: "About"
+        x: (window.width - width) / 2
+        y: window.height / 6
+        width: Math.min(window.width, window.height) / 3 * 2
+        contentHeight: aboutColumn.height
+
+        Column {
+            id: aboutColumn
+            spacing: 20
+
+            Label {
+                width: aboutDialog.availableWidth
+                text: "The Qt Quick Controls 2 module delivers the next generation user interface controls based on Qt Quick."
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+            }
+
+            Label {
+                width: aboutDialog.availableWidth
+                text: "In comparison to the desktop-oriented Qt Quick Controls 1, Qt Quick Controls 2 "
+                    + "are an order of magnitude simpler, lighter and faster, and are primarily targeted "
+                    + "towards embedded and mobile platforms."
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+            }
+        }
+    }
 }

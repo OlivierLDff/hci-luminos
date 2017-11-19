@@ -1,5 +1,36 @@
 <RCC>
   <qresource prefix="/">
     <file alias="AppIcon">AppIcon.png</file>
+    
+    <!-- WEATHER -->
+    <file alias="Sun">weather/Sun.png</file>
+    <file alias="Cloudy">weather/Cloudy.png</file>
+    <file alias="Night">weather/Night.png</file>
+    <file alias="Rain">weather/Rain.png</file>
+    <file alias="Snowing">weather/Snowing.png</file>
+    <file alias="Storm">weather/Storm.png</file>
+
+    <!-- ICONS -->
+    <file alias="back">icons/back.png</file>
+    <file alias="back@2x">icons/back@2x.png</file>
+    <file alias="back@3x">icons/back@3x.png</file>
+    <file alias="back@4x">icons/back@4x.png</file>
+
+    <file alias="drawer">icons/drawer.png</file>
+    <file alias="drawer@2x">icons/drawer@2x.png</file>
+    <file alias="drawer@3x">icons/drawer@3x.png</file>
+    <file alias="drawer@4x">icons/drawer@4x.png</file>
+
+    <file alias="menu">icons/menu.png</file>
+    <file alias="menu@2x">icons/menu@2x.png</file>
+    <file alias="menu@3x">icons/menu@3x.png</file>
+    <file alias="menu@4x">icons/menu@4x.png</file>
+
+    <!-- COLOR PICKER -->
+    <file alias="colorpicker">color_wheel.png</file>
+
+    <!-- BACKGROUND -->
+    <file alias="RestaurantMap">RestaurantMap.png</file>
+    
   </qresource>
 </RCC>

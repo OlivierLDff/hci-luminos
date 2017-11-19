@@ -155,7 +155,6 @@ foreach(_source IN ITEMS ${UI_QML})
 	file(RELATIVE_PATH _source_path_rel ${PROJECT_SOURCE_DIR} "${_source_path}")
 	string(REPLACE "/" "\\" _group_path "${_source_path_rel}")
 	source_group("${_group_path}" FILES "${_source}")
-	MESSAGE("${_group_path}")
 endforeach()
 
 source_group(res FILES ${UI_RES})
