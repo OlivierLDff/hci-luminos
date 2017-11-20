@@ -14,43 +14,69 @@ Pane
 		{
 			Layout.alignment: Qt.AlignHCenter
 		}
-
+		
 		RowLayout
 		{
 			id: row
-			Layout.alignment: Qt.AlignHCenter
-			Layout.fillWidth: true	
+			anchors.right: parent.right
+			anchors.left: parent.left
+			anchors.bottom: parent.bottom	
+
 			Frame
 			{
 				id: group
 				Layout.fillWidth: true	
-				Column 
+				Layout.fillHeight: true	
+				clip: true
+				ButtonGroup 
 				{
-					anchors.horizontalCenter: parent.horizontalCenter
-					RadioButton 
+					id: radioButtonGroup
+				}
+				ListView 
+				{
+					ScrollBar.vertical: ScrollBar { }
+					width: group.width; 
+					height: group.height
+
+					model: ListModel 
 					{
-						text: "Weather"
-						checked: true
+						ListElement 
+						{
+							buttonFunction: "Weather"
+							check: true
+						}
+						ListElement 
+						{
+						   buttonFunction: "Eco"
+						   check: false
+						}
+						ListElement 
+						{
+							buttonFunction: "Full"
+							check: false
+						}				
 					}
-					RadioButton 
+					delegate: RadioButton 
 					{
-						text: "Eco"						
-					}
-					RadioButton 
-					{
-						text: "Full"
+						text: buttonFunction
+						checked: check
+						ButtonGroup.group: radioButtonGroup
 					}
 				}
 			}	
 			Frame
 			{
-				Layout.maximumHeight: group.height
+				anchors.top: parent.top
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
 				Slider 
 				{
 					height: parent.height
-					orientation: Qt.Vertical
-					value: 1
+					implicitHeight: 40
 					anchors.horizontalCenter: parent.horizontalCenter
+					orientation: Qt.Vertical
+					
+					value: 1
 					onValueChanged:
 						console.log("value is " + value)
 				}			

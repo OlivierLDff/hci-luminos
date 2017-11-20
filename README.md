@@ -140,3 +140,24 @@ set(DCMAKE_MAKE_PROGRAM ${ANDROID_SDK}/ndk-bundle/prebuilt/windows-x86-64/bin/ma
 ##### Windows error
 
 todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
+
+## Todo
+
+### Main Control
+
+*[ ] Color Picker Page
+     *[ ] Color Picker in QML
+     *[ ] Attribute R G B
+*[ ] Effect Page
+     *[ ] Pad
+*[ ] Map Page
+     *[ ] Selectable object
+     *[ ] Select All button
+     *[ ] Clear Selection
+*[ ] Settings Page
+*[ ] C++ backend
+     *[ ] 6 fixture rgb
+     *[ ] Artnode Broadcast to 255.255.255.255 universe 1
+     *[ ] Wyg plan
+     *[ ] Change weather image
+
