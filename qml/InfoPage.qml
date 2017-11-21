@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import LuminosModel 1.0
 
 Pane
 {
@@ -47,8 +48,8 @@ Pane
 						}
 						ListElement 
 						{
-						   buttonFunction: "Eco"
-						   check: false
+							buttonFunction: "Eco"
+							check: false
 						}
 						ListElement 
 						{
@@ -61,6 +62,8 @@ Pane
 						text: buttonFunction
 						checked: check
 						ButtonGroup.group: radioButtonGroup
+						//							onPressed: 
+						//		SensorModel.WeatherImage = "Cloudy";
 					}
 				}
 			}	

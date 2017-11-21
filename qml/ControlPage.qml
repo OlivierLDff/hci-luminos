@@ -12,6 +12,7 @@ Page
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
+		clip:true 
 
 		InfoPage
 		{

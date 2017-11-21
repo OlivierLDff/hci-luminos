@@ -9,7 +9,7 @@
     <file alias="Rain">weather/Rain.png</file>
     <file alias="Snowing">weather/Snowing.png</file>
     <file alias="Storm">weather/Storm.png</file>
-
+ 
     <!-- ICONS -->
     <file alias="back">icons/back.png</file>
     <file alias="back@2x">icons/back@2x.png</file>

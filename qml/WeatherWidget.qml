@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
+import LuminosModel 1.0
 
 Pane
 {
@@ -19,15 +20,12 @@ Pane
 			{
 				id: weatherImage
 
-				//image attribute
-				//sourceSize.width: 64
-				//sourceSize.height: 64
 				Layout.minimumWidth: 32
 				Layout.minimumHeight: 32
 				Layout.preferredWidth: 64
 				Layout.preferredHeight: 64
 				fillMode: Image.PreserveAspectFit
-				source: "Sun"
+				source: SensorModel.WeatherImage
 			}
 			Label
 			{
@@ -45,14 +43,14 @@ Pane
 			Label
 			{
 				id: weatherText
-				text: qsTr("Sunny - 19C")
+				text: qsTr("Sunny - " + SensorModel.Temperature + "C")
 
 				//Layout.alignment: Qt.AlignCenter
 			}
 			Text
 			{
 				id: lumText
-				text: qsTr("Luminosity - 90000 lux")
+				text: qsTr("Luminosity - " + SensorModel.Lux + " lux")
 
 				//Layout.alignment: Qt.AlignCenter
 			}

@@ -6,7 +6,7 @@
 
 # Project for HCI class in BME 2017 - Group 7
 # Olivier Le Doeuff CR0ZOQ
-# Paul Cales 
+# Paul Cales VWTFKW
 # Andres Camilo Bernal Moreno
 # Antonio Eliseu
 
@@ -37,12 +37,28 @@ set(COMPANY_PROJECT_NAME HCI)
 #Use solution folders.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+########################
+# PRE PROJECT SETTINGS #
+########################
+
 option(ANDROID_TOOLCHAIN "ANDROID_TOOLCHAIN" off) #-DANDROID_TOOLCHAIN
-if(ANDROID_TOOLCHAIN) 
+
+if(${ANDROID_TOOLCHAIN}) 
 	set(CMAKE_TOOLCHAIN_FILE "./cmake/toolchain/android.toolchain.cmake")
-endif(ANDROID_TOOLCHAIN)
+endif(${ANDROID_TOOLCHAIN})
 
 project(${UI_PROJECT_NAME})
+
+#########################
+# POST PROJECT SETTINGS #
+#########################
+
+option(USE_DMX_BACKEND "USE_DMX_BACKEND" on) #-DUSE_DMX_BACKEND
+
+if(${USE_DMX_BACKEND})
+	include(${PROJECT_SOURCE_DIR}/cmake/BuildDmxManagerCore.cmake)
+endif(${USE_DMX_BACKEND})
+
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  	QT5 BUILDING							 │
@@ -207,4 +223,5 @@ endif()
 # │						  LINK LIBRARIES 	 						 │
 # └──────────────────────────────────────────────────────────────────┘
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quick)
+target_include_directories(${UI_PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/${INC_DIR})
+target_link_libraries(${UI_PROJECT_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quick ${DMX_MANAGER_CORE})

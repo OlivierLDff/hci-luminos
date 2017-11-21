@@ -135,7 +135,7 @@ cmake -G "MinGW Makefiles" -DANDROID_TOOLCHAIN=ON -DCMAKE_MAKE_PROGRAM="C:/Users
 
 set(DCMAKE_MAKE_PROGRAM ${ANDROID_SDK}/ndk-bundle/prebuilt/windows-x86-64/bin/make.exe)
 
-**IMPORTANT**  `QTDIR` need to match generator
+**IMPORTANT**  `QT_DIR` need to match generator
 
 ##### Windows error
 
