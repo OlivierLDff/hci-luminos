@@ -22,7 +22,7 @@ cmake_minimum_required(VERSION 2.8.12) #minimum version required by Qt (http://d
 # C:/Users/olivi/AppData/Local/Android/Sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe
 # https://github.com/LaurentGomila/qt-android-cmake
 
-#debug : C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe logcat build-debug.apk | grep libChatTutorialCmakeBuild
+#debug : C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe logcat build-debug.apk | grep Luminos
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install build-android-debug.apk
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp
 
