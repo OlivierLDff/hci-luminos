@@ -159,5 +159,7 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
      *[ ] 6 fixture rgb
      *[ ] Artnode Broadcast to 255.255.255.255 universe 1
      *[ ] Wyg plan
-     *[ ] Change weather image
+     *[x] Change weather image
+     *[ ] Change Lux/Temperature
+
 

@@ -11,7 +11,7 @@ ApplicationWindow
 	height: 480
 	visible: true
 	title:"Luminos App"
-	minimumWidth: Math.max(toolbar.implicitWidth, mainPage.implicitWidth)
+	//minimumWidth: Math.max(toolbar.implicitWidth, mainPage.implicitWidth)
 	minimumHeight: toolbar.implicitHeight + mainPage.implicitHeight//toolbar.implicitHeight + mainPage.minimumHeight
 
 	Material.primary : Material.color(Material.Red)

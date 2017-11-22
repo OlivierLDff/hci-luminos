@@ -28,6 +28,11 @@ Page
 		{
 			id: effect
 		}
+		MapPane
+		{
+			visible: false//Window.width <= 700
+			enabled: false//Window.width <= 700
+		}
 	}
 
 	footer: TabBar {
@@ -35,13 +40,19 @@ Page
         currentIndex: swipeView.currentIndex
 
         TabButton {
-            text: "Info"
+			text: qsTr("Info")
         }
         TabButton {
-            text: "Color"
+			text: qsTr("Color")
         }
         TabButton {
-            text: "Effect"
+			text: qsTr("Effect")
         }
+		TabButton {
+			text: qsTr("Map")
+			visible: false//Window.width <= 700
+			enabled: false//Window.width <= 700
+        }
+		
     }
 }

@@ -15,7 +15,9 @@ RowLayout
 	MapPane
 	{
 		id: map
+		visible: Window.width > 500
 		implicitHeight: 0 //todo: remove this and find a better way
+		//implicitWidth: Window.width ? 0 : undefined
 		Layout.fillWidth: true
 		Layout.fillHeight: true
 	}
