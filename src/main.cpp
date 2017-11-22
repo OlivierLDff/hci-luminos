@@ -6,21 +6,25 @@
 #include <FixturesModel.hpp>
 #include <sstream>
 
+SensorModel * Sensor;
+FixturesModel * FixturesManager;
+
 static QObject *SensorModelProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
 	Q_UNUSED(engine)
 	Q_UNUSED(scriptEngine)
 
-	SensorModel *singleton = new SensorModel(false);
-	return singleton;
+	//SensorModel *singleton = new SensorModel(false);
+	return Sensor;
 }
+
 static QObject *FixturesModelProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
 	Q_UNUSED(engine)
 	Q_UNUSED(scriptEngine)
 
-	FixturesModel *singleton = new FixturesModel();
-	return singleton;
+	//FixturesModel *singleton = new FixturesModel();
+	return FixturesManager;
 }
 
 #include <DmxManagerCore/DmxManagerCore.hpp>			//Create the manager that manage universes
@@ -120,7 +124,7 @@ void MyApp::Run(IThreadArg* threadArg)
 			Lin();
 		//else
 		//	RampUpDown();
-		qInfo("update");
+		//qInfo("update");
 		sem->Wait();
 	}
 }
@@ -186,6 +190,9 @@ int main(int argc, char *argv[])
 {
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(argc, argv);
+
+	Sensor = new SensorModel(false);
+	FixturesManager = new FixturesModel(Sensor);
 
 	//qmlRegisterType<SqlContactModel>("io.qt.examples.chattutorial", 1, 0, "SqlContactModel");
 	//qmlRegisterType<SqlConversationModel>("io.qt.examples.chattutorial", 1, 0, "SqlConversationModel");

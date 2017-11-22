@@ -43,14 +43,14 @@ Pane
 			Label
 			{
 				id: weatherText
-				text: qsTr("Sunny - " + SensorModel.Temperature + "C")
+				text: qsTr("Sunny : " + SensorModel.Temperature + "C")
 
 				//Layout.alignment: Qt.AlignCenter
 			}
 			Text
 			{
 				id: lumText
-				text: qsTr("Luminosity - " + SensorModel.Lux + " lux")
+				text: qsTr("Luminosity : " + SensorModel.Lux + " lux")
 
 				//Layout.alignment: Qt.AlignCenter
 			}

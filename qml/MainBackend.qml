@@ -207,5 +207,40 @@ ApplicationWindow
 				onClicked: SensorModel.WeatherImage = "Snowing"
 			}
 		}
+		RowLayout
+		{
+			Layout.fillWidth: true	
+			Dial
+			{
+				id: temperatureDial
+				value: 20
+				from: -50
+				to: 50
+				Layout.fillWidth: true	
+				onValueChanged: SensorModel.Temperature = Math.floor(value)
+				//anchors.horizontalCenter: parent.horizontalCenter
+			}
+			/*ProgressBar 
+			{
+				id: bar
+				value: temperatureDial.value
+				from: -50
+				to: 50
+				width: 20
+				transform: Rotation {  origin.x: 25; origin.y: 25; angle: -90; }
+				anchors.horizontalCenter: parent.horizontalCenter
+			}*/
+			Dial
+			{
+				id: luxDial
+				value: 10000
+				from: 0
+				to: 100000
+				Layout.fillWidth: true	
+				onValueChanged: SensorModel.Lux = Math.floor(value)
+				stepSize : 100
+				//anchors.horizontalCenter: parent.horizontalCenter
+			}
+		}
 	}
 }

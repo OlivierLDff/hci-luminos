@@ -26,6 +26,7 @@ cmake_minimum_required(VERSION 2.8.12) #minimum version required by Qt (http://d
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install build-android-debug.apk
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp
 
+# uninstall and install apk :
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install build-android-debug.apk
 
 # ┌──────────────────────────────────────────────────────────────────┐

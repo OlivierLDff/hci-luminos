@@ -107,9 +107,10 @@ UDPSocketReceiver::~UDPSocketReceiver()
 
 void UDPSocketReceiver::Start()
 {
-	//NetworkAdapterV4 a = NetworkHelper::GetWildcardNetworkAdapterV4();
-	NetworkAdapterV4 a = NetworkHelper::NetworkAdapterFromIpString("2.0.0.2");
-	s->Bind(&a);
+	NetworkAdapterV4 a = NetworkHelper::GetWildcardNetworkAdapterV4();
+	//NetworkAdapterV4 a = NetworkHelper::NetworkAdapterFromIpString("192.168.0.100");
+	ENetworkError e = s->Bind(&a);
+	//qInfo("Bind ret : %d", e);
 	t->Start(this);
 }
 
@@ -121,6 +122,7 @@ void UDPSocketReceiver::Stop()
 
 void UDPSocketReceiver::Run(IThreadArg* threadArg)
 {
+	//qInfo("Start run");
 	while (bIsRunning)
 	{
 		SensorBackendPacket msg;
@@ -137,12 +139,16 @@ void UDPSocketReceiver::Run(IThreadArg* threadArg)
 			size_t read_cnt = sizeof(msg);
 			int32_t read;
 			uint32_t ip;
+			//qInfo("Start read");
 			if (s->Receive((uint8_t*)&msg, read_cnt, read, ip) == ENetworkError_Ok)
 			{
 				Parent->SetWeatherImage(msg.Weather);
 				Parent->SetLux(msg.Lux);
 				Parent->SetTemperature(msg.Temperature);
+				//qInfo("receive %d", Parent->GetWeatherEnum());
 			}
+			//else
+			//	qInfo("failed to receive");
 		}
 	}
 }

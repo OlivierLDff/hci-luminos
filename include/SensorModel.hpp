@@ -59,7 +59,7 @@ public:
 
 	//Q_INVOKABLE int doSomething() { setSomeProperty(5); return m_someProperty; }
 
-	static QString SensorModel::WeatherToString(const ESensorWeather e);
+	static QString WeatherToString(const ESensorWeather e);
 
 	QString GetWeatherImage() const;
 	void SetWeatherImage(const QString& weatherImage);
