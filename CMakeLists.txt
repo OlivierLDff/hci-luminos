@@ -26,6 +26,8 @@ cmake_minimum_required(VERSION 2.8.12) #minimum version required by Qt (http://d
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install build-android-debug.apk
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp
 
+# C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install build-android-debug.apk
+
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  PROJECT SETTINGS							 │
 # └──────────────────────────────────────────────────────────────────┘
@@ -102,7 +104,12 @@ set(INC_DIR include)
 set(QML_DIR qml)
 set(IM_DIR images)
 
-file(
+set(SRC_ROOT_PATH ${PROJECT_SOURCE_DIR}/${SRC_DIR})
+set(INC_ROOT_PATH ${PROJECT_SOURCE_DIR}/${INC_DIR})
+set(QML_ROOT_PATH ${PROJECT_SOURCE_DIR}/${QML_DIR})
+set(IM_ROOT_PATH ${PROJECT_SOURCE_DIR}/${IM_DIR})
+
+#[[file(
 	GLOB_RECURSE  UI_SRC 
 	LIST_DIRECTORIES false
 	${CMAKE_CURRENT_SOURCE_DIR}/${SRC_DIR}/*.c*
@@ -111,7 +118,16 @@ file(
 	GLOB_RECURSE  UI_INC
 	LIST_DIRECTORIES false
 	${CMAKE_CURRENT_SOURCE_DIR}/${INC_DIR}/*.h*
-)
+)]]
+set(UI_SRC
+	${SRC_ROOT_PATH}/FixturesModel.cpp
+	${SRC_ROOT_PATH}/main.cpp
+	${SRC_ROOT_PATH}/SensorModel.cpp
+	)
+set(UI_INC
+	${INC_ROOT_PATH}/FixturesModel.hpp
+	${INC_ROOT_PATH}/SensorModel.hpp
+	)
 file(
 	GLOB_RECURSE  UI_QML
 	LIST_DIRECTORIES false
@@ -124,11 +140,6 @@ file(
 	./${QML_DIR}/qml.qrc
 	./${IM_DIR}/images.qrc 
 )
-
-set(SRC_ROOT_PATH ${PROJECT_SOURCE_DIR}/src)
-set(INC_ROOT_PATH ${PROJECT_SOURCE_DIR}/include)
-set(QML_ROOT_PATH ${PROJECT_SOURCE_DIR}/qml)
-set(IM_ROOT_PATH ${PROJECT_SOURCE_DIR}/images)
 
 if(WIN32)
 	set(UI_OS_DEPENDENCY ${IM_DIR}/windows/icon.rc)
@@ -225,3 +236,26 @@ endif()
 
 target_include_directories(${UI_PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/${INC_DIR})
 target_link_libraries(${UI_PROJECT_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quick ${DMX_MANAGER_CORE})
+
+# ┌──────────────────────────────────────────────────────────────────┐
+# │						  BACKEND SOFTWARE 	 						 │
+# └──────────────────────────────────────────────────────────────────┘
+
+set(BACKEND_NAME LuminosBackendApp)
+
+set(BACKEND_FILE_DEPENDANCIES
+	${PROJECT_SOURCE_DIR}/src/MainBackend.cpp
+	${PROJECT_SOURCE_DIR}/include/SensorModel.hpp
+	${PROJECT_SOURCE_DIR}/src/SensorModel.cpp
+	${UI_QML}
+	${UI_RES}
+	)
+
+if(ANDROID) #in android the executable is loaded as a library by the java activity
+	add_library(${BACKEND_NAME} SHARED ${BACKEND_FILE_DEPENDANCIES})
+else()
+	add_executable(${BACKEND_NAME} ${BACKEND_FILE_DEPENDANCIES})
+endif()
+
+target_include_directories(${BACKEND_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/${INC_DIR} )
+target_link_libraries(${BACKEND_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quick OObject)

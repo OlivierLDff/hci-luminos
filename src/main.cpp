@@ -11,7 +11,7 @@ static QObject *SensorModelProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 	Q_UNUSED(engine)
 	Q_UNUSED(scriptEngine)
 
-	SensorModel *singleton = new SensorModel();
+	SensorModel *singleton = new SensorModel(false);
 	return singleton;
 }
 static QObject *FixturesModelProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
@@ -120,7 +120,7 @@ void MyApp::Run(IThreadArg* threadArg)
 			Lin();
 		//else
 		//	RampUpDown();
-
+		qInfo("update");
 		sem->Wait();
 	}
 }

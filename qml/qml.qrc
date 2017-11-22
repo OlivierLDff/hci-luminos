@@ -14,5 +14,7 @@
     <file>EffectPage.qml</file>
     
 	  <file>MapPane.qml</file> 
+
+	<file>MainBackend.qml</file> 	  
 	</qresource>
 </RCC>

@@ -1,6 +1,51 @@
 #ifndef SENSOR_MODEL_HPP
 #define SENSOR_MODEL_HPP
+
 #include <QObject>
+#include <OsDef.hpp>
+#include <IThread.hpp>
+#include <INetwork.hpp>
+
+#define BACKEND_PORT 5123
+
+typedef enum ESensorWeather
+{
+	ESensorWeather_Sun,
+	ESensorWeather_Night,
+	ESensorWeather_Rain,
+	ESensorWeather_Snowing,
+	ESensorWeather_Storm,
+	ESensorWeather_Cloudy,
+}ESensorWeather;
+
+PRE_PACKED_ENUM_DEF
+struct SensorBackendPacket //No header very ugly but BALEC
+{
+	ESensorWeather Weather;
+	qreal Temperature;
+	qreal Lux;
+}
+POST_PACKED_ENUM_DEF
+
+class SensorModel;
+
+class UDPSocketReceiver : public IThreadFunction
+{
+public:
+	explicit UDPSocketReceiver(SensorModel* parent, IUDPSocket* s);
+
+	~UDPSocketReceiver();
+private:
+	IUDPSocket * s;
+	IThread * t;
+	SensorModel * Parent;
+
+public:
+	void Start();
+	void Stop();
+
+	void Run(IThreadArg* threadArg) override;
+};
 
 class SensorModel : public QObject
 {
@@ -9,55 +54,38 @@ class SensorModel : public QObject
 	Q_PROPERTY(qreal Temperature READ GetTemperature WRITE SetTemperature NOTIFY TemperatureChanged)
 	Q_PROPERTY(qreal Lux READ GetLux WRITE SetLux NOTIFY LuxChanged)
 public:
-	SensorModel(QObject* parent = nullptr) : QObject(parent), WeatherImage("Sun"), Temperature(20), Lux(10000)
-	{
-	}
+	SensorModel(const bool bBackend, QObject* parent = nullptr);
+	~SensorModel();
 
 	//Q_INVOKABLE int doSomething() { setSomeProperty(5); return m_someProperty; }
 
-	QString GetWeatherImage() const
-	{
-		return WeatherImage;
-	}
+	static QString SensorModel::WeatherToString(const ESensorWeather e);
 
-	void SetWeatherImage(const QString& weatherImage)
-	{
-		WeatherImage = weatherImage;
-		emit WeatherChanged(weatherImage);
-	}
+	QString GetWeatherImage() const;
+	void SetWeatherImage(const QString& weatherImage);
 
+	ESensorWeather GetWeatherEnum()const;
+	void SetWeatherImage(const ESensorWeather e);
 
-	qreal GetTemperature() const
-	{
-		return Temperature;
-	}
+	qreal GetTemperature() const;
+	void SetTemperature(const qreal temperature);
 
-	void SetTemperature(const qreal temperature)
-	{
-		Temperature = temperature;
-		emit TemperatureChanged(temperature);
-	}
-
-	qreal GetLux() const
-	{
-		return Lux;
-	}
-
-	void SetLux(const qreal lux)
-	{
-		Lux = lux;
-		emit LuxChanged(lux);
-	}
+	qreal GetLux() const;
+	void SetLux(const qreal lux);
 
 signals:
 	void WeatherChanged(QString newValue);
 	void TemperatureChanged(qreal newValue);
 	void LuxChanged(qreal newValue);
 
+
 private:
 	QString WeatherImage;
 	qreal Temperature;
 	qreal Lux;
+	bool bBackend;	
+	UDPSocketReceiver UDPServer;
+	friend class UDPSocketReceiver;
 };
 
 
