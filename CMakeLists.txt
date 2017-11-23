@@ -58,7 +58,7 @@ project(${UI_PROJECT_NAME})
 # POST PROJECT SETTINGS #
 #########################
 
-option(USE_DMX_BACKEND "USE_DMX_BACKEND" off) #-DUSE_DMX_BACKEND
+option(USE_DMX_BACKEND "USE_DMX_BACKEND" on) #-DUSE_DMX_BACKEND
 
 if(${USE_DMX_BACKEND})
 	include(${PROJECT_SOURCE_DIR}/cmake/BuildDmxManagerCore.cmake)
@@ -147,7 +147,7 @@ file(
 if(WIN32)
 	set(UI_OS_DEPENDENCY ${IM_DIR}/windows/icon.rc)
 elseif(APPLE)
-	#todo Cales
+	set(UI_OS_DEPENDENCY ${PROJECT_SOURCE_DIR}/images/apple/AppIcon.icns)
 elseif(UNIX)
 	#todo linux http://doc.qt.io/qt-5/appicon.html
 elseif(ANDROID)
@@ -226,6 +226,7 @@ elseif(WIN32) # Check if we are on Windows
 elseif(APPLE)
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 		MACOSX_BUNDLE YES
+		MACOSX_BUNDLE_ICON_FILE AppIcon.icns
 		)
 elseif(UNIX)
 	# Nothing special required
@@ -248,6 +249,8 @@ set(BACKEND_NAME LuminosBackendApp)
 
 if(WIN32)
 	set(BACKEND_OS_DEPENDENCY ${IM_DIR}/windows/iconbackend.rc)
+elseif(APPLE)
+	set(BACKEND_OS_DEPENDENCY ${PROJECT_SOURCE_DIR}/images/apple/AppIcon.icns)
 endif()
 
 set(BACKEND_FILE_DEPENDANCIES
@@ -287,7 +290,7 @@ elseif(WIN32) # Check if we are on Windows
 elseif(APPLE)
 	set_target_properties(${BACKEND_NAME} PROPERTIES
 		MACOSX_BUNDLE YES
-		MACOSX_BUNDLE_ICON_FILE ${PROJECT_SOURCE_DIR}/images/apple/AppIcon/icns
+		MACOSX_BUNDLE_ICON_FILE BackendAppIcon.icns
 		)
 elseif(UNIX)
 	# Nothing special required
@@ -295,5 +298,9 @@ else()
 	message(SEND_ERROR "You are on an unsupported platform! (Not Win32, Mac OS X or Unix)")
 endif()
 
+if(DUSE_DMX_BACKEND)
+	set(OOBJECTLIB OObject)
+endif()	
+
 target_include_directories(${BACKEND_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/${INC_DIR} )
-target_link_libraries(${BACKEND_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quick OObject)
+target_link_libraries(${BACKEND_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quick ${OOBJECTLIB})
