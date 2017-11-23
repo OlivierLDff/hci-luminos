@@ -5,15 +5,21 @@ SensorModel::SensorModel(const bool bBackend, QObject* parent) : QObject(parent)
 WeatherImage("Sun"), 
 Temperature(20),
 Lux(10000), 
-bBackend(bBackend),
-UDPServer(this, ISocketFactory::CreateUDPSocket(BACKEND_PORT, BACKEND_PORT))
+bBackend(bBackend)
+#ifdef OOBJECT
+, UDPServer(this, ISocketFactory::CreateUDPSocket(BACKEND_PORT, BACKEND_PORT))
+#endif
 {
+#ifdef OOBJECT
 	UDPServer.Start();
+#endif
 }
 
 SensorModel::~SensorModel()
 {
+#ifdef OOBJECT
 	UDPServer.Stop();
+#endif
 }
 
 QString SensorModel::GetWeatherImage() const
@@ -91,6 +97,7 @@ QString SensorModel::WeatherToString(const ESensorWeather e)
 	return "";
 }
 
+#ifdef OOBJECT
 SensorServer::SensorServer(SensorModel* parent, IUDPSocket* s): s(s), t(IThreadFactory::CreateThread()),
                                                                           Parent(parent)
 {
@@ -147,3 +154,4 @@ void SensorServer::Run(IThreadArg* threadArg)
 		}
 	}
 }
+#endif

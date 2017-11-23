@@ -26,7 +26,7 @@ static QObject *FixturesModelProvider(QQmlEngine *engine, QJSEngine *scriptEngin
 	//FixturesModel *singleton = new FixturesModel();
 	return FixturesManager;
 }
-
+#ifdef DMX_MANAGER_CORE
 #include <DmxManagerCore/DmxManagerCore.hpp>			//Create the manager that manage universes
 #include <DmxManagerCore/DmxUniverse.hpp>				//Array of data
 #include <DmxManagerCore/IDmxChangedCallback.hpp>		//Listen to change, mainly for debug and to see when data arrive
@@ -184,6 +184,7 @@ void MyApp::notify(DmxManagerCore* parent)
 {
 	sem->Post();
 }
+#endif
 
 
 int main(int argc, char *argv[])
@@ -208,9 +209,9 @@ int main(int argc, char *argv[])
 	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;
-
+#ifdef DMX_MANAGER_CORE
 	MyApp ap2p;		//Create the app
 	ap2p.Launch();	//And launch it
-
+#endif
 	return app.exec();
 }

@@ -2,9 +2,11 @@
 #define SENSOR_MODEL_HPP
 
 #include <QObject>
+#ifdef OOBJECT
 #include <OsDef.hpp>
 #include <IThread.hpp>
 #include <INetwork.hpp>
+#endif
 
 #define BACKEND_PORT 5123
 
@@ -18,6 +20,7 @@ typedef enum ESensorWeather
 	ESensorWeather_Cloudy,
 }ESensorWeather;
 
+#ifdef OOBJECT
 PRE_PACKED_ENUM_DEF
 struct SensorBackendPacket //No header very ugly but BALEC
 {
@@ -46,6 +49,7 @@ public:
 
 	void Run(IThreadArg* threadArg) override;
 };
+#endif
 
 class SensorModel : public QObject
 {
@@ -84,7 +88,9 @@ private:
 	qreal Temperature;
 	qreal Lux;
 	bool bBackend;	
+#ifdef OOBJECT
 	SensorServer UDPServer;
+#endif
 	friend class SensorServer;
 };
 

@@ -58,7 +58,7 @@ project(${UI_PROJECT_NAME})
 # POST PROJECT SETTINGS #
 #########################
 
-option(USE_DMX_BACKEND "USE_DMX_BACKEND" on) #-DUSE_DMX_BACKEND
+option(USE_DMX_BACKEND "USE_DMX_BACKEND" off) #-DUSE_DMX_BACKEND
 
 if(${USE_DMX_BACKEND})
 	include(${PROJECT_SOURCE_DIR}/cmake/BuildDmxManagerCore.cmake)
