@@ -33,38 +33,39 @@ Pane
 				{
 					id: radioButtonGroup
 				}
-				ListView 
+				Flickable
 				{
-					ScrollBar.vertical: ScrollBar { }
-					width: group.width; 
-					height: group.height
-
-					model: ListModel 
+					anchors.fill: parent
+					contentWidth: width; 
+					contentHeight: group.height > (column.implicitHeight) ? height : (column.implicitHeight)
+					ColumnLayout
 					{
-						ListElement 
+						
+						anchors.fill: parent
+						id:column
+						RadioButton 
 						{
-							buttonFunction: "Weather"
-							check: true
+							id : weatherButton
+							text: "Weather"
+							checked: true
+							onClicked: SensorModel.ConsumptionMode = EConsumptionMode_Weather
+							ButtonGroup.group: radioButtonGroup
 						}
-						ListElement 
+						RadioButton 
 						{
-							buttonFunction: "Eco"
-							check: false
+							id : ecoButton
+							text: "Eco"
+							onClicked: SensorModel.ConsumptionMode = EConsumptionMode_Eco
+							ButtonGroup.group: radioButtonGroup
 						}
-						ListElement 
+						RadioButton 
 						{
-							buttonFunction: "Full"
-							check: false
-						}				
-					}
-					delegate: RadioButton 
-					{
-						text: buttonFunction
-						checked: check
-						ButtonGroup.group: radioButtonGroup
-						//							onPressed: 
-						//		SensorModel.WeatherImage = "Cloudy";
-					}
+							id : fullButton
+							text: "Full"
+							onClicked: SensorModel.ConsumptionMode = EConsumptionMode_Full
+							ButtonGroup.group: radioButtonGroup
+						}
+					}					
 				}
 			}	
 			Frame

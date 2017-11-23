@@ -1,24 +1,41 @@
 #ifndef FIXTURES_MODEL_HPP
 #define FIXTURES_MODEL_HPP
 
-enum EConsumptionMode
-{
-	EConsumptionMode_Eco,
-	EConsumptionMode_Weather,
-	EConsumptionMode_Full
-};
-
 #include <QObject>
+#include <QtQml>
+
+class ModeClass : public QObject
+{
+	Q_OBJECT
+public:
+	// Default constructor, required for classes you expose to QML.
+	ModeClass() : QObject() {}
+
+	enum EConsumptionMode
+	{
+		EConsumptionMode_Eco,
+		EConsumptionMode_Weather,
+		EConsumptionMode_Full
+	};
+	Q_ENUMS(EConsumptionMode)
+
+	// Do not forget to declare your class to the QML system.
+	static void declareQML() 
+	{
+		qmlRegisterType<ModeClass>("SensorModel", 1, 0, "Mode");
+	}
+};
 
 class FixturesModel : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
+	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
 public:
 	FixturesModel(class SensorModel * sensor, QObject* parent = nullptr) : QObject(parent), Sensor(sensor),
-	                                                                       ComsumptionMode(EConsumptionMode_Eco)
+		ConsumptionMode(ModeClass::EConsumptionMode_Eco)
 	{
-		qRegisterMetaType<EConsumptionMode>("EConsumptionMode");
+		ModeClass::declareQML();
+		//qmlRegisterType<EConsumptionMode>("SensorModel", 1, 0, "EConsumptionMode");
 	}
 
 	~FixturesModel()
@@ -26,22 +43,31 @@ public:
 		
 	}
 
-	EConsumptionMode GetComsumptionMode() const
+	
+	//Q_ENUMS(EConsumptionMode)
+
+	// Do not forget to declare your class to the QML system.
+	/*static void declareQML() 
 	{
-		return ComsumptionMode;
+		
+	}*/
+
+	ModeClass::EConsumptionMode GetComsumptionMode() const
+	{
+		return ConsumptionMode;
 	}
 
-	void SetComsumptionMode(const EConsumptionMode comsumptionMode)
+	void SetComsumptionMode(const ModeClass::EConsumptionMode comsumptionMode)
 	{
-		ComsumptionMode = comsumptionMode;
+		ConsumptionMode = comsumptionMode;
 	}
 
 signals:
-	void ComsumptionModeChanged(EConsumptionMode comsumptionMode);
+	void ComsumptionModeChanged(ModeClass::EConsumptionMode comsumptionMode);
 
 private:
 	class SensorModel * Sensor;
-	EConsumptionMode ComsumptionMode;
+	ModeClass::EConsumptionMode ConsumptionMode;
 };
 
 
