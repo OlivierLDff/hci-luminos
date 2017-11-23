@@ -29,12 +29,12 @@ POST_PACKED_ENUM_DEF
 
 class SensorModel;
 
-class UDPSocketReceiver : public IThreadFunction
+class SensorServer : public IThreadFunction
 {
 public:
-	explicit UDPSocketReceiver(SensorModel* parent, IUDPSocket* s);
+	explicit SensorServer(SensorModel* parent, IUDPSocket* s);
 
-	~UDPSocketReceiver();
+	~SensorServer();
 private:
 	IUDPSocket * s;
 	IThread * t;
@@ -84,8 +84,8 @@ private:
 	qreal Temperature;
 	qreal Lux;
 	bool bBackend;	
-	UDPSocketReceiver UDPServer;
-	friend class UDPSocketReceiver;
+	SensorServer UDPServer;
+	friend class SensorServer;
 };
 
 

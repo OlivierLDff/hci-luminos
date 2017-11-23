@@ -44,6 +44,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # PRE PROJECT SETTINGS #
 ########################
 
+option(ANDROID_BACK "ANDROID_BACK" off)
+
 option(ANDROID_TOOLCHAIN "ANDROID_TOOLCHAIN" off) #-DANDROID_TOOLCHAIN
 
 if(${ANDROID_TOOLCHAIN}) 
@@ -192,7 +194,7 @@ source_group(os FILES ${UI_OS_DEPENDENCY})
 # │						  CREATE EXECUTABLE 						 │
 # └──────────────────────────────────────────────────────────────────┘
 
-if(ANDROID) #in android the executable is loaded as a library by the java activity
+if(ANDROID AND NOT ${ANDROID_BACK}) #in android the executable is loaded as a library by the java activity
 	add_library(${UI_PROJECT_NAME} SHARED ${UI_FILE_DEPENDANCIES})
 else()
 	add_executable(${UI_PROJECT_NAME} ${UI_FILE_DEPENDANCIES})
@@ -202,7 +204,7 @@ endif()
 # │						  TARGET PROPERTIES	 						 │
 # └──────────────────────────────────────────────────────────────────┘
 
-if(ANDROID)
+if(ANDROID AND NOT ${ANDROID_BACK})
 	include(${PROJECT_SOURCE_DIR}/cmake/android/AddQtAndroidApk.cmake)
 	add_qt_android_apk(${UI_PROJECT_NAME}_apk ${UI_PROJECT_NAME} 
 		NAME ${UI_APP_NAME}
@@ -244,21 +246,26 @@ target_link_libraries(${UI_PROJECT_NAME} Qt5::Core Qt5::QuickControls2 Qt5::Quic
 
 set(BACKEND_NAME LuminosBackendApp)
 
+if(WIN32)
+	set(BACKEND_OS_DEPENDENCY ${IM_DIR}/windows/iconbackend.rc)
+endif()
+
 set(BACKEND_FILE_DEPENDANCIES
 	${PROJECT_SOURCE_DIR}/src/MainBackend.cpp
 	${PROJECT_SOURCE_DIR}/include/SensorModel.hpp
 	${PROJECT_SOURCE_DIR}/src/SensorModel.cpp
 	${UI_QML}
 	${UI_RES}
+	${BACKEND_OS_DEPENDENCY}
 	)
 
-if(ANDROID) #in android the executable is loaded as a library by the java activity
+if(ANDROID AND ${ANDROID_BACK}) #in android the executable is loaded as a library by the java activity
 	add_library(${BACKEND_NAME} SHARED ${BACKEND_FILE_DEPENDANCIES})
 else()
 	add_executable(${BACKEND_NAME} ${BACKEND_FILE_DEPENDANCIES})
 endif()
 
-if(ANDROID)
+if(ANDROID AND ${ANDROID_BACK})
 	include(${PROJECT_SOURCE_DIR}/cmake/android/AddQtAndroidApk.cmake)
 	add_qt_android_apk(${BACKEND_NAME}_apk ${BACKEND_NAME} 
 		NAME ${BACKEND_NAME}
@@ -280,6 +287,7 @@ elseif(WIN32) # Check if we are on Windows
 elseif(APPLE)
 	set_target_properties(${BACKEND_NAME} PROPERTIES
 		MACOSX_BUNDLE YES
+		MACOSX_BUNDLE_ICON_FILE ${PROJECT_SOURCE_DIR}/images/apple/AppIcon/icns
 		)
 elseif(UNIX)
 	# Nothing special required

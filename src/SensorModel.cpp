@@ -91,13 +91,13 @@ QString SensorModel::WeatherToString(const ESensorWeather e)
 	return "";
 }
 
-UDPSocketReceiver::UDPSocketReceiver(SensorModel* parent, IUDPSocket* s): s(s), t(IThreadFactory::CreateThread()),
+SensorServer::SensorServer(SensorModel* parent, IUDPSocket* s): s(s), t(IThreadFactory::CreateThread()),
                                                                           Parent(parent)
 {
 	s->AllowBroadcast(true);
 }
 
-UDPSocketReceiver::~UDPSocketReceiver()
+SensorServer::~SensorServer()
 {
 	if (t)
 		IThreadFactory::DestroyThread(t);
@@ -105,24 +105,23 @@ UDPSocketReceiver::~UDPSocketReceiver()
 		ISocketFactory::DestroyUDPSocket(s);
 }
 
-void UDPSocketReceiver::Start()
+void SensorServer::Start()
 {
 	NetworkAdapterV4 a = NetworkHelper::GetWildcardNetworkAdapterV4();
-	//NetworkAdapterV4 a = NetworkHelper::NetworkAdapterFromIpString("192.168.0.100");
+	//NetworkAdapterV4 a = NetworkHelper::NetworkAdapterFromIpString("152.66.159.194");
 	ENetworkError e = s->Bind(&a);
 	//qInfo("Bind ret : %d", e);
 	t->Start(this);
 }
 
-void UDPSocketReceiver::Stop()
+void SensorServer::Stop()
 {
 	IThreadFactory::DestroyThread(t);
 	t = nullptr;
 }
 
-void UDPSocketReceiver::Run(IThreadArg* threadArg)
+void SensorServer::Run(IThreadArg* threadArg)
 {
-	//qInfo("Start run");
 	while (bIsRunning)
 	{
 		SensorBackendPacket msg;
@@ -139,16 +138,12 @@ void UDPSocketReceiver::Run(IThreadArg* threadArg)
 			size_t read_cnt = sizeof(msg);
 			int32_t read;
 			uint32_t ip;
-			//qInfo("Start read");
 			if (s->Receive((uint8_t*)&msg, read_cnt, read, ip) == ENetworkError_Ok)
 			{
 				Parent->SetWeatherImage(msg.Weather);
 				Parent->SetLux(msg.Lux);
 				Parent->SetTemperature(msg.Temperature);
-				//qInfo("receive %d", Parent->GetWeatherEnum());
 			}
-			//else
-			//	qInfo("failed to receive");
 		}
 	}
 }

@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 
 Pane
 {
-	Image
+	/*Image
 	{
 		id: colorpickerim
 
@@ -16,5 +16,17 @@ Pane
 
 		//layout attribyte
 		Layout.alignment: Qt.AlignCenter
-	}
+	}*/
+	width: 256
+    height: 256
+	Rectangle
+    {
+        anchors.fill: parent
+		color: "red"
+		/*gradient: Gradient
+        {
+            GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0) }
+            GradientStop { position: 1.0; color: Qt.rgba(255, 0, 0, 255) }
+        }*/
+    }
 }
