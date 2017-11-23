@@ -22,7 +22,7 @@ public:
 	// Do not forget to declare your class to the QML system.
 	static void declareQML() 
 	{
-		qmlRegisterType<ModeClass>("SensorModel", 1, 0, "Mode");
+		qmlRegisterType<ModeClass>("LuminosModel", 1, 0, "Mode");
 	}
 };
 

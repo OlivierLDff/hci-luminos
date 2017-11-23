@@ -87,10 +87,12 @@ set (CMAKE_CXX_STANDARD 11) #required by Qt5
 if(ANDROID) # Arm android toolchain
 	set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/android_armv7/")
 else(ANDROID)
-	if(MSVC) # Microsoft visual Studio toolchain -G "Visual Studio 15 2017 Win64"
-		set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/msvc2017_64/")
-	elseif(CMAKE_COMPILER_IS_GNUCXX) # Mingw32 toolchain -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND"
-		set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/mingw53_32/")		
+	if(WIN32)
+		if(MSVC) # Microsoft visual Studio toolchain -G "Visual Studio 15 2017 Win64"
+			set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/msvc2017_64/")
+		elseif(CMAKE_COMPILER_IS_GNUCXX) # Mingw32 toolchain -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND"
+			set (CMAKE_PREFIX_PATH "C:/Qt/Qt5.9.2/5.9.2/mingw53_32/")		
+		endif()
 	endif()
 endif(ANDROID)	
 
@@ -298,7 +300,7 @@ else()
 	message(SEND_ERROR "You are on an unsupported platform! (Not Win32, Mac OS X or Unix)")
 endif()
 
-if(DUSE_DMX_BACKEND)
+if(${USE_DMX_BACKEND})
 	set(OOBJECTLIB OObject)
 endif()	
 

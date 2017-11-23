@@ -13,6 +13,7 @@ Page
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 		clip:true 
+		interactive: !color.pressed
 
 		InfoPage
 		{
@@ -28,11 +29,11 @@ Page
 		{
 			id: effect
 		}
-		MapPane
+		/*MapPane
 		{
 			visible: false//Window.width <= 700
 			enabled: false//Window.width <= 700
-		}
+		}*/
 	}
 
 	footer: TabBar {
@@ -48,11 +49,11 @@ Page
         TabButton {
 			text: qsTr("Effect")
         }
-		TabButton {
+		/*TabButton {
 			text: qsTr("Map")
 			visible: false//Window.width <= 700
 			enabled: false//Window.width <= 700
-        }
+        }*/
 		
     }
 }

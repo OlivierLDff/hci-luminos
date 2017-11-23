@@ -1,32 +1,83 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
+import QtQuick.Controls.Material 2.1
 
 Pane
 {
-	/*Image
+	id: control
+	property bool pressed: mouseArea.pressed
+	Image
+		{
+		id: colorPicker
+			source: "ColorPickerRect"
+			anchors.fill: parent
+		}
+		MouseArea
+		{
+			id: mouseArea
+			anchors.fill: colorPicker
+			onPressed:
+			{
+			cursor.x = mouse.x - 4
+			cursor.y = mouse.y - 4
+			//updateSelectedColor()
+			console.log("pressed")
+		}
+		onPositionChanged:
+		{
+			var clampX = (mouse.x > 0 && mouse.x < colorPicker.width) ?  mouse.x : (mouse.x > 0) ? colorPicker.width : 0;
+			var clampY = (mouse.y > 0 && mouse.y < colorPicker.height) ? mouse.y : (mouse.y > 0) ? colorPicker.height : 0;
+			cursor.x = clampX - 4;
+			cursor.y = clampY - 4;
+			console.log("x : " + clampX  + " y : " +  clampY );
+				
+			//updateSelectedColor()
+		}
+	}
+	Image
 	{
-		id: colorpickerim
-
-		//image attribute
-		sourceSize.width: 128
-		sourceSize.height: 128
-		fillMode: Image.PreserveAspectFit
-		source: "colorpicker"
-
-		//layout attribyte
-		Layout.alignment: Qt.AlignCenter
-	}*/
-	width: 256
-    height: 256
-	Rectangle
+		id: cursor
+		x: width/2
+		y: height/2
+		source: "colorPickerCursor"
+	}
+	/*Rectangle
     {
         anchors.fill: parent
-		color: "red"
+		id: rect
+		//color: "red"
 		/*gradient: Gradient
         {
-            GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0) }
-            GradientStop { position: 1.0; color: Qt.rgba(255, 0, 0, 255) }
+            GradientStop { position: 0.0; color: Material.color(Material.Red) }
+            GradientStop { position: 0.0625; color: Material.color(Material.DeepOrange) }
+			GradientStop { position: 0.125; color: Material.color(Material.Orange) }
+			GradientStop { position: 0.1875; color: Material.color(Material.Amber) }
+			GradientStop { position: 0.25; color: Material.color(Material.Yellow) }
+			GradientStop { position: 0.3125; color: Material.color(Material.Lime) }
+			GradientStop { position: 0.375; color: Material.color(Material.LightGreen) }
+			GradientStop { position: 0.4375; color: Material.color(Material.Green) }
+			GradientStop { position: 0.5; color: Material.color(Material.Teal) }
+			GradientStop { position: 0.5625; color: Material.color(Material.Cyan) }
+			GradientStop { position: 0.625; color: Material.color(Material.LightBlue) }
+			GradientStop { position: 0.6875; color: Material.color(Material.Blue) }
+			GradientStop { position: 0.75; color: Material.color(Material.Indigo) }
+			GradientStop { position: 0.8125; color: Material.color(Material.DeepPurple) }
+			GradientStop { position: 0.875; color: Material.color(Material.Purple) }
+			GradientStop { position: 0.9375; color: Material.color(Material.Pink) }
+			GradientStop { position: 1.0; color: Material.color(Material.Red) }
         }*/
-    }
+		/*gradient: Gradient
+        {
+            GradientStop { position: 0.0; color: Qt.rgba(1,0,0,1) }
+            GradientStop { position: 0.16; color: Qt.rgba(1,1,0,1) }
+			GradientStop { position: 0.33; color: Qt.rgba(0,1,0,1) }
+			GradientStop { position: 0.5; color: Qt.rgba(0,1,1,1) }
+			GradientStop { position: 0.66; color: Qt.rgba(0,0,1,1)  }
+			GradientStop { position: 1.84; color: Qt.rgba(1,0,1,1)  }
+			GradientStop { position: 1.0; color: Qt.rgba(1,0, 0,1)  }
+        }*/
+
+		
+    //}*/
 }

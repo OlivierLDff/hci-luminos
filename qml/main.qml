@@ -86,6 +86,10 @@ ApplicationWindow
 			anchors.fill: parent
 		}
     }
+	/*ColorPicker
+	{
+		anchors.fill: parent
+	}*/
 
 
 	Dialog {

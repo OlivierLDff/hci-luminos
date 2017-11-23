@@ -27,7 +27,9 @@
     <file alias="menu@4x">icons/menu@4x.png</file>
 
     <!-- COLOR PICKER -->
-    <file alias="colorpicker">color_wheel.png</file>
+    <file alias="colorPicker">color_wheel.png</file>
+    <file alias="colorPickerCursor">color_picker_cursor.png</file>
+    <file alias="ColorPickerRect">ColorPickerRect.png</file>
 
     <!-- BACKGROUND -->
     <file alias="RestaurantMap">RestaurantMap.png</file>

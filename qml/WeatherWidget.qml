@@ -3,10 +3,10 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import LuminosModel 1.0
 
-Pane
-{
+//Pane
+//{
 	//implicitWidth: root.implicitWidth
-	implicitHeight: root.implicitHeight + 10
+	//implicitHeight: root.implicitHeight + 10
 	RowLayout
 	{
 		id: root
@@ -56,4 +56,4 @@ Pane
 			}
 		}
 	}	
-}
+//}

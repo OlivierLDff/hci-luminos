@@ -48,21 +48,21 @@ Pane
 							id : weatherButton
 							text: "Weather"
 							checked: true
-							onClicked: SensorModel.ConsumptionMode = EConsumptionMode_Weather
+							onClicked: SensorModel.ConsumptionMode = Mode.EConsumptionMode_Weather
 							ButtonGroup.group: radioButtonGroup
 						}
 						RadioButton 
 						{
 							id : ecoButton
 							text: "Eco"
-							onClicked: SensorModel.ConsumptionMode = EConsumptionMode_Eco
+							onClicked: SensorModel.ConsumptionMode = Mode.EConsumptionMode_Eco
 							ButtonGroup.group: radioButtonGroup
 						}
 						RadioButton 
 						{
 							id : fullButton
 							text: "Full"
-							onClicked: SensorModel.ConsumptionMode = EConsumptionMode_Full
+							onClicked: SensorModel.ConsumptionMode = Mode.EConsumptionMode_Full
 							ButtonGroup.group: radioButtonGroup
 						}
 					}					
