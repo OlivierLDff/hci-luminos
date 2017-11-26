@@ -2,46 +2,62 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.1
+import LuminosModel 1.0
+import QtGraphicalEffects 1.0
 
 Pane
 {
 	id: control
 	property bool pressed: mouseArea.pressed
+	Material.elevation: mouseArea.pressed ? 10 : 5;
+	//anchors.fill: parent
 	Image
-		{
+	{
 		id: colorPicker
-			source: "ColorPickerRect"
-			anchors.fill: parent
-		}
+		source: "ColorPickerRect"
+		sourceSize.width: parent.width
+		//sourceSize.height: parent.height
+		//fillMode: Image.PreserveAspectFit
 		MouseArea
 		{
 			id: mouseArea
 			anchors.fill: colorPicker
 			onPressed:
 			{
-			cursor.x = mouse.x - 4
-			cursor.y = mouse.y - 4
-			//updateSelectedColor()
-			console.log("pressed")
-		}
-		onPositionChanged:
-		{
-			var clampX = (mouse.x > 0 && mouse.x < colorPicker.width) ?  mouse.x : (mouse.x > 0) ? colorPicker.width : 0;
-			var clampY = (mouse.y > 0 && mouse.y < colorPicker.height) ? mouse.y : (mouse.y > 0) ? colorPicker.height : 0;
-			cursor.x = clampX - 4;
-			cursor.y = clampY - 4;
-			console.log("x : " + clampX  + " y : " +  clampY );
-				
-			//updateSelectedColor()
-		}
+				cursor.x = mouse.x - 4
+				cursor.y = mouse.y - 4
+				FixturesModel.SetColorFromPicker(cursor.x*360/colorPicker.width, cursor.y*360/colorPicker.height)	
+			}
+			onPositionChanged:
+			{
+				var clampX = (mouse.x > 0 && mouse.x < colorPicker.width) ?  mouse.x : (mouse.x > 0) ? colorPicker.width : 0;
+				var clampY = (mouse.y > 0 && mouse.y < colorPicker.height) ? mouse.y : (mouse.y > 0) ? colorPicker.height : 0;
+				cursor.x = clampX - 4;
+				cursor.y = clampY - 4;
+				console.log("x : " + clampX  + " y : " +  clampY );
+				FixturesModel.SetColorFromPicker(clampX*360/colorPicker.width, clampY*360/colorPicker.height)	
+			}
+			Image
+			{
+				id: cursor
+				x: width/2
+				y: height/2
+				source: "colorPickerCursor"
+			}
+		}	
 	}
-	Image
+	/*DropShadow
 	{
-		id: cursor
-		x: width/2
-		y: height/2
-		source: "colorPickerCursor"
+		anchors.fill: colorPicker
+		cached: true
+		horizontalOffset: 2
+		verticalOffset: pressed ? 4 : 2
+		radius: 8.0
+		samples: 16
+		color: "#80000000"
+		source: colorPicker
 	}
+	
 	/*Rectangle
     {
         anchors.fill: parent

@@ -11,7 +11,7 @@ ApplicationWindow
 	height: 480
 	visible: true
 	title:"Luminos App"
-	//minimumWidth: Math.max(toolbar.implicitWidth, mainPage.implicitWidth)
+	minimumWidth: toolbar.implicitWidth//Math.max(toolbar.implicitWidth, mainPage.implicitWidth)
 	minimumHeight: toolbar.implicitHeight + mainPage.implicitHeight//toolbar.implicitHeight + mainPage.minimumHeight
 
 	Material.primary : Material.color(Material.Red)
@@ -76,21 +76,17 @@ ApplicationWindow
 		}
 	}
 
-	StackView {
+	StackView 
+	{
         id: stackView
         anchors.fill: parent
 
         initialItem: MainPage
 		{
 			id: mainPage
-			anchors.fill: parent
+			//anchors.fill: parent
 		}
     }
-	/*ColorPicker
-	{
-		anchors.fill: parent
-	}*/
-
 
 	Dialog {
         id: aboutDialog

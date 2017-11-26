@@ -12,12 +12,32 @@ Pane
 	{
 		anchors.fill: parent	
 		id: root
+		Text
+		{
+			text: "Color : "
+			Layout.fillWidth: true
+		}
 		ColorPicker
 		{
 			id: colorPicker
 			Layout.fillWidth: true
-			Layout.fillHeight: true
+			//Layout.fillHeight: true
 			//anchors.fill: parent
+		}
+		ColumnLayout
+		{
+			Text
+			{
+				text: "Brightness : "
+			}
+			Slider 
+			{
+				id: brightness
+				anchors.horizontalCenter: parent.horizontalCenter
+				Layout.fillWidth: true
+				value: 1
+				onValueChanged: FixturesModel.SetBrighness(value)
+			}
 		}
 	}	
 }

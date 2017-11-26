@@ -1,12 +1,16 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
 
 Page 
 {
-    id: page
+    id: control
 	implicitWidth: info.implicitWidth// Math.max(tabBar.implicitWidth + 20, swipeView.implicitWidth) // oliv: why +20 is needed?
 	implicitHeight: tabBar.implicitHeight + info.implicitHeight
+
+	property bool drawMap: false
+
 	SwipeView 
 	{
         id: swipeView
@@ -29,11 +33,31 @@ Page
 		{
 			id: effect
 		}
-		/*MapPane
+		function addPage(page) 
 		{
-			visible: false//Window.width <= 700
-			enabled: false//Window.width <= 700
-		}*/
+            addItem(page)
+            page.visible = true
+        }
+
+        function removePage(page)
+		{
+            for (var n = 0; n < count; n++) { if (page === itemAt(n)) { removeItem(n) } }
+            page.visible = false
+        }
+	}
+
+	onDrawMapChanged:
+	{
+		if(!mapPane.visible && drawMap)
+			swipeView.addPage(mapPane);			
+		else if(mapPane.visible && !drawMap)
+			swipeView.removePage(mapPane);
+	}
+
+	MapPane
+	{
+		id : mapPane
+		visible: false
 	}
 
 	footer: TabBar {
@@ -49,11 +73,11 @@ Page
         TabButton {
 			text: qsTr("Effect")
         }
-		/*TabButton {
+		TabButton {
 			text: qsTr("Map")
-			visible: false//Window.width <= 700
-			enabled: false//Window.width <= 700
-        }*/
+			width: drawMap ? undefined : 0
+			visible: drawMap
+        }
 		
     }
 }

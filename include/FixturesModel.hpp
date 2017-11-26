@@ -4,6 +4,12 @@
 #include <QObject>
 #include <QtQml>
 
+#ifdef DMX_MANAGER_CORE
+#include <DmxManagerCore/IDmxTickCallback.hpp>
+#include <IMutex.hpp>
+#include <IThread.hpp>
+#endif
+
 class ModeClass : public QObject
 {
 	Q_OBJECT
@@ -26,41 +32,42 @@ public:
 	}
 };
 
-class FixturesModel : public QObject
+class Fixture
+{
+public:
+	Fixture(uint16_t addr) : addr(addr), r(0), g(0), b(0), d(0) {}
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+	uint8_t d;
+	uint16_t addr;
+};
+
+#define NUMBER_OF_FIXTURE
+
+class FixturesModel : public QObject, public IDmxTickCallback, public IThreadFunction
 {
 	Q_OBJECT
 	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
 public:
-	FixturesModel(class SensorModel * sensor, QObject* parent = nullptr) : QObject(parent), Sensor(sensor),
-		ConsumptionMode(ModeClass::EConsumptionMode_Eco)
+	FixturesModel(class SensorModel* sensor, QObject* parent = nullptr);
+
+	~FixturesModel();
+
+	Q_INVOKABLE void SetColorFromPicker(double angle, double white)
 	{
-		ModeClass::declareQML();
-		//qmlRegisterType<EConsumptionMode>("SensorModel", 1, 0, "EConsumptionMode");
 	}
 
-	~FixturesModel()
-	{
-		
-	}
+	class IThread * t;
+	class ISemaphore * s;
 
-	
-	//Q_ENUMS(EConsumptionMode)
+	/** THREAD */
+	virtual void notify(DmxManagerCore* parent) override;
+	bool StopSignal() override;
+	void Run(IThreadArg* threadArg) override;
 
-	// Do not forget to declare your class to the QML system.
-	/*static void declareQML() 
-	{
-		
-	}*/
-
-	ModeClass::EConsumptionMode GetComsumptionMode() const
-	{
-		return ConsumptionMode;
-	}
-
-	void SetComsumptionMode(const ModeClass::EConsumptionMode comsumptionMode)
-	{
-		ConsumptionMode = comsumptionMode;
-	}
+	ModeClass::EConsumptionMode GetComsumptionMode() const;
+	void SetComsumptionMode(const ModeClass::EConsumptionMode comsumptionMode);
 
 signals:
 	void ComsumptionModeChanged(ModeClass::EConsumptionMode comsumptionMode);
