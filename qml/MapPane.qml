@@ -24,7 +24,7 @@ Pane
 			//layout attribyte
 			Layout.alignment: Qt.AlignCenter
 		}*/
-		ListView 
+		/*ListView 
 		{
 			//width: 200; height: 250
 			anchors.fill: parent
@@ -33,6 +33,23 @@ Pane
 			delegate: Text 
 			{ 
 				text: ("fixture dimmer : " + dimmer )
+			}
+		}*/
+		Flickable
+		{
+			anchors.fill: parent
+			Image
+			{
+				id: colorpickerim
+
+				//image attribute
+				//sourceSize.width: 128
+				//sourceSize.height: 128
+				fillMode: Image.PreserveAspectFit
+				source: "RestaurantMap"
+				anchors.fill: parent
+				//layout attribyte
+				Layout.alignment: Qt.AlignCenter
 			}
 		}
 	}

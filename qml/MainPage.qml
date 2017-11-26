@@ -10,15 +10,16 @@ RowLayout
 	ControlPage
 	{
 		id: control
-		Layout.fillWidth: true
+		Layout.fillWidth: drawMap
 		Layout.fillHeight: true
 		Layout.minimumWidth: implicitWidth
-		drawMap : Window.width <= 500
+		//Layout.preferredWidth: 300
+		drawMap : Window.width <= implicitWidth + 200
 	}
 	MapPane
 	{
 		id: map
-		visible: Window.width > 500
+		visible: Window.width > control.implicitWidth + 200
 		implicitHeight: 0
 		Layout.fillWidth: true
 		Layout.fillHeight: true
