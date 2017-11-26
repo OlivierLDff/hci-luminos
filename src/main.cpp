@@ -206,6 +206,8 @@ int main(int argc, char *argv[])
 	QQuickStyle::setFallbackStyle("Material");
 
 	QQmlApplicationEngine engine;
+	QQmlContext * context = new QQmlContext(engine.rootContext());
+	//context->setContextProperty("myModel", &modelData);
 	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;

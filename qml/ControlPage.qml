@@ -6,7 +6,7 @@ import QtQuick.Window 2.2
 Page 
 {
     id: control
-	implicitWidth: info.implicitWidth// Math.max(tabBar.implicitWidth + 20, swipeView.implicitWidth) // oliv: why +20 is needed?
+	implicitWidth: info.implicitWidth+ 20// Math.max(tabBar.implicitWidth + 20, swipeView.implicitWidth) // oliv: why +20 is needed?
 	implicitHeight: tabBar.implicitHeight + info.implicitHeight
 
 	property bool drawMap: false

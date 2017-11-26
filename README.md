@@ -146,7 +146,7 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
 ### Main Control
 
 *[ ] Color Picker Page
-     *[ ] Color Picker in QML
+     *[x] Color Picker in QML
      *[ ] Attribute R G B
 *[ ] Effect Page
      *[ ] Pad
@@ -154,6 +154,7 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
      *[ ] Selectable object
      *[ ] Select All button
      *[ ] Clear Selection
+     *[ ] Resize create a new tab map
 *[ ] Settings Page
 *[ ] C++ backend
      *[ ] 6 fixture rgb
