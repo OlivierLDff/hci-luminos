@@ -200,17 +200,25 @@ int main(int argc, char *argv[])
 	qmlRegisterSingletonType<SensorModel>("LuminosModel", 1, 0, "SensorModel", SensorModelProvider);
 	qmlRegisterSingletonType<FixturesModel>("LuminosModel", 1, 0, "FixturesModel", FixturesModelProvider);
 	//qmlRegisterUncreatableType<MyStyle>("MyStyle", 1, 0, "MyStyle", "MyStyle is an attached property");
+	FixturesManager->AddFixture(1, 0.5f, 0.5f);
+	FixturesManager->AddFixture(6, 0.7f, 1);
+	FixturesManager->AddFixture(11, 0.5f, 0.5f);
+	FixturesManager->AddFixture(16, 0.5f, 0.5f);
+	FixturesManager->AddFixture(21, 0.5f, 0.5f);
+	FixturesManager->AddFixture(26, 0.5f, 0.5f);
 
 	//QQuickStyle::setStyle(":/MyStyle");
 	QQuickStyle::setStyle("Material");
 	QQuickStyle::setFallbackStyle("Material");
 
 	QQmlApplicationEngine engine;
-	QQmlContext * context = new QQmlContext(engine.rootContext());
-	//context->setContextProperty("myModel", &modelData);
 	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;
+
+	//QQmlContext * context = new QQmlContext(engine.rootContext());
+	//context->setContextProperty("myModel", &m);
+
 #ifdef DMX_MANAGER_CORE
 	MyApp ap2p;		//Create the app
 	ap2p.Launch();	//And launch it

@@ -2,66 +2,102 @@
 
 #include <QColor>
 
-uint8_t Fixture::GetR() const
+uint8_t Fixture::GetRed() const
 {
-	return R;
+	return Red;
 }
 
-void Fixture::SetR(const uint8_t r)
+void Fixture::SetRed(const uint8_t red)
 {
-	R = r;
+	Red = red;
+	emit RedChanged(red);
 }
 
-uint8_t Fixture::GetG() const
+uint8_t Fixture::GetGreen() const
 {
-	return G;
+	return Green;
 }
 
-void Fixture::SetG(const uint8_t g)
+void Fixture::SetGreen(const uint8_t green)
 {
-	G = g;
+	Green = green;
+	emit GreenChanged(green);
 }
 
-uint8_t Fixture::GetB() const
+uint8_t Fixture::GetBlue() const
 {
-	return B;
+	return Blue;
 }
 
-void Fixture::SetB(const uint8_t b)
+void Fixture::SetBlue(const uint8_t blue)
 {
-	B = b;
+	Blue = blue;
+	emit BlueChanged(blue);
 }
 
-uint8_t Fixture::GetD() const
+uint8_t Fixture::GetDimmer() const
 {
-	return D;
+	return Dimmer;
 }
 
-void Fixture::SetD(const uint8_t d)
+void Fixture::SetDimmer(const uint8_t dimmer)
 {
-	D = d;
+	Dimmer = dimmer;
+	emit DimmerChanged(dimmer);
 }
 
-uint16_t Fixture::GetAddr() const
+uint16_t Fixture::GetAddress() const
 {
-	return Addr;
+	return Address;
 }
 
-void Fixture::SetAddr(const uint16_t addr)
+void Fixture::SetAddress(const uint16_t address)
 {
-	Addr = addr;
+	Address = address;
+	emit AddressChanged(address);
 }
 
-FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent): QAbstractListModel(parent),
-#ifdef DMX_MANAGER_CORE
-IDmxTickCallback(EDmxTickCallback_App),
-#endif
-Sensor(sensor),
-ConsumptionMode(ModeClass::EConsumptionMode_Eco)
-#ifdef DMX_MANAGER_CORE
-, t(CreateThread()),
-s(CreateSemaphore(0, 1))
-#endif
+bool Fixture::GetIsSelected() const
+{
+	return bSelected;
+}
+
+void Fixture::SetSelected(const bool selected)
+{
+	bSelected = selected;
+	emit SelectedChanged(selected);
+}
+
+double Fixture::GetX() const
+{
+	return x;
+}
+
+void Fixture::SetX(const double x)
+{
+	this->x = x;
+}
+
+double Fixture::GetY() const
+{
+	return y;
+}
+
+void Fixture::SetY(const double y)
+{
+	this->y = y;
+}
+
+FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) : 
+	QAbstractListModel(parent), //Qt object
+	#ifdef DMX_MANAGER_CORE
+	IDmxTickCallback(EDmxTickCallback_App),
+	t(CreateThread()),
+	s(CreateSemaphore(0, 1)),
+	#endif
+	Sensor(sensor), //Link to sensor class
+	ConsumptionMode(ModeClass::EConsumptionMode_Eco),
+	Master(1.f)
 {
 	ModeClass::declareQML();
 #ifdef DMX_MANAGER_CORE
@@ -76,6 +112,9 @@ FixturesModel::~FixturesModel()
 	DestroyThread(t);
 	DestroySemaphore(s);
 #endif
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it !=Fixtures.end(); ++it)
+		delete *it;
+	Fixtures.clear();
 }
 
 #ifdef DMX_MANAGER_CORE
@@ -115,17 +154,30 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 {
 }
 
-void FixturesModel::AddFixture(const Fixture& fixture)
+void FixturesModel::SetMaster(const qreal value)
+{
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
+	{
+		(*it)->SetDimmer(value * 255);	
+	}
+	const QModelIndex top = createIndex(0, 0);
+	const QModelIndex bottom = createIndex(Fixtures.size() - 1, 0);
+
+	emit dataChanged(top, bottom);
+	emit MasterChanged(value);
+}
+
+void FixturesModel::AddFixture(const uint16_t address, const double x, const double y)
 {
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	Fixtures.push_back(fixture);
+	Fixtures.push_back(new Fixture(address, x, y));
 	endInsertRows();
 }
 
 int FixturesModel::rowCount(const QModelIndex& parent) const
 {
 	Q_UNUSED(parent);
-	return Fixtures.size();
+	return static_cast<int>(Fixtures.size());
 }
 
 QVariant FixturesModel::data(const QModelIndex& index, const int role) const
@@ -133,13 +185,21 @@ QVariant FixturesModel::data(const QModelIndex& index, const int role) const
 	if (index.row() < 0 || index.row() >= Fixtures.size())
 		return QVariant();
 
-	const Fixture & fixture = Fixtures[index.row()];
+	const Fixture * fixture = Fixtures[index.row()];
+	//if (role == FixtureRole)
+	//	return fixture;
 	if (role == AddressRole)
-		return fixture.GetAddr();
+		return fixture->GetAddress();
 	if (role == ColorRole)
-		return QColor(fixture.GetR(), fixture.GetG(), fixture.GetB(), fixture.GetD());
+		return QColor(fixture->GetRed(), fixture->GetGreen(), fixture->GetBlue(), fixture->GetDimmer());
 	if (role == DimmerRole)
-		return fixture.GetD();
+		return fixture->GetDimmer();
+	if (role == IsSelectedRole)
+		return fixture->GetIsSelected();
+	if (role == XRole)
+		return fixture->GetX();
+	if (role == YRole)
+		return fixture->GetY();
 	return QVariant();
 }
 
@@ -149,5 +209,8 @@ QHash<int, QByteArray> FixturesModel::roleNames() const
 	roles[AddressRole] = "address";
 	roles[ColorRole] = "color";
 	roles[DimmerRole] = "dimmer";
+	roles[IsSelectedRole] = "selected";
+	roles[XRole] = "x";
+	roles[YRole] = "y";
 	return roles;
 }

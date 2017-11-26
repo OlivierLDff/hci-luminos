@@ -5,8 +5,8 @@ import QtQuick.Controls 2.1
 
 RowLayout
 {
-	implicitHeight: control.implicitHeight 
-	implicitWidth: control.implicitWidth //not working, why???? kurwa fuck
+	//implicitHeight: control.implicitHeight 
+	//implicitWidth: control.implicitWidth //not working, why???? kurwa fuck
 	ControlPage
 	{
 		id: control

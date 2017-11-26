@@ -33,50 +33,81 @@ public:
 	}
 };
 
-class Fixture
+class Fixture : public QObject
 {
+	Q_OBJECT
+	//Q_PROPERTY(QColor Color READ GetColor WRITE SetColor NOTIFY ColorChanged)
+	Q_PROPERTY(quint8 Red READ GetRed WRITE SetRed NOTIFY RedChanged)
+	Q_PROPERTY(quint8 Green READ GetGreen WRITE SetGreen NOTIFY GreenChanged)
+	Q_PROPERTY(quint8 Blue READ GetBlue WRITE SetBlue NOTIFY BlueChanged)
+	Q_PROPERTY(quint8 Dimmer READ GetDimmer WRITE SetDimmer NOTIFY DimmerChanged)
+	Q_PROPERTY(quint16 Address READ GetAddress WRITE SetAddress NOTIFY AddressChanged)
+	Q_PROPERTY(bool Selected READ GetIsSelected WRITE SetSelected NOTIFY SelectedChanged)
+
 public:
-	explicit Fixture(const uint16_t addr) : R(0), G(0), B(0), D(0), Addr(addr), bSelected(false) {}
+	Fixture(const uint16_t addr, const double x, const double y, QObject * parent = nullptr) : QObject(parent), Red(0), Green(0), Blue(0), Dimmer(0), Address(addr), bSelected(false), x(x), y(y) {}
+	~Fixture() {}
 
-	uint8_t GetR() const;
-	void SetR(const uint8_t r);
+	uint8_t GetRed() const;
+	void SetRed(const uint8_t red);
 
-	uint8_t GetG() const;
-	void SetG(const uint8_t g);
+	uint8_t GetGreen() const;
+	void SetGreen(const uint8_t green);
 
-	uint8_t GetB() const;
-	void SetB(const uint8_t b);
+	uint8_t GetBlue() const;
+	void SetBlue(const uint8_t blue);
 
-	uint8_t GetD() const;
-	void SetD(const uint8_t d);
+	uint8_t GetDimmer() const;
+	void SetDimmer(const uint8_t dimmer);
 
-	uint16_t GetAddr() const;
-	void SetAddr(const uint16_t addr);
+	uint16_t GetAddress() const;
+	void SetAddress(const uint16_t address);
+
+	bool GetIsSelected() const;
+	void SetSelected(const bool selected);
+
+	double GetX() const;
+	void SetX(const double x);
+
+	double GetY() const;
+	void SetY(const double y);
+
+signals:
+	void RedChanged(uint8_t value);
+	void GreenChanged(uint8_t value);
+	void BlueChanged(uint8_t value);
+	void DimmerChanged(uint8_t value);
+	void AddressChanged(uint16_t value);
+	void SelectedChanged(bool value);
 
 private:
 	/** \brief value for red led */
-	uint8_t R;
+	uint8_t Red;
 	/** \brief value for green led */
-	uint8_t G;
+	uint8_t Green;
 	/** \brief value for blue led */
-	uint8_t B;
+	uint8_t Blue;
 	/** \brief value for dimmer led */
-	uint8_t D;
+	uint8_t Dimmer;
 	/** \brief dmx address (1 t 512) */
-	uint16_t Addr;
+	uint16_t Address;
 	/** \brief is the fixture currently selected */
 	bool bSelected;
+	double x;
+	double y;
 };
 
-#define NUMBER_OF_FIXTURE
+//#define NUMBER_OF_FIXTURE
 
 class FixturesModel : public QAbstractListModel
 #ifdef DMX_MANAGER_CORE
-, public IDmxTickCallback, public IThreadFunction
+                      , public IDmxTickCallback, public IThreadFunction
 #endif
 {
-	Q_OBJECT
-	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
+Q_OBJECT
+	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY
+		ComsumptionModeChanged)
+	Q_PROPERTY(qreal Master READ GetMaster WRITE SetMaster NOTIFY MasterChanged)
 public:
 	explicit FixturesModel(class SensorModel* sensor, QObject* parent = nullptr);
 	~FixturesModel();
@@ -117,22 +148,34 @@ private:
 public:
 	/** \brief apply color from color picker to the current selection */
 	Q_INVOKABLE void SetColorFromPicker(double angle, double white);
+	//Q_INVOKABLE void SetMaster(const double value);
 
+public:
+	qreal GetMaster() const { return Master; }
+	void SetMaster(qreal comsumptionMode);
+signals:
+	void MasterChanged(qreal master);
+private:
+	qreal Master;
+public:
 	enum EFixtureRoles 
 	{
-		ColorRole = Qt::UserRole + 1,
-		AddressRole,
+		AddressRole = Qt::UserRole + 1,
+		ColorRole,
 		DimmerRole,
+		IsSelectedRole,
+		XRole,
+		YRole
 	};
 
-	void AddFixture(const Fixture & fixture);
+	void AddFixture(const uint16_t address, const double x, const double y);
 	int rowCount(const QModelIndex & parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
 protected:
 	QHash<int, QByteArray> roleNames() const override;
 private:
 	/** \brief Array that contain every fixture to be displayed inside the map */
-	std::vector<Fixture> Fixtures;
+	std::vector<Fixture *> Fixtures;
 };
 
 

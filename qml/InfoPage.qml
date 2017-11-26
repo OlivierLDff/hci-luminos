@@ -75,14 +75,23 @@ Pane
 				anchors.bottom: parent.bottom
 				Slider 
 				{
+					id:master
 					height: parent.height
 					implicitHeight: 40
 					anchors.horizontalCenter: parent.horizontalCenter
 					orientation: Qt.Vertical
 					
-					value: 1
+					value: 0//FixturesModel.Master
 					onValueChanged:
+					{
 						console.log("value is " + value)
+						FixturesModel.Master = value
+					}	
+					Component.onCompleted:
+					{
+						//console.log("Nested Completed Running!" + FixturesModel.Master )
+						master.value=FixturesModel.Master 
+					}
 				}			
 			}				
 		}
