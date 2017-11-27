@@ -192,36 +192,48 @@ int main(int argc, char *argv[])
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(argc, argv);
 
-	Sensor = new SensorModel(false);
-	FixturesManager = new FixturesModel(Sensor);
+	Sensor = new SensorModel(false); //Sensor model that leave in his own thread
+	FixturesManager = new FixturesModel(Sensor); //Fixture model also leave in his own thread
 
-	//qmlRegisterType<SqlContactModel>("io.qt.examples.chattutorial", 1, 0, "SqlContactModel");
-	//qmlRegisterType<SqlConversationModel>("io.qt.examples.chattutorial", 1, 0, "SqlConversationModel");
-	qmlRegisterSingletonType<SensorModel>("LuminosModel", 1, 0, "SensorModel", SensorModelProvider);
-	qmlRegisterSingletonType<FixturesModel>("LuminosModel", 1, 0, "FixturesModel", FixturesModelProvider);
-	//qmlRegisterUncreatableType<MyStyle>("MyStyle", 1, 0, "MyStyle", "MyStyle is an attached property");
-	FixturesManager->AddFixture(1, 0.5f, 0.5f);
-	FixturesManager->AddFixture(6, 0.7f, 1);
-	FixturesManager->AddFixture(11, 0.5f, 0.5f);
-	FixturesManager->AddFixture(16, 0.5f, 0.5f);
-	FixturesManager->AddFixture(21, 0.5f, 0.5f);
-	FixturesManager->AddFixture(26, 0.5f, 0.5f);
+	qmlRegisterSingletonType<SensorModel>("LuminosModel", 1, 0, "SensorModel", SensorModelProvider); //Register Sensor model as a singleton for the model
+	qmlRegisterSingletonType<FixturesModel>("LuminosModel", 1, 0, "FixturesModel", FixturesModelProvider); //Register fixture model as a singleton for the model
+	
+	//Create all fixture in the model
 
-	//QQuickStyle::setStyle(":/MyStyle");
-	QQuickStyle::setStyle("Material");
-	QQuickStyle::setFallbackStyle("Material");
+	//TABLE MAIN
+	//for(int i = 0; i < 1000; ++i)
+	//	FixturesManager->AddFixture(1, (double)i/10, 0.3535f);
+	FixturesManager->AddFixture(1, 0.371f, 0.3535f);
+	FixturesManager->AddFixture(6, 0.579f, 0.348f);
+	FixturesManager->AddFixture(11, 0.371f, 0.505f);
+	FixturesManager->AddFixture(16, 0.585f, 0.507f);
 
-	QQmlApplicationEngine engine;
-	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-	if (engine.rootObjects().isEmpty())
+	//TABLE TOP
+	FixturesManager->AddFixture(21, 0.478f, 0.181f);
+	FixturesManager->AddFixture(26, 0.703f, 0.177f);
+
+	//TABLE LEFT
+	FixturesManager->AddFixture(31, 0.898f, 0.4f);
+	FixturesManager->AddFixture(36, 0.9f, 0.59f);
+
+	//HALL
+	FixturesManager->AddFixture(41, 0.775f, 0.8f);
+
+	//KITCHEN
+	FixturesManager->AddFixture(46, 0.1605f, 0.7f);
+	FixturesManager->AddFixture(51, 0.466f, 0.71f);
+
+	QQuickStyle::setStyle("Material"); //todo for later, set our own style
+	QQuickStyle::setFallbackStyle("Material"); //fallback style is material if an object doesn't exist in our style
+
+	QQmlApplicationEngine engine; //Create the qml engine
+	engine.load(QUrl(QStringLiteral("qrc:/main.qml"))); //launch the application views
+	if (engine.rootObjects().isEmpty()) //check that it has been found
 		return -1;
-
-	//QQmlContext * context = new QQmlContext(engine.rootContext());
-	//context->setContextProperty("myModel", &m);
 
 #ifdef DMX_MANAGER_CORE
 	MyApp ap2p;		//Create the app
 	ap2p.Launch();	//And launch it
 #endif
-	return app.exec();
+	return app.exec(); //Launch qt core thread
 }

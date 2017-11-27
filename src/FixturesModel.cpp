@@ -90,13 +90,14 @@ void Fixture::SetY(const double y)
 
 FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) : 
 	QAbstractListModel(parent), //Qt object
-	#ifdef DMX_MANAGER_CORE
+#ifdef DMX_MANAGER_CORE
 	IDmxTickCallback(EDmxTickCallback_App),
 	t(CreateThread()),
 	s(CreateSemaphore(0, 1)),
-	#endif
+#endif
 	Sensor(sensor), //Link to sensor class
 	ConsumptionMode(ModeClass::EConsumptionMode_Eco),
+	SelectionSize(0),
 	Master(1.f)
 {
 	ModeClass::declareQML();
@@ -154,6 +155,54 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 {
 }
 
+void FixturesModel::SelectOrDeselectFixture(const int idx)
+{
+	if(idx >= 0 && idx < Fixtures.size())
+		Fixtures[idx]->SetSelected(!Fixtures[idx]->GetIsSelected());
+
+	if (Fixtures[idx]->GetIsSelected()) ++SelectionSize;
+	else --SelectionSize;
+
+	const QModelIndex top = createIndex(idx, 0);
+	emit dataChanged(top, top);
+}
+
+void FixturesModel::SelectAll()
+{
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
+	{
+		(*it)->SetSelected(true);
+	}
+	const QModelIndex top = createIndex(0, 0);
+	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
+
+	SelectionSize = Fixtures.size();
+
+	emit dataChanged(top, bottom);
+}
+
+void FixturesModel::ClearAll()
+{
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
+	{
+		(*it)->SetSelected(false);
+	}
+	const QModelIndex top = createIndex(0, 0);
+	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
+	SelectionSize = 0;
+	emit dataChanged(top, bottom);
+}
+
+qint32 FixturesModel::GetSelectionSize() const
+{
+	return SelectionSize;
+}
+
+void FixturesModel::SetSelectionSize(const qint32 selectionSize)
+{
+	SelectionSize = selectionSize;
+}
+
 void FixturesModel::SetMaster(const qreal value)
 {
 	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
@@ -161,9 +210,10 @@ void FixturesModel::SetMaster(const qreal value)
 		(*it)->SetDimmer(value * 255);	
 	}
 	const QModelIndex top = createIndex(0, 0);
-	const QModelIndex bottom = createIndex(Fixtures.size() - 1, 0);
+	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
 
 	emit dataChanged(top, bottom);
+	//emit layoutChanged();
 	emit MasterChanged(value);
 }
 

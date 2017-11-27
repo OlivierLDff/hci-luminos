@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Controls.Material 2.1
+import LuminosModel 1.0
 
 ApplicationWindow
 {
@@ -37,6 +38,32 @@ ApplicationWindow
 				Layout.leftMargin: 20
 				Layout.rightMargin: 20
             }
+
+			ToolButton 
+			{
+				//anchors.right: parent.right
+                contentItem: Image 
+				{
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "select"
+                }
+                onClicked: FixturesModel.SelectAll();
+			}
+
+			ToolButton 
+			{
+				//anchors.right: parent.right
+                contentItem: Image 
+				{
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "clear"
+                }
+                onClicked: FixturesModel.ClearAll();
+			}
 
             ToolButton 
 			{

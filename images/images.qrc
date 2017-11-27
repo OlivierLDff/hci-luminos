@@ -25,6 +25,9 @@
     <file alias="menu@2x">icons/menu@2x.png</file>
     <file alias="menu@3x">icons/menu@3x.png</file>
     <file alias="menu@4x">icons/menu@4x.png</file>
+    
+    <file alias="clear">icons/clear-button.png</file>
+    <file alias="select">icons/select.png</file>
 
     <!-- COLOR PICKER -->
     <file alias="colorPicker">color_wheel.png</file>

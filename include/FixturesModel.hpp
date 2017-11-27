@@ -101,13 +101,13 @@ private:
 
 class FixturesModel : public QAbstractListModel
 #ifdef DMX_MANAGER_CORE
-                      , public IDmxTickCallback, public IThreadFunction
+, public IDmxTickCallback, public IThreadFunction
 #endif
 {
 Q_OBJECT
-	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY
-		ComsumptionModeChanged)
+	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
 	Q_PROPERTY(qreal Master READ GetMaster WRITE SetMaster NOTIFY MasterChanged)
+	Q_PROPERTY(qint32 SelectionSize READ GetSelectionSize WRITE SetSelectionSize NOTIFY SelectionSizeChanged)
 public:
 	explicit FixturesModel(class SensorModel* sensor, QObject* parent = nullptr);
 	~FixturesModel();
@@ -149,13 +149,22 @@ public:
 	/** \brief apply color from color picker to the current selection */
 	Q_INVOKABLE void SetColorFromPicker(double angle, double white);
 	//Q_INVOKABLE void SetMaster(const double value);
+	Q_INVOKABLE void SelectOrDeselectFixture(const int idx);
+	Q_INVOKABLE void SelectAll();
+	Q_INVOKABLE void ClearAll();
 
-public:
+	
+
+	qint32 GetSelectionSize() const;
+	void SetSelectionSize(const qint32 selectionSize);
+
 	qreal GetMaster() const { return Master; }
 	void SetMaster(qreal comsumptionMode);
 signals:
 	void MasterChanged(qreal master);
+	void SelectionSizeChanged(qint32 n);
 private:
+	qint32 SelectionSize;
 	qreal Master;
 public:
 	enum EFixtureRoles 

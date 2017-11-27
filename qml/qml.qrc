@@ -13,8 +13,9 @@
 	  <!-- EFFECT PAGE -->
     <file>EffectPage.qml</file>
     
-	  <file>MapPane.qml</file> 
+	  <file>MapPane.qml</file>
+    <file>FixtureButton.qml</file>
 
-	<file>MainBackend.qml</file> 	  
+    <file>MainBackend.qml</file> 	  
 	</qresource>
 </RCC>
