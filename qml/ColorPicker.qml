@@ -5,11 +5,11 @@ import QtQuick.Controls.Material 2.1
 import LuminosModel 1.0
 import QtGraphicalEffects 1.0
 
-Pane
+Item
 {
 	id: control
 	property bool pressed: mouseArea.pressed
-	Material.elevation: mouseArea.pressed ? 10 : 5;
+	//Material.elevation: mouseArea.pressed ? 10 : 5;
 	//anchors.fill: parent
 	Image
 	{
@@ -17,6 +17,7 @@ Pane
 		source: "ColorPickerRect"
 		sourceSize.width: parent.width
 		//sourceSize.height: parent.height
+		//anchors.fill: parent
 		//fillMode: Image.PreserveAspectFit
 		MouseArea
 		{

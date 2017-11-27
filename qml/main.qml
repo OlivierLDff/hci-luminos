@@ -9,7 +9,7 @@ ApplicationWindow
 	id: window
 	width: 640
 	height: 480
-	visible: true
+	//visible: true
 	title:"Luminos App"
 	minimumWidth: toolbar.implicitWidth//Math.max(toolbar.implicitWidth, mainPage.implicitWidth)
 	minimumHeight: toolbar.implicitHeight + mainPage.implicitHeight//toolbar.implicitHeight + mainPage.minimumHeight
@@ -119,4 +119,6 @@ ApplicationWindow
             }
         }
     }
+
+	Component.onCompleted: visible = true
 }

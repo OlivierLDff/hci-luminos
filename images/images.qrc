@@ -34,6 +34,9 @@
     <!-- BACKGROUND -->
     <file alias="RestaurantMap">RestaurantMap.png</file>
 
+    <!-- SELECTION -->
+    <file alias="LightBulb">lightbulb.png</file>
+
     <!-- EFFECT -->
     <file alias="Wave">effects/audio-wave.png</file>
     <file alias="Level">effects/levels.png</file>

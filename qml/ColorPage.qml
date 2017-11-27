@@ -21,10 +21,12 @@ Pane
 		{
 			id: colorPicker
 			Layout.fillWidth: true
-			//Layout.fillHeight: true
+			Layout.fillHeight: true
 			//anchors.fill: parent
+			//anchors.bottom: parent.bottom
+			//anchors.top: parent.top
 		}
-		ColumnLayout
+		/*ColumnLayout
 		{
 			Text
 			{
@@ -38,6 +40,6 @@ Pane
 				value: 1
 				onValueChanged: FixturesModel.SetBrighness(value)
 			}
-		}
+		}*/
 	}	
 }
