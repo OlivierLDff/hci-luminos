@@ -154,7 +154,14 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
      *[ ] Selectable object
      *[ ] Select All button
      *[ ] Clear Selection
-     *[ ] Resize create a new tab map
+     *[x] Resize create a new tab map
+     *[ ] Select button
+          *[ ] Background
+          *[ ] Circle
+          *[ ] Image full
+          *[ ] not full
+          *[ ] % full
+          *[ ] selected
 *[ ] Settings Page
 *[ ] C++ backend
      *[ ] 6 fixture rgb

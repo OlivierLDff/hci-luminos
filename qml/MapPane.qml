@@ -54,12 +54,14 @@ Pane
 
 				property real initialWidth
 				property real initialHeight
-				onPinchStarted: {
+				onPinchStarted: 
+				{
 					initialWidth = flick.contentWidth
 					initialHeight = flick.contentHeight
 				}
 
-				onPinchUpdated: {
+				onPinchUpdated: 
+				{
 					// adjust content pos due to drag
 					flick.contentX += pinch.previousCenter.x - pinch.center.x
 					flick.contentY += pinch.previousCenter.y - pinch.center.y
@@ -67,7 +69,8 @@ Pane
 					// resize content
 					flick.resizeContent(initialWidth * pinch.scale, initialHeight * pinch.scale, pinch.center)
 				}
-				onPinchFinished: {
+				onPinchFinished: 
+				{
 					// Move its content within bounds.
 					flick.returnToBounds()
 				}
@@ -78,40 +81,12 @@ Pane
 				onClicked: console.log("click")
 				onWheel: 
 				{
-					//console.log("wheel.angleDelta.x : " + wheel.angleDelta.x/1200 + ", wheel.angleDelta.y : " + wheel.angleDelta.y/1200);
 					restaurantMap.scale += restaurantMap.scale * wheel.angleDelta.y/1200;
-					//console.log("restaurantMap.scale" + restaurantMap.scale);
 					if(restaurantMap.scale < 0.7) restaurantMap.scale = 0.7
 					else if(restaurantMap.scale > 1) restaurantMap.scale = 1
 
-					//flick.contentX = 150//flick.contentX - wheel.x/2
-					//flick.contentY = flick.contentY - wheel.y/2
-					//flick.contentX +=  wheel.x - flick.width/2
-					//flick.contentY += wheel.y - flick.height/2
-
-					//console.log("wheel.x: " + wheel.x);
-					//console.log("flick.contentX: " + flick.contentX);
-
-					/*if (wheel.modifiers & Qt.ControlModifier)
-					{
-						
-						photoFrame.rotation += wheel.angleDelta.y / 120 * 5;
-						photoFrame.rotation = 0;
-                    }
-					else 
-					{
-						photoFrame.rotation += wheel.angleDelta.x / 120;
-						if (Math.abs(photoFrame.rotation) < 0.6)
-							photoFrame.rotation = 0;
-						var scaleBefore = photoFrame.scale;
-						photoFrame.scale += photoFrame.scale * wheel.angleDelta.y / 120 / 10;
-                    }*/
+					console.log("contentWidth : " + flick.contentWidth)
                 }
-				/*onDoubleClicked: 
-				{
-					flick.contentWidth = 730
-					flick.contentHeight = 730
-				}*/
             }
 			Image 
 			{
@@ -119,22 +94,15 @@ Pane
 				anchors.fill: parent
 				Behavior on scale { PropertyAnimation {properties: "scale"; easing.type: Easing.InQuad } }
 				source: "RestaurantMap"
-				//sourceSize.width: flick.contentWidth
-				//sourceSize.height: flick.contentHeight
             }
-			/*Image
+			Rectangle
 			{
-				id: colorpickerim
-
-				//image attribute
-				//sourceSize.width: 128
-				//sourceSize.height: 128
-				fillMode: Image.PreserveAspectFit
-				source: "RestaurantMap"
-				anchors.fill: parent
-				//layout attribyte
-				Layout.alignment: Qt.AlignCenter
-			}*/
+				color: "red"
+				width: 2
+				height: 2
+				x: flick.contentWidth*0.3*restaurant.scale
+				y: flick.contentHeight*0.3*restaurant.scale
+			}
 		}
 	}
 }
