@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
+import QtGraphicalEffects 1.0
 import LuminosModel 1.0
 
 Pane
@@ -106,57 +107,159 @@ Pane
 				x: flick.contentWidth*0.2
 				y: flick.contentHeight*0.35
 			}
-			Rectangle
+			Item
 			{
 				id: control
 				property real xPos: 0.3
 				property real yPos: 0.3
-				property real ratio : flick.contentWidth/730
-
-				readonly property real sizeX: 64
-				readonly property real sizeY: 64
-
 				property real dimmer : slid.value
 
-				color: "#FF0051"
-				width: sizeX*ratio
-				height: sizeY*ratio
-				x: flick.contentWidth*xPos-sizeX/2*ratio
-				y: flick.contentHeight*yPos-sizeY/2*ratio
-				radius: sizeX/2*ratio
+				property bool selected: false;
+				property bool pressed: false;
+
+				state: selected ? "SELECTED" : "RELEASED"
+
+				//color: "#80FF0051"
+				//border.color : "#FFFF0051"
+
+				scale : flick.contentWidth/730
+
+				width: 64
+				height: 64
+
+				x: flick.contentWidth*xPos - width/2
+				y: flick.contentHeight*yPos - height/2
+
+				Rectangle
+				{
+					id: foreground
+					radius: width/2
+					anchors.centerIn: parent
+					color: "#40FF0051"
+					border.color : "#FFFF0051"
+				}
+				Rectangle
+				{
+					id: background
+					anchors.centerIn: parent
+					color: "transparent"
+					border.color: "#80FF0051"
+					border.width: 10
+					radius: width/2
+					//opacity: control.selected ? 1 : 0 
+				}
+
+				MouseArea 
+				{
+					id: mouseArea
+					anchors.fill: parent
+					onClicked:
+					{
+						control.selected = !control.selected;
+						console.log(control.selected)
+					}
+					onPressed: control.pressed = true
+					onReleased: control.pressed = false
+				}
+
 				/*Rectangle
 				{
-					clip: true
-					//anchors.fill: parent
-					anchors.bottom : parent.bottom
-					anchors.right: parent.right
-					anchors.left: parent.left
-					//scale: 0.8
-					height: control.height*(control.dimmer)//*0.7
-					color: "red"*/
-					//verticalAlignment: Image.AlignBottom
+					radius: control.radius
+					color: "#80FF0051"
+					anchors.fill: control
+					border.width : 2
+					border.color : "#FFFF0051"
+				}*/
+
+				Rectangle
+				{
+					anchors.fill: parent
+					anchors.margins: 10
+					color: "transparent"
+					
+					Image 
+					{
+						id: lightbulbback
+						anchors.fill: parent
+						opacity : 0.6
+						source: "LightBulb"
+					}
 					Image 
 					{
 						id: lightbulb
-						scale: 0.8
-						anchors.bottom: control.bottom
-						width: control.width
-						height: control.height*control.dimmer
-						//anchors.margins: 10
+						clip: true
+
+						anchors.bottom: parent.bottom
+						anchors.right: parent.right
+						anchors.left: parent.left
 						verticalAlignment: Image.AlignBottom
-						
-						
-						//scale: 0.8
-						//width: control.width*0.7
-						//scale: 0.8
-						//height: control.height*(control.dimmer)//*0.7
+
+						height: parent.height*control.dimmer
+
 						fillMode: Image.PreserveAspectCrop
-						//Behavior on scale { PropertyAnimation {properties: "scale"; easing.type: Easing.InQuad } }
 						source: "LightBulb"
+					}		
+					DropShadow {
+        anchors.fill: lightbulbback
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: lightbulbback
+    }
+				}
+
+				states: 
+				[
+					State
+					{
+						name: "SELECTED"
+						PropertyChanges { target: foreground.border; width: 32}
+						PropertyChanges { target: foreground; width: 50}
+						PropertyChanges { target: foreground; height: 50}
+						PropertyChanges { target: background; width: 64}
+						PropertyChanges { target: background; height: 64}
+					},
+					State 
+					{
+						name: "RELEASED"
+						PropertyChanges { target: foreground.border; width: 3}
+						PropertyChanges { target: foreground; width: 64}
+						PropertyChanges { target: foreground; height: 64}
+						PropertyChanges { target: background; width: 0}
+						PropertyChanges { target: background; height: 0}
 					}
-				//}
-				
-			}
+				]
+
+				transitions: 
+				[
+					Transition
+					{
+						from: "SELECTED"
+						to: "RELEASED"
+						NumberAnimation { properties: "width"; target: foreground.border; duration: 250; easing.type: Easing.OutQuad}
+
+						NumberAnimation { properties: "width"; target: foreground; duration: 250; easing.type: Easing.OutQuad}
+						NumberAnimation { properties: "height"; target: foreground; duration: 250; easing.type: Easing.OutQuad}
+
+						NumberAnimation { properties: "width"; target: background; duration: 250; easing.type: Easing.OutQuad}
+						NumberAnimation { properties: "height"; target: background; duration: 250; easing.type: Easing.OutQuad}
+					},
+					Transition 
+					{
+						from: "RELEASED"
+						to: "SELECTED"
+						NumberAnimation { properties: "width"; target: foreground.border; duration: 250; easing.type: Easing.OutQuad}
+
+						NumberAnimation { properties: "width"; target: foreground; duration: 250; easing.type: Easing.OutQuad}
+						NumberAnimation { properties: "height"; target: foreground; duration: 250; easing.type: Easing.OutQuad}
+
+						NumberAnimation { properties: "width"; target: background; duration: 250; easing.type: Easing.OutQuad}
+						NumberAnimation { properties: "height"; target: background; duration: 250; easing.type: Easing.OutQuad}
+					}
+				]
+			}			
 		}
 	}
 }
