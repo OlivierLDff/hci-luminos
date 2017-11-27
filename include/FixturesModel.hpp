@@ -104,10 +104,19 @@ class FixturesModel : public QAbstractListModel
 , public IDmxTickCallback, public IThreadFunction
 #endif
 {
-Q_OBJECT
+	Q_OBJECT
+
+	// ─────────────────────────────────────────────────────────────
+	// 						Q PROPERTY			 
+	// ─────────────────────────────────────────────────────────────
+	
 	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
 	Q_PROPERTY(qreal Master READ GetMaster WRITE SetMaster NOTIFY MasterChanged)
 	Q_PROPERTY(qint32 SelectionSize READ GetSelectionSize WRITE SetSelectionSize NOTIFY SelectionSizeChanged)
+
+	// ─────────────────────────────────────────────────────────────
+	// 					CONSTRUCTOR / DESTRUCTOR					 
+	// ─────────────────────────────────────────────────────────────
 public:
 	explicit FixturesModel(class SensorModel* sensor, QObject* parent = nullptr);
 	~FixturesModel();
@@ -148,14 +157,15 @@ private:
 public:
 	/** \brief apply color from color picker to the current selection */
 	Q_INVOKABLE void SetColorFromPicker(double angle, double white);
-	//Q_INVOKABLE void SetMaster(const double value);
+	/** \brief select one fixture */
 	Q_INVOKABLE void SelectOrDeselectFixture(const int idx);
+	/** \brief select all fixtures */
 	Q_INVOKABLE void SelectAll();
+	/** \brief clear selection */
 	Q_INVOKABLE void ClearAll();	
 
 	qint32 GetSelectionSize() const;
 	void SetSelectionSize(const qint32 selectionSize);
-
 	qreal GetMaster() const { return Master; }
 	void SetMaster(qreal comsumptionMode);
 signals:
@@ -164,6 +174,15 @@ signals:
 private:
 	qint32 SelectionSize;
 	qreal Master;
+
+private:
+	/** \brief Array that contain every fixture to be displayed inside the map */
+	std::vector<Fixture *> Fixtures;
+
+	// ─────────────────────────────────────────────────────────────
+	// 					    MODEL OVERRIDE 					 
+	// ─────────────────────────────────────────────────────────────
+
 public:
 	enum EFixtureRoles 
 	{
@@ -180,9 +199,6 @@ public:
 	QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
 protected:
 	QHash<int, QByteArray> roleNames() const override;
-private:
-	/** \brief Array that contain every fixture to be displayed inside the map */
-	std::vector<Fixture *> Fixtures;
 };
 
 
