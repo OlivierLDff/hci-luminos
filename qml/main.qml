@@ -54,9 +54,10 @@ ApplicationWindow
 
 			ToolButton 
 			{
+				visible: FixturesModel.SelectionSize > 0
 				//anchors.right: parent.right
                 contentItem: Image 
-				{
+				{			
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter

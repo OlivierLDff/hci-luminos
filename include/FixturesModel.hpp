@@ -151,9 +151,7 @@ public:
 	//Q_INVOKABLE void SetMaster(const double value);
 	Q_INVOKABLE void SelectOrDeselectFixture(const int idx);
 	Q_INVOKABLE void SelectAll();
-	Q_INVOKABLE void ClearAll();
-
-	
+	Q_INVOKABLE void ClearAll();	
 
 	qint32 GetSelectionSize() const;
 	void SetSelectionSize(const qint32 selectionSize);

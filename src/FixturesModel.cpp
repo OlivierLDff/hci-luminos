@@ -162,6 +162,7 @@ void FixturesModel::SelectOrDeselectFixture(const int idx)
 
 	if (Fixtures[idx]->GetIsSelected()) ++SelectionSize;
 	else --SelectionSize;
+	emit SelectionSizeChanged(SelectionSize);
 
 	const QModelIndex top = createIndex(idx, 0);
 	emit dataChanged(top, top);
@@ -177,6 +178,7 @@ void FixturesModel::SelectAll()
 	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
 
 	SelectionSize = Fixtures.size();
+	emit SelectionSizeChanged(SelectionSize);
 
 	emit dataChanged(top, bottom);
 }
@@ -190,6 +192,7 @@ void FixturesModel::ClearAll()
 	const QModelIndex top = createIndex(0, 0);
 	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
 	SelectionSize = 0;
+	emit SelectionSizeChanged(SelectionSize);
 	emit dataChanged(top, bottom);
 }
 
@@ -201,6 +204,7 @@ qint32 FixturesModel::GetSelectionSize() const
 void FixturesModel::SetSelectionSize(const qint32 selectionSize)
 {
 	SelectionSize = selectionSize;
+	emit SelectionSizeChanged(selectionSize);
 }
 
 void FixturesModel::SetMaster(const qreal value)
