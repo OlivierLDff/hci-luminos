@@ -27,7 +27,7 @@ Item
 			{
 				cursor.x = mouse.x - 4
 				cursor.y = mouse.y - 4
-				FixturesModel.SetColorFromPicker(cursor.x*360/colorPicker.width, cursor.y*360/colorPicker.height)	
+				FixturesModel.SetColorFromPicker(cursor.x*360/colorPicker.width, cursor.y/colorPicker.height)	
 			}
 			onPositionChanged:
 			{
@@ -36,7 +36,7 @@ Item
 				cursor.x = clampX - 4;
 				cursor.y = clampY - 4;
 				console.log("x : " + clampX  + " y : " +  clampY );
-				FixturesModel.SetColorFromPicker(clampX*360/colorPicker.width, clampY*360/colorPicker.height)	
+				FixturesModel.SetColorFromPicker(clampX*360/colorPicker.width, clampY/colorPicker.height)	
 			}
 			Image
 			{

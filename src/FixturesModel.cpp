@@ -153,6 +153,61 @@ void FixturesModel::SetComsumptionMode(const ModeClass::EConsumptionMode comsump
 
 void FixturesModel::SetColorFromPicker(double angle, double white)
 {
+	int modulto = (int)(angle)/360;
+	angle -= modulto * 360;
+	white *= 255;
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if((*it) && (*it)->GetIsSelected())
+	{
+		//(*it)->SetSelected(true);
+		if(angle >= 0 && angle <= 120)
+		{
+			if (angle <= 60)
+			{
+				(*it)->SetRed(255);
+				(*it)->SetGreen(std::max(angle/60*255, white));
+				(*it)->SetBlue(white);
+			}			
+			else
+			{
+				(*it)->SetRed(std::max(255 - (angle - 60) / 60 * 255, white));
+				(*it)->SetGreen(255);
+				(*it)->SetBlue(white);
+			}			
+		}
+		else if( angle > 120 && angle <= 240)
+		{
+			if (angle <= 180)
+			{
+				(*it)->SetRed(white);
+				(*it)->SetGreen(255);
+				(*it)->SetBlue(std::max((angle - 120) / 60 * 255, white));
+			}
+			else
+			{
+				(*it)->SetRed(white);
+				(*it)->SetGreen(std::max(255 - (angle - 180) / 60 * 255, white));/*std::max(255 - (angle - 120) / 60 * 255*/
+				qInfo("%d)", (int)(255 - (angle - 180) / 60 * 255));
+				(*it)->SetBlue(255);
+			}
+		}
+		else
+		{
+			if (angle <= 300)
+			{
+				(*it)->SetRed(std::max((angle - 240) / 60 * 255, white));
+				(*it)->SetGreen(white);
+				(*it)->SetBlue(255);
+			}
+			else
+			{
+				(*it)->SetRed(255);
+				(*it)->SetGreen(white);
+				(*it)->SetBlue(std::max(255 - (angle - 300) / 60 * 255, white));
+			}
+		}
+		const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
+		emit dataChanged(top, top);
+	}
 }
 
 void FixturesModel::SelectOrDeselectFixture(const int idx)
@@ -170,7 +225,7 @@ void FixturesModel::SelectOrDeselectFixture(const int idx)
 
 void FixturesModel::SelectAll()
 {
-	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it))
 	{
 		(*it)->SetSelected(true);
 	}
@@ -185,7 +240,7 @@ void FixturesModel::SelectAll()
 
 void FixturesModel::ClearAll()
 {
-	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it))
 	{
 		(*it)->SetSelected(false);
 	}
@@ -209,7 +264,7 @@ void FixturesModel::SetSelectionSize(const qint32 selectionSize)
 
 void FixturesModel::SetMaster(const qreal value)
 {
-	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it)
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it))
 	{
 		(*it)->SetDimmer(value * 255);	
 	}
