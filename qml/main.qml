@@ -62,7 +62,7 @@ ApplicationWindow
                     verticalAlignment: Image.AlignVCenter
                     source: "clear"
                 }
-                onClicked: FixturesModel.ClearAll();
+                onClicked: FixturesModel.ClearSelection();
 			}
 
             ToolButton 

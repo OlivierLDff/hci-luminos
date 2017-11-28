@@ -5,15 +5,12 @@ import QtQuick.Controls 2.1
 
 RowLayout
 {
-	//implicitHeight: control.implicitHeight 
-	//implicitWidth: control.implicitWidth //not working, why???? kurwa fuck
 	ControlPage
 	{
 		id: control
 		Layout.fillWidth: drawMap
 		Layout.fillHeight: true
 		Layout.minimumWidth: implicitWidth
-		//Layout.preferredWidth: 300
 		drawMap : Window.width <= implicitWidth + 200
 	}
 	MapPane

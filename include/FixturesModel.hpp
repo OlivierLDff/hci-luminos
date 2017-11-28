@@ -6,9 +6,14 @@
 #include <QColor>
 
 #ifdef DMX_MANAGER_CORE
-#include <DmxManagerCore/IDmxTickCallback.hpp>
 #include <IMutex.hpp>
 #include <IThread.hpp>
+
+#include <DmxManagerCore/DmxManagerCore.hpp>			//Create the manager that manage universes
+#include <DmxManagerCore/DmxUniverse.hpp>				//Array of data
+#include <DmxManagerCore/IDmxChangedCallback.hpp>		//Listen to change, mainly for debug and to see when data arrive
+#include <Artnode/Artnode.hpp>							//Create artnet node
+
 #endif
 
 /** \brief call that store the enumeration */
@@ -63,6 +68,8 @@ public:
 
 	double GetY() const;
 	void SetY(const double y);
+
+	static uint8_t GetZoom() { return 255; } //yolo yolo
 
 private:
 	/** \brief value for red led */
@@ -121,6 +128,10 @@ public:
 private:
 	class IThread * t; //Handle dmx refreshment app
 	class ISemaphore * s; //tick semaphore with dmx
+
+	DmxManagerCore DmxManager;  //Create the dmx manager, we set at the initialisation the number of universes, this number can't be changed later
+	Artnode node; 
+	DmxUniverse * Universe;
 #endif
 
 	// ─────────────────────────────────────────────────────────────
@@ -135,6 +146,7 @@ signals:
 private:
 	class SensorModel * Sensor;
 	ModeClass::EConsumptionMode ConsumptionMode;
+	bool bProgrammerChanged;
 
 	// ─────────────────────────────────────────────────────────────
 	// 						FIXTURE MODEL	 					 
@@ -153,7 +165,7 @@ public:
 	/** \brief select all fixtures */
 	Q_INVOKABLE void SelectAll();
 	/** \brief clear selection */
-	Q_INVOKABLE void ClearAll();	
+	Q_INVOKABLE void ClearSelection();	
 
 	qint32 GetSelectionSize() const;
 	void SetSelectionSize(const qint32 selectionSize);

@@ -145,11 +145,15 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
 
 ### Main Control
 
-*[ ] Color Picker Page
+*[x] Color Picker Page
      *[x] Color Picker in QML
-     *[ ] Attribute R G B
+     *[x] Attribute R G B
 *[ ] Effect Page
      *[ ] Pad
+     *[ ] Ramp
+     *[ ] Sin
+     *[ ] Color
+     *[ ] Random
 *[ ] Map Page
      *[x] Selectable object
      *[x] Select All button
@@ -160,16 +164,20 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
           *[x] Circle
           *[x] Image full
           *[x] not full
-          *[ ] % full
           *[x] selected
-     *[ ] Link fixture button to fixture color, how to handle white ?
-     *[ ] GetFixtureColorWithAlpha
+     *[x] Link fixture button to fixture color, how to handle white ?
+     *[x] GetFixtureColorWithAlpha
+     *[x] Dimmer per fixture
+     *[x] Deselect fixture after having done something and reselect-> bShouldDeselectAll
 *[ ] Settings Page
-*[ ] C++ backend
-     *[ ] 6 fixture rgb
-     *[ ] Artnode Broadcast to 255.255.255.255 universe 1
-     *[ ] Wyg plan
+     *[ ] Choose network adapter
+     *[ ] Find Network Adapter with friendly name
+*[x] C++ backend
+     *[x] 6 fixture rgb
+     *[x] Artnode Broadcast to 255.255.255.255 universe 1
+     *[x] Wyg plan
      *[x] Change weather image
      *[x] Change Lux/Temperature
+     *[ ] Dimmer output react with lux
 
 

@@ -86,14 +86,30 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	IDmxTickCallback(EDmxTickCallback_App),
 	t(CreateThread()),
 	s(CreateSemaphore(0, 1)),
+	DmxManager(1),
+	node(&DmxManager, GetWildcardNetworkAdapterV4(), false, false, EArtnodeMode_Controller),
+	Universe(DmxManager.GetDmxUniverse(1)),
 #endif
 	Sensor(sensor), //Link to sensor class
 	ConsumptionMode(ModeClass::EConsumptionMode_Eco),
+	bProgrammerChanged(false),
 	SelectionSize(0),
 	Master(1.f)
 {
 	ModeClass::declareQML();
 #ifdef DMX_MANAGER_CORE
+
+	DmxManager.AddDmxCallback(this); //Add a listener to be updated every 25ms
+	node.SetBroadcastInNetwork(false); //broadcast to 255.255.255.255 to be sure information arrive to computer
+	node.AddPort(Universe, 0, EArtnetPortMode_OutputBroadcast); // universe 0 artnet is internal universe 1
+	node.ActivateOutput(); // activate the output
+
+#ifdef WIN32 //oliv : only for debug, this will be replace by a proper menu, on phone wildcard work well
+	NetworkAdapterV4 a = NetworkAdapterFromIpString("2.0.0.2");
+	node.SetNetworkAdapter(&a);
+#endif
+
+	node.Start(); //Start artnet
 	t->Start(this);
 #endif
 }
@@ -118,6 +134,7 @@ void FixturesModel::notify(DmxManagerCore* parent)
 
 bool FixturesModel::StopSignal()
 {
+	DmxManager.RemoveDmxCallback(this);
 	s->Post();
 	return IThreadFunction::StopSignal();
 }
@@ -127,7 +144,22 @@ void FixturesModel::Run(IThreadArg* threadArg)
 	s->Wait();
 	while (bIsRunning)
 	{
+//_________________PROTECT THE UNIVERSE IN WRITE MODE_________________________
+		Universe->ProtectUniverseWrite(); //Take MUTEX
 		//dmx tick here
+		for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if (*it)
+		{
+			const Fixture * f = (*it);
+			Universe->SetChannel(f->GetAddress(), f->GetDimmer());
+			Universe->SetChannel(f->GetAddress() + 2, 14);
+			Universe->SetChannel(f->GetAddress()+3, f->GetRed());
+			Universe->SetChannel(f->GetAddress()+4, f->GetGreen());
+			Universe->SetChannel(f->GetAddress()+5, f->GetBlue());
+			Universe->SetChannel(f->GetAddress()+8, 0);
+		}
+		Universe->ReleaseUniverseWrite();
+//_________________RELEASE THE UNIVERSE IN WRITE MODE_________________________
+
 		s->Wait();
 	}
 }
@@ -200,6 +232,7 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 		const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
 		emit dataChanged(top, top);
 	}
+	bProgrammerChanged = true;
 }
 
 void FixturesModel::SetColor(QColor color)
@@ -213,10 +246,12 @@ void FixturesModel::SetColor(QColor color)
 		const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
 		emit dataChanged(top, top);
 	}
+	bProgrammerChanged = true;
 }
 
 void FixturesModel::SelectOrDeselectFixture(const int idx)
 {
+	if (bProgrammerChanged) ClearSelection();
 	if(idx >= 0 && idx < Fixtures.size())
 		Fixtures[idx]->SetSelected(!Fixtures[idx]->GetIsSelected());
 
@@ -243,8 +278,9 @@ void FixturesModel::SelectAll()
 	emit dataChanged(top, bottom);
 }
 
-void FixturesModel::ClearAll()
+void FixturesModel::ClearSelection()
 {
+	bProgrammerChanged = false;
 	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it))
 	{
 		(*it)->SetSelected(false);
@@ -269,7 +305,9 @@ void FixturesModel::SetSelectionSize(const qint32 selectionSize)
 
 void FixturesModel::SetMaster(const qreal value)
 {
-	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it))
+	const bool bAll = SelectionSize == 0;
+	bProgrammerChanged = true;
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (bAll || (*it)->GetIsSelected()))
 	{
 		(*it)->SetDimmer(value * 255);	
 	}
