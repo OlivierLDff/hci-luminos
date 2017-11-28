@@ -151,23 +151,25 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
 *[ ] Effect Page
      *[ ] Pad
 *[ ] Map Page
-     *[ ] Selectable object
-     *[ ] Select All button
-     *[ ] Clear Selection
+     *[x] Selectable object
+     *[x] Select All button
+     *[x] Clear Selection
      *[x] Resize create a new tab map
-     *[ ] Select button
-          *[ ] Background
-          *[ ] Circle
-          *[ ] Image full
-          *[ ] not full
+     *[x] Select button
+          *[x] Background
+          *[x] Circle
+          *[x] Image full
+          *[x] not full
           *[ ] % full
-          *[ ] selected
+          *[x] selected
+     *[ ] Link fixture button to fixture color, how to handle white ?
+     *[ ] GetFixtureColorWithAlpha
 *[ ] Settings Page
 *[ ] C++ backend
      *[ ] 6 fixture rgb
      *[ ] Artnode Broadcast to 255.255.255.255 universe 1
      *[ ] Wyg plan
      *[x] Change weather image
-     *[ ] Change Lux/Temperature
+     *[x] Change Lux/Temperature
 
 

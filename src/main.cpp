@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
 
 	//TABLE MAIN
 	//for(int i = 0; i < 1000; ++i)
-	//	FixturesManager->AddFixture(1, (double)i/10, 0.3535f);
+	//FixturesManager->AddFixture(1, (double)i/10, 0.3535f);
 	FixturesManager->AddFixture(1, 0.371f, 0.3535f);
 	FixturesManager->AddFixture(6, 0.579f, 0.348f);
 	FixturesManager->AddFixture(11, 0.371f, 0.505f);

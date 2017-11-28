@@ -22,20 +22,24 @@ Item
 
 	signal clicked()
 
+	property color color: Qt.rgba(0.956, 0.2627, 0.2117, 1)
+	property color colorBack1: Qt.rgba(0.956, 0.2627, 0.2117, 0.5)
+	property color colorBack2: Qt.rgba(0.956, 0.2627, 0.2117, 0.25)
+
 	Rectangle
 	{
 		id: foreground
 		radius: width/2
 		anchors.centerIn: parent
-		color: "#40FF0051"
-		border.color : "#FFFF0051"
+		color: control.colorBack2//"#40FF0051"
+		border.color : control.color//"#FFFF0051"
 	}
 	Rectangle
 	{
 		id: background
 		anchors.centerIn: parent
 		color: "transparent"
-		border.color: "#80FF0051"
+		border.color: control.colorBack1//"#80FF0051"
 		border.width: 10
 		radius: width/2
 		//opacity: control.selected ? 1 : 0

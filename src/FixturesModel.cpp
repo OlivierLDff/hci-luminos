@@ -177,7 +177,7 @@ void FixturesModel::SelectAll()
 	const QModelIndex top = createIndex(0, 0);
 	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
 
-	SelectionSize = Fixtures.size();
+	SelectionSize = (qint32)Fixtures.size();
 	emit SelectionSizeChanged(SelectionSize);
 
 	emit dataChanged(top, bottom);
@@ -217,7 +217,7 @@ void FixturesModel::SetMaster(const qreal value)
 	const QModelIndex bottom = createIndex((int)Fixtures.size() - 1, 0);
 
 	emit dataChanged(top, bottom);
-	//emit layoutChanged();
+	//emit layoutChanged(); //way to heavy
 	emit MasterChanged(value);
 }
 
@@ -240,12 +240,14 @@ QVariant FixturesModel::data(const QModelIndex& index, const int role) const
 		return QVariant();
 
 	const Fixture * fixture = Fixtures[index.row()];
-	//if (role == FixtureRole)
-	//	return fixture;
 	if (role == AddressRole)
 		return fixture->GetAddress();
 	if (role == ColorRole)
-		return QColor(fixture->GetRed(), fixture->GetGreen(), fixture->GetBlue(), fixture->GetDimmer());
+		return QColor(fixture->GetRed(), fixture->GetGreen(), fixture->GetBlue(), 255);
+	if (role == ColorBackground1Role)
+		return QColor(fixture->GetRed(), fixture->GetGreen(), fixture->GetBlue(), 127);
+	if (role == ColorBackground2Role)
+		return QColor(fixture->GetRed(), fixture->GetGreen(), fixture->GetBlue(), 64);
 	if (role == DimmerRole)
 		return fixture->GetDimmer();
 	if (role == IsSelectedRole)
@@ -262,6 +264,8 @@ QHash<int, QByteArray> FixturesModel::roleNames() const
 	QHash<int, QByteArray> roles;
 	roles[AddressRole] = "address";
 	roles[ColorRole] = "color";
+	roles[ColorBackground1Role] = "colorBack1";
+	roles[ColorBackground2Role] = "colorBack2";
 	roles[DimmerRole] = "dimmer";
 	roles[IsSelectedRole] = "selected";
 	roles[XRole] = "x";

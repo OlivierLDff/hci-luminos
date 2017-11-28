@@ -188,6 +188,8 @@ public:
 	{
 		AddressRole = Qt::UserRole + 1,
 		ColorRole,
+		ColorBackground1Role,
+		ColorBackground2Role,
 		DimmerRole,
 		IsSelectedRole,
 		XRole,

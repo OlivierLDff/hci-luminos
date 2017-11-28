@@ -124,6 +124,10 @@ Pane
 					scale : flick.contentWidth/730
 					selected: model.selected
 
+					color: model.color 
+					colorBack1: model.colorBack1
+					colorBack2: model.colorBack2
+
 					x: flick.contentWidth*model.x - width/2
 					y: flick.contentHeight*model.y - height/2
 					onClicked: FixturesModel.SelectOrDeselectFixture(model.index)//console.log(model.index)
