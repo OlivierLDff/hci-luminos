@@ -9,16 +9,16 @@ Item
 {
 	id: control
 	property bool pressed: mouseArea.pressed
-	//Material.elevation: mouseArea.pressed ? 10 : 5;
-	//anchors.fill: parent
+	//implicitWidth: colorPicker.width
+	implicitHeight: colorPicker.height
 	Image
 	{
 		id: colorPicker
 		source: "ColorPickerRect"
-		sourceSize.width: parent.width
+		width: parent.width
+		//sourceSize.width: parent.width
 		//sourceSize.height: parent.height
-		//anchors.fill: parent
-		//fillMode: Image.PreserveAspectFit
+		fillMode: Image.PreserveAspectFit
 		MouseArea
 		{
 			id: mouseArea
@@ -35,7 +35,6 @@ Item
 				var clampY = (mouse.y > 0 && mouse.y < colorPicker.height) ? mouse.y : (mouse.y > 0) ? colorPicker.height : 0;
 				cursor.x = clampX - 4;
 				cursor.y = clampY - 4;
-				console.log("x : " + clampX  + " y : " +  clampY );
 				FixturesModel.SetColorFromPicker(clampX*360/colorPicker.width, clampY/colorPicker.height)	
 			}
 			Image
@@ -46,17 +45,6 @@ Item
 				source: "colorPickerCursor"
 			}
 		}	
-	}
-	/*DropShadow
-	{
-		anchors.fill: colorPicker
-		cached: true
-		horizontalOffset: 2
-		verticalOffset: pressed ? 4 : 2
-		radius: 8.0
-		samples: 16
-		color: "#80000000"
-		source: colorPicker
 	}
 	
 	/*Rectangle

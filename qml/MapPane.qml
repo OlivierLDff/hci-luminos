@@ -80,7 +80,7 @@ Pane
 				anchors.fill: parent
 				width: Math.max(flick.contentWidth, flick.width)
 				height: Math.max(flick.contentHeight, flick.height)
-				onClicked: console.log(flick.contentX)
+				//onClicked:// console.log(flick.contentX)
 				onWheel: 
 				{
 					flick.resizeContent(flick.contentWidth + wheel.angleDelta.y/2, flick.contentHeight + wheel.angleDelta.y/2, Qt.point(wheel.x, wheel.y))
@@ -88,7 +88,7 @@ Pane
 					if(restaurantMap.scale < 0.7) restaurantMap.scale = 0.7
 					else if(restaurantMap.scale > 1) restaurantMap.scale = 1*/
 					flick.returnToBounds()
-					console.log("contentWidth : " + flick.contentWidth)
+					//console.log("contentWidth : " + flick.contentWidth)
 
                 }
             }

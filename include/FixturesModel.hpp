@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtQml>
+#include <QColor>
 
 #ifdef DMX_MANAGER_CORE
 #include <DmxManagerCore/IDmxTickCallback.hpp>
@@ -35,15 +36,6 @@ public:
 
 class Fixture : public QObject
 {
-	Q_OBJECT
-	//Q_PROPERTY(QColor Color READ GetColor WRITE SetColor NOTIFY ColorChanged)
-	Q_PROPERTY(quint8 Red READ GetRed WRITE SetRed NOTIFY RedChanged)
-	Q_PROPERTY(quint8 Green READ GetGreen WRITE SetGreen NOTIFY GreenChanged)
-	Q_PROPERTY(quint8 Blue READ GetBlue WRITE SetBlue NOTIFY BlueChanged)
-	Q_PROPERTY(quint8 Dimmer READ GetDimmer WRITE SetDimmer NOTIFY DimmerChanged)
-	Q_PROPERTY(quint16 Address READ GetAddress WRITE SetAddress NOTIFY AddressChanged)
-	Q_PROPERTY(bool Selected READ GetIsSelected WRITE SetSelected NOTIFY SelectedChanged)
-
 public:
 	Fixture(const uint16_t addr, const double x, const double y, QObject * parent = nullptr) : QObject(parent), Red(255), Green(0), Blue(0), Dimmer(0), Address(addr), bSelected(false), x(x), y(y) {}
 	~Fixture() {}
@@ -72,14 +64,6 @@ public:
 	double GetY() const;
 	void SetY(const double y);
 
-signals:
-	void RedChanged(uint8_t value);
-	void GreenChanged(uint8_t value);
-	void BlueChanged(uint8_t value);
-	void DimmerChanged(uint8_t value);
-	void AddressChanged(uint16_t value);
-	void SelectedChanged(bool value);
-
 private:
 	/** \brief value for red led */
 	uint8_t Red;
@@ -93,7 +77,9 @@ private:
 	uint16_t Address;
 	/** \brief is the fixture currently selected */
 	bool bSelected;
+	/** \brief x position on the map */
 	double x;
+	/** \brief y position on the map */
 	double y;
 };
 
@@ -155,11 +141,13 @@ private:
 	// ─────────────────────────────────────────────────────────────
 
 public:
-	/** \brief apply color from color picker to the current selection
+	/** 
+	 *\brief apply color from color picker to the current selection
 	 * \param angle 0 t 360 
 	 * \param white 0 t 1
 	 */
 	Q_INVOKABLE void SetColorFromPicker(double angle, double white);
+	Q_INVOKABLE void SetColor(QColor color);
 	/** \brief select one fixture */
 	Q_INVOKABLE void SelectOrDeselectFixture(const int idx);
 	/** \brief select all fixtures */

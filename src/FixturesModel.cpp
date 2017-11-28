@@ -1,7 +1,5 @@
 #include <FixturesModel.hpp>
 
-#include <QColor>
-
 uint8_t Fixture::GetRed() const
 {
 	return Red;
@@ -10,7 +8,6 @@ uint8_t Fixture::GetRed() const
 void Fixture::SetRed(const uint8_t red)
 {
 	Red = red;
-	emit RedChanged(red);
 }
 
 uint8_t Fixture::GetGreen() const
@@ -21,7 +18,6 @@ uint8_t Fixture::GetGreen() const
 void Fixture::SetGreen(const uint8_t green)
 {
 	Green = green;
-	emit GreenChanged(green);
 }
 
 uint8_t Fixture::GetBlue() const
@@ -32,7 +28,6 @@ uint8_t Fixture::GetBlue() const
 void Fixture::SetBlue(const uint8_t blue)
 {
 	Blue = blue;
-	emit BlueChanged(blue);
 }
 
 uint8_t Fixture::GetDimmer() const
@@ -43,7 +38,6 @@ uint8_t Fixture::GetDimmer() const
 void Fixture::SetDimmer(const uint8_t dimmer)
 {
 	Dimmer = dimmer;
-	emit DimmerChanged(dimmer);
 }
 
 uint16_t Fixture::GetAddress() const
@@ -54,7 +48,6 @@ uint16_t Fixture::GetAddress() const
 void Fixture::SetAddress(const uint16_t address)
 {
 	Address = address;
-	emit AddressChanged(address);
 }
 
 bool Fixture::GetIsSelected() const
@@ -65,7 +58,6 @@ bool Fixture::GetIsSelected() const
 void Fixture::SetSelected(const bool selected)
 {
 	bSelected = selected;
-	emit SelectedChanged(selected);
 }
 
 double Fixture::GetX() const
@@ -205,6 +197,19 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 				(*it)->SetBlue(std::max(255 - (angle - 300) / 60 * 255, white));
 			}
 		}
+		const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
+		emit dataChanged(top, top);
+	}
+}
+
+void FixturesModel::SetColor(QColor color)
+{
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (*it)->GetIsSelected())
+	{
+		(*it)->SetRed(color.red());
+		(*it)->SetGreen(color.green());
+		(*it)->SetBlue(color.blue());
+
 		const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
 		emit dataChanged(top, top);
 	}
