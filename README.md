@@ -191,6 +191,6 @@ Set IOS_PLATFORM to OS to build for Device
      *[x] Wyg plan
      *[x] Change weather image
      *[x] Change Lux/Temperature
-     *[ ] Dimmer output react with lux
+     *[x] Dimmer output react with lux
 
 
