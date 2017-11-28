@@ -141,6 +141,18 @@ set(DCMAKE_MAKE_PROGRAM ${ANDROID_SDK}/ndk-bundle/prebuilt/windows-x86-64/bin/ma
 
 todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
 
+### iOs
+
+```
+cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR ..
+make
+make install
+```
+
+Set IOS_PLATFORM to SIMULATOR64 to build for iOS simulator 64 bit
+
+Set IOS_PLATFORM to OS to build for Device
+
 ## Todo
 
 ### Main Control
@@ -172,6 +184,7 @@ todo : if error GNU 9.0.1 is meed comment line xxx in file xxx
 *[ ] Settings Page
      *[ ] Choose network adapter
      *[ ] Find Network Adapter with friendly name
+     *[ ] Change
 *[x] C++ backend
      *[x] 6 fixture rgb
      *[x] Artnode Broadcast to 255.255.255.255 universe 1
