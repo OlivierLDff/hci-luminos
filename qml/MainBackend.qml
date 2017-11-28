@@ -98,20 +98,9 @@ ApplicationWindow
 		id: root
 		anchors.fill: parent	
 		anchors.margins : 20
-		/*Text 
-		{
-			Layout.fillWidth: true	
-			Layout.alignment: Qt.AlignHCenter
-			//width: aboutDialog.availableWidth
-			text: "Choose the weather"
-			//wrapMode: Label.Wrap
-			font.pixelSize: 20
-        }*/
 		WeatherWidget
 		{
 			Layout.alignment: Qt.AlignHCenter
-			//Layout.fillWidth: true	
-			//Layout.fillHeight: true	
 		}
 		GridLayout
 		{
@@ -218,28 +207,16 @@ ApplicationWindow
 				to: 50
 				Layout.fillWidth: true	
 				onValueChanged: SensorModel.Temperature = Math.floor(value)
-				//anchors.horizontalCenter: parent.horizontalCenter
 			}
-			/*ProgressBar 
-			{
-				id: bar
-				value: temperatureDial.value
-				from: -50
-				to: 50
-				width: 20
-				transform: Rotation {  origin.x: 25; origin.y: 25; angle: -90; }
-				anchors.horizontalCenter: parent.horizontalCenter
-			}*/
 			Dial
 			{
 				id: luxDial
-				value: 10000
+				value: 15000
 				from: 0
-				to: 100000
+				to: 20000
 				Layout.fillWidth: true	
 				onValueChanged: SensorModel.Lux = Math.floor(value)
 				stepSize : 100
-				//anchors.horizontalCenter: parent.horizontalCenter
 			}
 		}
 	}

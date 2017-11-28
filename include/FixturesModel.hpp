@@ -69,7 +69,7 @@ public:
 	double GetY() const;
 	void SetY(const double y);
 
-	static uint8_t GetZoom() { return 255; } //yolo yolo
+	static uint8_t GetZoom() { return 0; } //yolo yolo
 
 private:
 	/** \brief value for red led */
@@ -103,7 +103,7 @@ class FixturesModel : public QAbstractListModel
 	// 						Q PROPERTY			 
 	// ─────────────────────────────────────────────────────────────
 	
-	Q_PROPERTY(ModeClass::EConsumptionMode ComsumptionMode READ GetComsumptionMode WRITE SetComsumptionMode NOTIFY ComsumptionModeChanged)
+	Q_PROPERTY(qint32 ModelMode READ GetModelMode WRITE SetModelMode NOTIFY ModelModeChanged)
 	Q_PROPERTY(qreal Master READ GetMaster WRITE SetMaster NOTIFY MasterChanged)
 	Q_PROPERTY(qint32 SelectionSize READ GetSelectionSize WRITE SetSelectionSize NOTIFY SelectionSizeChanged)
 
@@ -130,7 +130,7 @@ private:
 	class ISemaphore * s; //tick semaphore with dmx
 
 	DmxManagerCore DmxManager;  //Create the dmx manager, we set at the initialisation the number of universes, this number can't be changed later
-	Artnode node; 
+	Artnode Node; 
 	DmxUniverse * Universe;
 #endif
 
@@ -138,14 +138,15 @@ private:
 	// 						COMSUMTION MODE		 					 
 	// ─────────────────────────────────────────────────────────────
 public:
+	double GetDimmerMultiplier() const;
 	/** \brief current consumption mode, used in the run frunction to multiply the dimmer of every fixtures */
-	ModeClass::EConsumptionMode GetComsumptionMode() const;
-	void SetComsumptionMode(const ModeClass::EConsumptionMode comsumptionMode);
+	qint32 GetModelMode() const;
+	void SetModelMode(qint32 comsumptionMode);
 signals:
-	void ComsumptionModeChanged(ModeClass::EConsumptionMode comsumptionMode);
+	void ModelModeChanged(qint32 comsumptionMode);
 private:
 	class SensorModel * Sensor;
-	ModeClass::EConsumptionMode ConsumptionMode;
+	qint32 ModelMode;
 	bool bProgrammerChanged;
 
 	// ─────────────────────────────────────────────────────────────
@@ -154,7 +155,7 @@ private:
 
 public:
 	/** 
-	 *\brief apply color from color picker to the current selection
+	 * \brief apply color from color picker to the current selection
 	 * \param angle 0 t 360 
 	 * \param white 0 t 1
 	 */

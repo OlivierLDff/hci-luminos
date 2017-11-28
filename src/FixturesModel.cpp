@@ -1,4 +1,5 @@
 #include <FixturesModel.hpp>
+#include <SensorModel.hpp>
 
 uint8_t Fixture::GetRed() const
 {
@@ -87,11 +88,11 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	t(CreateThread()),
 	s(CreateSemaphore(0, 1)),
 	DmxManager(1),
-	node(&DmxManager, GetWildcardNetworkAdapterV4(), false, false, EArtnodeMode_Controller),
+	Node(&DmxManager, GetWildcardNetworkAdapterV4(), false, false, EArtnodeMode_Controller),
 	Universe(DmxManager.GetDmxUniverse(1)),
 #endif
 	Sensor(sensor), //Link to sensor class
-	ConsumptionMode(ModeClass::EConsumptionMode_Eco),
+	ModelMode(ModeClass::EConsumptionMode_Eco),
 	bProgrammerChanged(false),
 	SelectionSize(0),
 	Master(1.f)
@@ -100,16 +101,16 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 #ifdef DMX_MANAGER_CORE
 
 	DmxManager.AddDmxCallback(this); //Add a listener to be updated every 25ms
-	node.SetBroadcastInNetwork(false); //broadcast to 255.255.255.255 to be sure information arrive to computer
-	node.AddPort(Universe, 0, EArtnetPortMode_OutputBroadcast); // universe 0 artnet is internal universe 1
-	node.ActivateOutput(); // activate the output
+	Node.SetBroadcastInNetwork(false); //broadcast to 255.255.255.255 to be sure information arrive to computer
+	Node.AddPort(Universe, 0, EArtnetPortMode_OutputBroadcast); // universe 0 artnet is internal universe 1
+	Node.ActivateOutput(); // activate the output
 
 #ifdef WIN32 //oliv : only for debug, this will be replace by a proper menu, on phone wildcard work well
 	NetworkAdapterV4 a = NetworkAdapterFromIpString("2.0.0.2");
-	node.SetNetworkAdapter(&a);
+	Node.SetNetworkAdapter(&a);
 #endif
 
-	node.Start(); //Start artnet
+	Node.Start(); //Start artnet
 	t->Start(this);
 #endif
 }
@@ -150,12 +151,12 @@ void FixturesModel::Run(IThreadArg* threadArg)
 		for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if (*it)
 		{
 			const Fixture * f = (*it);
-			Universe->SetChannel(f->GetAddress(), f->GetDimmer());
+			Universe->SetChannel(f->GetAddress(), f->GetDimmer()*GetDimmerMultiplier());
 			Universe->SetChannel(f->GetAddress() + 2, 14);
-			Universe->SetChannel(f->GetAddress()+3, f->GetRed());
-			Universe->SetChannel(f->GetAddress()+4, f->GetGreen());
-			Universe->SetChannel(f->GetAddress()+5, f->GetBlue());
-			Universe->SetChannel(f->GetAddress()+8, 0);
+			Universe->SetChannel(f->GetAddress() + 3, f->GetRed());
+			Universe->SetChannel(f->GetAddress() + 4, f->GetGreen());
+			Universe->SetChannel(f->GetAddress() + 5, f->GetBlue());
+			Universe->SetChannel(f->GetAddress() + 8, f->GetZoom());
 		}
 		Universe->ReleaseUniverseWrite();
 //_________________RELEASE THE UNIVERSE IN WRITE MODE_________________________
@@ -165,14 +166,27 @@ void FixturesModel::Run(IThreadArg* threadArg)
 }
 #endif
 
-ModeClass::EConsumptionMode FixturesModel::GetComsumptionMode() const
+double FixturesModel::GetDimmerMultiplier() const
 {
-	return ConsumptionMode;
+	switch(ModelMode)
+	{
+	case ModeClass::EConsumptionMode_Eco: return 0.5f;
+	case ModeClass::EConsumptionMode_Weather: return 1.f-Sensor->GetLux()/20000;
+	case ModeClass::EConsumptionMode_Full: return 1.f;
+	default: ;
+	}
+	return 1.f;
 }
 
-void FixturesModel::SetComsumptionMode(const ModeClass::EConsumptionMode comsumptionMode)
+qint32 FixturesModel::GetModelMode() const
 {
-	ConsumptionMode = comsumptionMode;
+	return ModelMode;
+}
+
+void FixturesModel::SetModelMode(qint32 comsumptionMode)
+{
+	ModelMode = comsumptionMode;
+	emit ModelModeChanged(comsumptionMode);
 }
 
 void FixturesModel::SetColorFromPicker(double angle, double white)
