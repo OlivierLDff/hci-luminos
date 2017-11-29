@@ -29,7 +29,10 @@ cmake_minimum_required(VERSION 2.8.12) #minimum version required by Qt (http://d
 # uninstall and install apk :
 # C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install build-android-debug.apk
 
-# C:/Users/olivi/AppData/Local/Android/Sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install ./build/output/apk/build-android-debug.apk
+# App :
+# C:/Users/olivi/AppData/Local/Android/Sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install ./build/outputs/apk/build-android-debug.apk
+# Backend :
+# C:/Users/olivi/AppData/Local/Android/Sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosBackendApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install ./build/outputs/apk/build-android-back-debug.apk
 
 
 # ┌──────────────────────────────────────────────────────────────────┐
