@@ -157,40 +157,40 @@ Set IOS_PLATFORM to OS to build for Device
 
 ### Main Control
 
-*[x] Color Picker Page
-     *[x] Color Picker in QML
-     *[x] Attribute R G B
-*[ ] Effect Page
-     *[ ] Pad
-     *[ ] Ramp
-     *[ ] Sin
-     *[ ] Color
-     *[ ] Random
-*[ ] Map Page
-     *[x] Selectable object
-     *[x] Select All button
-     *[x] Clear Selection
-     *[x] Resize create a new tab map
-     *[x] Select button
-          *[x] Background
-          *[x] Circle
-          *[x] Image full
-          *[x] not full
-          *[x] selected
-     *[x] Link fixture button to fixture color, how to handle white ?
-     *[x] GetFixtureColorWithAlpha
-     *[x] Dimmer per fixture
-     *[x] Deselect fixture after having done something and reselect-> bShouldDeselectAll
-*[ ] Settings Page
-     *[ ] Choose network adapter
-     *[ ] Find Network Adapter with friendly name
-     *[ ] Change
-*[x] C++ backend
-     *[x] 6 fixture rgb
-     *[x] Artnode Broadcast to 255.255.255.255 universe 1
-     *[x] Wyg plan
-     *[x] Change weather image
-     *[x] Change Lux/Temperature
-     *[x] Dimmer output react with lux
+* [x] Color Picker Page
+     * [x] Color Picker in QML
+     * [x] Attribute R G B
+* [x] Effect Page
+     * [x] Ramp
+     * [x] Sin
+     * [x] Color
+     * [x] Random
+* [ ] Map Page
+     * [x] Selectable object
+     * [x] Select All button
+     * [x] Clear Selection
+     * [x] Resize create a new tab map
+     * [x] Select button
+          * [x] Background
+          * [x] Circle
+          * [x] Image full
+          * [x] not full
+          * [x] selected
+     * [x] Link fixture button to fixture color, how to handle white ?
+     * [x] GetFixtureColorWithAlpha
+     * [x] Dimmer per fixture
+     * [x] Deselect fixture after having done something and reselect-> bShouldDeselectAll
+     * [ ] Pinch in and out
+* [ ] Settings Page
+     * [ ] Choose network adapter
+     * [ ] Find Network Adapter with friendly name
+     * [ ] Change
+* [x] C++ backend
+     * [x] 6 fixture rgb
+     * [x] Artnode Broadcast to 255.255.255.255 universe 1
+     * [x] Wyg plan
+     * [x] Change weather image
+     * [x] Change Lux/Temperature
+     * [x] Dimmer output react with lux
 
 
