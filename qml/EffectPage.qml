@@ -16,6 +16,9 @@ Pane
 			text:"Off"
 			Layout.fillWidth: true	
 			onClicked: FixturesModel.SetFx(FxType.None)
+			ToolTip.visible: hovered | down
+			ToolTip.delay: 1000
+			ToolTip.text: qsTr("Off effect on current selection")
 		}
 		GridLayout
 		{
@@ -39,6 +42,10 @@ Pane
 					source: "Wave"
 				}
 				onClicked: FixturesModel.SetFx(FxType.Lin)
+
+				ToolTip.visible: hovered | down
+				ToolTip.delay: 1000
+				ToolTip.text: qsTr("Linear down dimmer effect")
 			}
 			Button
 			{
@@ -53,6 +60,10 @@ Pane
 					source: "Level"
 				}
 				onClicked: FixturesModel.SetFx(FxType.Sin)
+
+				ToolTip.visible: hovered | down
+				ToolTip.delay: 1000
+				ToolTip.text: qsTr("Sinus dimmer effect")
 			}
 			Button
 			{
@@ -66,6 +77,9 @@ Pane
 					anchors.centerIn: parent
 					source: "Shuffle"
 				}
+				ToolTip.visible: hovered | down
+				ToolTip.delay: 1000
+				ToolTip.text: qsTr("Random dimmer effect")
 				onClicked: FixturesModel.SetFx(FxType.Random)
 			}
 			Button
@@ -80,6 +94,9 @@ Pane
 					anchors.centerIn: parent
 					source: "Rainbow"
 				}
+				ToolTip.visible: hovered | down
+				ToolTip.delay: 1000
+				ToolTip.text: qsTr("Rainbow color effect")
 				onClicked: FixturesModel.SetFx(FxType.Rainbow)
 			}
 		}

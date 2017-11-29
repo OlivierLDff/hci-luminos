@@ -48,12 +48,12 @@ Pane
 							id : weatherButton
 							text: "Weather"
 							checked: true
-							onClicked: 
-							{
-								console.log("mode : " + Mode.EConsumptionMode_Full)
-								FixturesModel.ModelMode = Mode.EConsumptionMode_Weather
-							}
+							onClicked: FixturesModel.ModelMode = Mode.EConsumptionMode_Weather
 							ButtonGroup.group: radioButtonGroup
+
+							ToolTip.visible: hovered | down
+							ToolTip.delay: 500
+							ToolTip.text: qsTr("The output dimmer will depend on the lux sensor")
 						}
 						RadioButton 
 						{
@@ -61,6 +61,9 @@ Pane
 							text: "Eco"
 							onClicked: FixturesModel.ModelMode = Mode.EConsumptionMode_Eco
 							ButtonGroup.group: radioButtonGroup
+							ToolTip.visible: hovered | down
+							ToolTip.delay: 500
+							ToolTip.text: qsTr("The output dimmer is divide by 2")
 						}
 						RadioButton 
 						{
@@ -68,6 +71,9 @@ Pane
 							text: "Full"
 							onClicked: FixturesModel.ModelMode = Mode.EConsumptionMode_Full
 							ButtonGroup.group: radioButtonGroup
+							ToolTip.visible: hovered | down
+							ToolTip.delay: 500
+							ToolTip.text: qsTr("The dimmer isn't affected")
 						}
 					}					
 				}
@@ -85,7 +91,12 @@ Pane
 					anchors.horizontalCenter: parent.horizontalCenter
 					orientation: Qt.Vertical
 					
-					value: 0//FixturesModel.Master
+					value: 0
+
+					ToolTip.visible: hovered
+					ToolTip.delay: 1000
+					ToolTip.text: qsTr("Change the dimmer of selection")
+
 					onValueChanged:
 					{
 						console.log("value is " + value)
@@ -93,7 +104,6 @@ Pane
 					}	
 					Component.onCompleted:
 					{
-						//console.log("Nested Completed Running!" + FixturesModel.Master )
 						master.value=FixturesModel.Master 
 					}
 				}			

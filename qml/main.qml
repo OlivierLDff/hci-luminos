@@ -50,6 +50,10 @@ ApplicationWindow
                     source: "select"
                 }
                 onClicked: FixturesModel.SelectAll();
+				
+				ToolTip.visible: hovered | down
+				ToolTip.delay: 500
+				ToolTip.text: qsTr("Select all fixtures")
 			}
 
 			ToolButton 
@@ -63,6 +67,9 @@ ApplicationWindow
                     source: "clear"
                 }
                 onClicked: FixturesModel.ClearSelection();
+				ToolTip.visible: hovered | down
+				ToolTip.delay: 500
+				ToolTip.text: qsTr("Clear the selection")
 			}
 
             ToolButton 

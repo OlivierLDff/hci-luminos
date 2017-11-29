@@ -165,7 +165,7 @@ Set IOS_PLATFORM to OS to build for Device
      * [x] Sin
      * [x] Color
      * [x] Random
-* [ ] Map Page
+* [x] Map Page
      * [x] Selectable object
      * [x] Select All button
      * [x] Clear Selection
@@ -180,7 +180,7 @@ Set IOS_PLATFORM to OS to build for Device
      * [x] GetFixtureColorWithAlpha
      * [x] Dimmer per fixture
      * [x] Deselect fixture after having done something and reselect-> bShouldDeselectAll
-     * [ ] Pinch in and out
+     * [x] Pinch in and out
 * [ ] Settings Page
      * [ ] Choose network adapter
      * [ ] Find Network Adapter with friendly name
