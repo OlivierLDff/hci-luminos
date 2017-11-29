@@ -78,9 +78,9 @@ Pane
 					var newW = initialWidth * pinch.scale
 					var newH = initialHeight * pinch.scale
 					var s = Math.min(flick.width, flick.height)
-					if(newW > 730) newW = 730
+					if(newW > 2000) newW = 2000
 					else if(newW<s) newW = s
-					if(newH > 730) newH = 730
+					if(newH > 2000) newH = 2000
 					else if(newH<s) newH = s
 					flick.resizeContent(newW, newH, pinch.center)
 				}
@@ -119,9 +119,6 @@ Pane
 						if(newH > 730) newH = 730
 						else if(newH<s) newH = s
 						flick.resizeContent(newW, newH, Qt.point(wheel.x, wheel.y))
-						/*restaurantMap.scale += restaurantMap.scale * wheel.angleDelta.y/1200;
-						if(restaurantMap.scale < 0.7) restaurantMap.scale = 0.7
-						else if(restaurantMap.scale > 1) restaurantMap.scale = 1*/
 						flick.returnToBounds()
 						console.log("contentWidth : " + flick.width)
 
@@ -131,9 +128,9 @@ Pane
 						console.log("double click : " + flick.contentWidth + " " + flick.width)
 						var s = Math.min(flick.width, flick.height)
 						if(flick.contentWidth === flick.width || flick.contentHeight === flick.height)
-							flick.resizeContent(730, 730, Qt.point(0, 0))
+							flick.resizeContent(730, 730, Qt.point(mouse.x, mouse.y))
 						else
-							flick.resizeContent(s,s, Qt.point(mouse.x, mouse.y))									
+							flick.resizeContent(s,s, Qt.point(mouse.x, mouse.y))						
 						flick.returnToBounds()
 					}
 				}

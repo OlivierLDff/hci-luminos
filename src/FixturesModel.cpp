@@ -283,7 +283,8 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 	int modulto = (int)(angle)/360;
 	angle -= modulto * 360;
 	white *= 255;
-	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if((*it) && (*it)->GetIsSelected())
+	const bool bAll = SelectionSize == 0;
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (bAll || (*it)->GetIsSelected()))
 	{
 		if ((*it)->GetFx() == FxType::Rainbow)
 			(*it)->SetFx(FxType::None);
@@ -340,7 +341,8 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 
 void FixturesModel::SetColor(QColor color)
 {
-	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (*it)->GetIsSelected())
+	const bool bAll = SelectionSize == 0;
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (bAll || (*it)->GetIsSelected()))
 	{
 		if ((*it)->GetFx() == FxType::Rainbow)
 			(*it)->SetFx(FxType::None);
@@ -422,8 +424,8 @@ void FixturesModel::SetSelectionSize(const qint32 selectionSize)
 
 void FixturesModel::SetMaster(const qreal value)
 {
-	const bool bAll = SelectionSize == 0;
 	bProgrammerChanged = true;
+	const bool bAll = SelectionSize == 0;
 	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (bAll || (*it)->GetIsSelected()))
 	{
 		if ((*it)->GetFx() != FxType::Rainbow || (*it)->GetFx() != FxType::None)
