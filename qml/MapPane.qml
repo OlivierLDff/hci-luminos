@@ -151,7 +151,13 @@ Pane
 						y: flick.contentHeight*model.y - height/2
 						onClicked: FixturesModel.SelectOrDeselectFixture(model.index)//console.log(model.index)
 					}
-				}		
+				}
+				/*Component.onCompleted:
+				{
+					var s = Math.min(flick.width, flick.height)
+					flick.resizeContent(s, s, Qt.point(0, 0))
+					flick.returnToBounds()
+				}*/
 			}	
 		}
 	}

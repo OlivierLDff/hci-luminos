@@ -4,7 +4,7 @@
 SensorModel::SensorModel(const bool bBackend, QObject* parent) : QObject(parent),
 WeatherImage("Sun"), 
 Temperature(20),
-Lux(15000),
+Lux(20000),
 bBackend(bBackend)
 #ifdef OOBJECT
 , UDPServer(this, ISocketFactory::CreateUDPSocket(BACKEND_PORT, BACKEND_PORT))
@@ -134,7 +134,7 @@ void SensorServer::Run(IThreadArg* threadArg)
 		SensorBackendPacket msg;
 		if (Parent->bBackend)
 		{
-			Sleep(40);
+			Sleep(100);
 			msg.Lux = Parent->GetLux();
 			msg.Temperature = Parent->GetTemperature();
 			msg.Weather = Parent->GetWeatherEnum();
