@@ -75,21 +75,15 @@ Page
 				{
 					Layout.fillWidth: true
 					model: FixturesModel.AdapterList
-					/*ListModel 
+					onCurrentIndexChanged:
 					{
-						id: model
-						ListElement { text: "Banana" }
-						ListElement { text: "Apple" }
-						ListElement { text: "Coconut" }
-					}*/
-					onAccepted:
-					{
-						if (find(editText) === -1)
-							model.append({text: editText})
+						console.debug("on accepted : " + currentIndex)
+						FixturesModel.ArtnetAdapterIndex = currentIndex
 					}
 					ToolTip.visible: hovered// | down
 					ToolTip.delay: 500
 					ToolTip.text: qsTr("Network adapter for Artnet")
+					currentIndex: FixturesModel.ArtnetAdapterIndex
 				}		
 			}	
 		}

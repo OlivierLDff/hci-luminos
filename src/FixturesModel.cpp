@@ -197,6 +197,7 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
 	for (size_t i = 0; i < list.size(); ++i)
 		AdapterList.append(QString::fromStdString(list[i].Ipv4ToString()));
+	AdapterList.append("0.0.0.0");
 	emit AdapterListChanged(AdapterList);
 
 	Node.Start(); //Start artnet
@@ -233,7 +234,12 @@ void FixturesModel::Run(IThreadArg* threadArg)
 {
 	s->Wait();
 	while (bIsRunning)
-	{
+	{	
+		if(adapterip != Node.GetNetworkAdapter().Ipv4ToString())
+		{
+			emit ArtnetAdapterIndexChanged(GetArtnetAdapterIndex());
+		}
+			
 //_________________PROTECT THE UNIVERSE IN WRITE MODE_________________________
 		Universe->ProtectUniverseWrite(); //Take MUTEX
 		//dmx tick here

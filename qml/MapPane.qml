@@ -10,46 +10,17 @@ Pane
 	{
 		title: qsTr("Restaurant")
 		anchors.fill: parent
-		/*Image
-		{
-			id: colorpickerim
-
-			//image attribute
-			//sourceSize.width: 128
-			//sourceSize.height: 128
-			fillMode: Image.PreserveAspectFit
-			source: "RestaurantMap"
-			anchors.fill: parent
-			//layout attribyte
-			Layout.alignment: Qt.AlignCenter
-		}*/
-		/*ListView 
-		{
-			//width: 200; height: 250
-			anchors.fill: parent
-			//model: FixturesModel
-			model: FixturesModel
-			delegate: Text 
-			{ 
-				text: ("fixture dimmer : " + dimmer )
-			}
-		}*/
 		Flickable
 		{
 			id: flick
-			//property real zoom: 0.5;
 			anchors.fill: parent
-			//width: parent.width
-			//height: parent.height
-			contentWidth: 730//*restaurantMap.scale
-			contentHeight: 730//*restaurantMap.scale
+			contentWidth: 730
+			contentHeight: 730
 			clip: true
 			ScrollIndicator.vertical: ScrollIndicator { }
 			ScrollIndicator.horizontal: ScrollIndicator { }
 			PinchArea 
 			{
-				//width: Math.max(flick.contentWidth, flick.width)
-				//height: Math.max(flick.contentHeight, flick.height)
 				anchors.fill:parent
 				pinch.target : restaurantMap
 
@@ -60,7 +31,6 @@ Pane
 				{
 					initialWidth = flick.contentWidth
 					initialHeight = flick.contentHeight
-					//console.log("pinch start")
 				}
 
 				onPinchUpdated: 
@@ -68,11 +38,6 @@ Pane
 					// adjust content pos due to drag
 					flick.contentX += pinch.previousCenter.x - pinch.center.x
 					flick.contentY += pinch.previousCenter.y - pinch.center.y
-
-					/*console.log("pinch.previousCenter.x : " + pinch.previousCenter.x + "pinch.previousCenter.y : " + pinch.previousCenter.y)
-					console.log("pinch.center.x : " + pinch.center.x + "pinch.center.y : " + pinch.center.y)
-					console.log("pinch.center.x : " + pinch.center.x + "pinch.center.y : " + pinch.center.y)
-					console.log("pinch.scale : " + pinch.scale)*/
 
 					// resize content
 					var newW = initialWidth * pinch.scale
@@ -84,16 +49,13 @@ Pane
 					else if(newH<s) newH = s
 					flick.resizeContent(newW, newH, pinch.center)
 				}
+
 				onPinchFinished: 
 				{
 					// Move its content within bounds.
 					flick.returnToBounds()
-					//console.log("pinch finished")
 				}
-				/*Rectangle
-				{
-					color: "trans"
-				}*/
+
 				Image 
 				{
 					id: restaurantMap
@@ -103,6 +65,7 @@ Pane
 					//Behavior on scale { PropertyAnimation {properties: "scale"; easing.type: Easing.InQuad } }
 					source: "RestaurantMap"
 				}
+
 				MouseArea 
 				{
 					anchors.fill: parent
@@ -134,6 +97,7 @@ Pane
 						flick.returnToBounds()
 					}
 				}
+
 				Repeater 
 				{
 					model: FixturesModel

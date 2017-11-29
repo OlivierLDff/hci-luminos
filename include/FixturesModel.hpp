@@ -140,6 +140,7 @@ class FixturesModel : public QAbstractListModel
 	Q_PROPERTY(qint32 SelectionSize READ GetSelectionSize WRITE SetSelectionSize NOTIFY SelectionSizeChanged)
 	Q_PROPERTY(bool ArtnetOutput READ GetArtnetOutput WRITE SetArtnetOutput NOTIFY ArtnetOutputChanged)
 	Q_PROPERTY(QStringList AdapterList READ GetAdapterList WRITE SetAdapterList NOTIFY AdapterListChanged)
+	Q_PROPERTY(qint32 ArtnetAdapterIndex READ GetArtnetAdapterIndex WRITE SetArtnetAdapterIndex NOTIFY ArtnetAdapterIndexChanged)
 
 	// ─────────────────────────────────────────────────────────────
 	// 					CONSTRUCTOR / DESTRUCTOR					 
@@ -241,6 +242,37 @@ signals:
 	void AdapterListChanged(QStringList value);
 private:
 	QStringList AdapterList;
+
+public:
+	qint32 GetArtnetAdapterIndex()
+	{
+		adapterip = Node.GetNetworkAdapter().Ipv4ToString();
+		std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+		for (size_t i = 0; i < list.size(); ++i)
+			if (adapterip == list[i].Ipv4ToString())
+				return (qint32)i;
+		return (qint32)list.size();
+	}
+
+	void SetArtnetAdapterIndex(const qint32 artnetAdapterIndex)
+	{
+		std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+		if(artnetAdapterIndex >= 0 && artnetAdapterIndex < list.size())
+		{
+			if (adapterip != list[artnetAdapterIndex].Ipv4ToString())
+				Node.SetNetworkAdapter(&list[artnetAdapterIndex]);
+		}
+		else
+		{
+			NetworkAdapterV4 a;
+			Node.SetNetworkAdapter(&a);
+		}
+		emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
+	}
+	std::string adapterip;
+signals:
+	void ArtnetAdapterIndexChanged(qint32 value);
+
 
 	// ─────────────────────────────────────────────────────────────
 	// 					    MODEL OVERRIDE 					 

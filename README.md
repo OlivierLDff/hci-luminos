@@ -185,6 +185,7 @@ Set IOS_PLATFORM to OS to build for Device
      * [ ] Choose network adapter
      * [ ] Find Network Adapter with friendly name
      * [ ] Change
+     * [ ] Emit network failure -> update network adapter static list
 * [x] C++ backend
      * [x] 6 fixture rgb
      * [x] Artnode Broadcast to 255.255.255.255 universe 1
