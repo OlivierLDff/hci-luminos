@@ -6,6 +6,9 @@
 #include <FixturesModel.hpp>
 #include <sstream>
 
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 SensorModel * Sensor;
 FixturesModel * FixturesManager;
 
@@ -31,6 +34,9 @@ int main(int argc, char *argv[])
 {
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(argc, argv);
+
+	/* initialize random seed: */
+	srand(time(NULL));
 
 	Sensor = new SensorModel(false); //Sensor model that leave in his own thread
 	FixturesManager = new FixturesModel(Sensor); //Fixture model also leave in his own thread

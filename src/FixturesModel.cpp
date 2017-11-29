@@ -81,6 +81,88 @@ void Fixture::SetY(const double y)
 	this->y = y;
 }
 
+void Fixture::ApplyFx()
+{
+	//fx_time + PI / 64.0;
+	switch(fx)
+	{
+	case FxType::None: break;
+	case FxType::Sin:
+		fxtime += 3.14 / 64;
+		//SetDimmer(GetDimmer());
+		//if (!(cooldown % 5))
+		{
+			Dimmer = int(127.5 + 127.5 * sin(fxtime) + 0.5); //int(127.5 + 127.5 * sin(fxtime + (Dimmer * 3.14f / 2.0)) + 0.5); // round to nearest
+		}
+		break;
+	case FxType::Lin: Dimmer -= 1; break;
+	case FxType::Random:
+		if(!(cooldown%10))
+		{
+			SetDimmer(rand() % 255);
+			if (Dimmer < 50)
+				Dimmer = 50;
+		}
+		break;
+	case FxType::Rainbow:
+		if (Blue == 0 && Red == 255 && Green < 255)
+			++Green;
+		else if (Blue == 0 && Green == 255 && Red > 0)
+			--Red;
+		else if (Red == 0 && Green == 255 && Blue < 255)
+			++Blue; 
+		else if (Red == 0 && Blue == 255 && Green > 0)
+			--Green;
+		if (Green == 0 && Blue == 255 && Red < 255)
+			++Red;
+		else if (Green == 0 && Red == 255 && Blue > 0)
+			--Blue;
+		break;
+	default: ;
+	}
+	++cooldown;
+}
+
+FxType::EFxType Fixture::GetFx() const
+{
+	return fx;
+}
+
+void Fixture::SetFx(const FxType::EFxType fx)
+{
+	this->fx = fx;
+	switch(fx)
+	{
+	case FxType::None: break;
+	case FxType::Sin:
+	case FxType::Lin:
+	case FxType::Random: Dimmer = rand() % 255; break;
+	case FxType::Rainbow:
+		switch (rand() % 3)
+		{
+		case 0:
+			Red = 255;
+			Green = rand() % 255;
+			Blue = 0;
+			break;
+		case 1:
+			Green = 255;
+			Blue = rand() % 255;
+			Red = 0;
+			break;
+		case 2:
+			Blue = 255;
+			Red = rand() % 255;
+			Green = 0;
+			break;
+		default:;
+		}	
+		
+		break;
+	default: ;
+	}
+}
+
 FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) : 
 	QAbstractListModel(parent), //Qt object
 #ifdef DMX_MANAGER_CORE
@@ -98,6 +180,7 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	Master(1.f)
 {
 	ModeClass::declareQML();
+	FxType::declareQML();
 #ifdef DMX_MANAGER_CORE
 
 	DmxManager.AddDmxCallback(this); //Add a listener to be updated every 25ms
@@ -150,7 +233,13 @@ void FixturesModel::Run(IThreadArg* threadArg)
 		//dmx tick here
 		for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if (*it)
 		{
-			const Fixture * f = (*it);
+			Fixture * f = (*it);
+			f->ApplyFx();
+			if(f->GetFx() != FxType::None)
+			{
+				const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
+				emit dataChanged(top, top);		
+			}
 			Universe->SetChannel(f->GetAddress(), f->GetDimmer()*GetDimmerMultiplier());
 			Universe->SetChannel(f->GetAddress() + 2, 14);
 			Universe->SetChannel(f->GetAddress() + 3, f->GetRed());
@@ -196,7 +285,8 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 	white *= 255;
 	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if((*it) && (*it)->GetIsSelected())
 	{
-		//(*it)->SetSelected(true);
+		if ((*it)->GetFx() == FxType::Rainbow)
+			(*it)->SetFx(FxType::None);
 		if(angle >= 0 && angle <= 120)
 		{
 			if (angle <= 60)
@@ -224,7 +314,6 @@ void FixturesModel::SetColorFromPicker(double angle, double white)
 			{
 				(*it)->SetRed(white);
 				(*it)->SetGreen(std::max(255 - (angle - 180) / 60 * 255, white));/*std::max(255 - (angle - 120) / 60 * 255*/
-				qInfo("%d)", (int)(255 - (angle - 180) / 60 * 255));
 				(*it)->SetBlue(255);
 			}
 		}
@@ -253,6 +342,8 @@ void FixturesModel::SetColor(QColor color)
 {
 	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (*it)->GetIsSelected())
 	{
+		if ((*it)->GetFx() == FxType::Rainbow)
+			(*it)->SetFx(FxType::None);
 		(*it)->SetRed(color.red());
 		(*it)->SetGreen(color.green());
 		(*it)->SetBlue(color.blue());
@@ -306,6 +397,18 @@ void FixturesModel::ClearSelection()
 	emit dataChanged(top, bottom);
 }
 
+void FixturesModel::SetFx(const int fx)
+{
+	const bool bAll = SelectionSize == 0;
+	bProgrammerChanged = true;
+	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (bAll || (*it)->GetIsSelected()))
+	{
+		(*it)->SetFx((FxType::EFxType)fx);
+		const QModelIndex top = createIndex(it - Fixtures.begin(), 0); //not efficiant
+		emit dataChanged(top, top);
+	}
+}
+
 qint32 FixturesModel::GetSelectionSize() const
 {
 	return SelectionSize;
@@ -323,6 +426,8 @@ void FixturesModel::SetMaster(const qreal value)
 	bProgrammerChanged = true;
 	for (std::vector<Fixture *>::iterator it = Fixtures.begin(); it != Fixtures.end(); ++it) if ((*it) && (bAll || (*it)->GetIsSelected()))
 	{
+		if ((*it)->GetFx() != FxType::Rainbow || (*it)->GetFx() != FxType::None)
+			(*it)->SetFx(FxType::None);
 		(*it)->SetDimmer(value * 255);	
 	}
 	const QModelIndex top = createIndex(0, 0);

@@ -39,10 +39,34 @@ public:
 	}
 };
 
+class FxType : public QObject
+{
+	Q_OBJECT
+public:
+	// Default constructor, required for classes you expose to QML.
+	FxType() : QObject() {}
+
+		enum EFxType
+	{
+		None,
+		Sin,
+		Lin,
+		Random,
+		Rainbow,
+	};
+	Q_ENUMS(EFxType) //Declare the enum
+
+					 // Must be called only ONCE!!!
+		static void declareQML()
+	{
+		qmlRegisterType<FxType>("LuminosModel", 1, 0, "FxType");
+	}
+};
+
 class Fixture : public QObject
 {
 public:
-	Fixture(const uint16_t addr, const double x, const double y, QObject * parent = nullptr) : QObject(parent), Red(255), Green(0), Blue(0), Dimmer(0), Address(addr), bSelected(false), x(x), y(y) {}
+	Fixture(const uint16_t addr, const double x, const double y, QObject * parent = nullptr) : QObject(parent), cooldown(0), fxtime(0), Red(255), Green(0), Blue(0), Dimmer(0), Address(addr), bSelected(false), x(x), y(y), fx(FxType::None) {}
 	~Fixture() {}
 
 	uint8_t GetRed() const;
@@ -69,6 +93,13 @@ public:
 	double GetY() const;
 	void SetY(const double y);
 
+	void ApplyFx();
+	int cooldown;
+	double fxtime;
+
+	FxType::EFxType GetFx() const;
+	void SetFx(const FxType::EFxType fx);
+
 	static uint8_t GetZoom() { return 0; } //yolo yolo
 
 private:
@@ -88,6 +119,7 @@ private:
 	double x;
 	/** \brief y position on the map */
 	double y;
+	FxType::EFxType fx;
 };
 
 //#define NUMBER_OF_FIXTURE
@@ -166,7 +198,8 @@ public:
 	/** \brief select all fixtures */
 	Q_INVOKABLE void SelectAll();
 	/** \brief clear selection */
-	Q_INVOKABLE void ClearSelection();	
+	Q_INVOKABLE void ClearSelection();
+	Q_INVOKABLE void SetFx(const int fx);
 
 	qint32 GetSelectionSize() const;
 	void SetSelectionSize(const qint32 selectionSize);
