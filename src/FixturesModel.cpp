@@ -178,6 +178,7 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	bProgrammerChanged(false),
 	SelectionSize(0),
 	Master(1.f)
+	//, AdapterList(new QStringList())
 {
 	ModeClass::declareQML();
 	FxType::declareQML();
@@ -193,8 +194,13 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	Node.SetNetworkAdapter(&a);
 #endif
 
+	std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+	for (size_t i = 0; i < list.size(); ++i)
+		AdapterList.append(QString::fromStdString(list[i].Ipv4ToString()));
+	emit AdapterListChanged(AdapterList);
+
 	Node.Start(); //Start artnet
-	t->Start(this);
+	t->Start(this); //Start application thread that handle dmx data and update fx
 #endif
 }
 
@@ -438,6 +444,13 @@ void FixturesModel::SetMaster(const qreal value)
 	emit dataChanged(top, bottom);
 	//emit layoutChanged(); //way to heavy
 	emit MasterChanged(value);
+}
+
+void FixturesModel::SetArtnetOutput(const bool value)
+{
+	if (value) Node.ActivateOutput();
+	else Node.DeactivateOutput();
+	emit ArtnetOutputChanged(value);
 }
 
 void FixturesModel::AddFixture(const uint16_t address, const double x, const double y)

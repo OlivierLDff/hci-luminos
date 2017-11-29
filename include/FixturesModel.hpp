@@ -138,6 +138,8 @@ class FixturesModel : public QAbstractListModel
 	Q_PROPERTY(qint32 ModelMode READ GetModelMode WRITE SetModelMode NOTIFY ModelModeChanged)
 	Q_PROPERTY(qreal Master READ GetMaster WRITE SetMaster NOTIFY MasterChanged)
 	Q_PROPERTY(qint32 SelectionSize READ GetSelectionSize WRITE SetSelectionSize NOTIFY SelectionSizeChanged)
+	Q_PROPERTY(bool ArtnetOutput READ GetArtnetOutput WRITE SetArtnetOutput NOTIFY ArtnetOutputChanged)
+	Q_PROPERTY(QStringList AdapterList READ GetAdapterList WRITE SetAdapterList NOTIFY AdapterListChanged)
 
 	// ─────────────────────────────────────────────────────────────
 	// 					CONSTRUCTOR / DESTRUCTOR					 
@@ -205,9 +207,12 @@ public:
 	void SetSelectionSize(const qint32 selectionSize);
 	qreal GetMaster() const { return Master; }
 	void SetMaster(qreal comsumptionMode);
+	bool GetArtnetOutput() const { return Node.IsOutputActive(); }
+	void SetArtnetOutput(const bool value);
 signals:
 	void MasterChanged(qreal master);
 	void SelectionSizeChanged(qint32 n);
+	void ArtnetOutputChanged(bool value);
 private:
 	qint32 SelectionSize;
 	qreal Master;
@@ -215,6 +220,27 @@ private:
 private:
 	/** \brief Array that contain every fixture to be displayed inside the map */
 	std::vector<Fixture *> Fixtures;
+
+	// ─────────────────────────────────────────────────────────────
+	// 					 NETWORK ADAPTER MODEL		 
+	// ─────────────────────────────────────────────────────────────
+
+
+public:
+	QStringList GetAdapterList() const
+	{
+		return AdapterList;
+	}
+
+	void SetAdapterList(const QStringList& adapterList)
+	{
+		AdapterList = adapterList;
+		emit AdapterListChanged(adapterList);
+	}	
+signals:
+	void AdapterListChanged(QStringList value);
+private:
+	QStringList AdapterList;
 
 	// ─────────────────────────────────────────────────────────────
 	// 					    MODEL OVERRIDE 					 

@@ -58,7 +58,7 @@ Page
 				Layout.fillWidth: true
 				text: "Artnet Output"
 				checked: true
-				onCheckedChanged: LuminosModel.ArtnetOutput = checked
+				onCheckedChanged: FixturesModel.ArtnetOutput = checked
 				ToolTip.visible: hovered | down
 				ToolTip.delay: 500
 				ToolTip.text: qsTr("Switch Artnet output")
@@ -74,19 +74,20 @@ Page
 				ComboBox 
 				{
 					Layout.fillWidth: true
-					model: ListModel 
+					model: FixturesModel.AdapterList
+					/*ListModel 
 					{
 						id: model
 						ListElement { text: "Banana" }
 						ListElement { text: "Apple" }
 						ListElement { text: "Coconut" }
-					}
+					}*/
 					onAccepted:
 					{
 						if (find(editText) === -1)
 							model.append({text: editText})
 					}
-					ToolTip.visible: hovered | down
+					ToolTip.visible: hovered// | down
 					ToolTip.delay: 500
 					ToolTip.text: qsTr("Network adapter for Artnet")
 				}		
