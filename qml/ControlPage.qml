@@ -54,7 +54,7 @@ Page
 			swipeView.removePage(mapPane);
 	}
 
-	MapPane
+	SmallMapPane
 	{
 		id : mapPane
 		visible: false

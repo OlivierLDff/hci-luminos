@@ -9,13 +9,16 @@
       <file>WeatherWidget.qml</file>
 	  <!-- COLOR PAGE -->
     <file>ColorPage.qml</file>
-	    <file>ColorPicker.qml</file>
+	  <file>ColorPicker.qml</file>
 	  <!-- EFFECT PAGE -->
     <file>EffectPage.qml</file>
-    
+	  <!-- MAP PAGE -->
 	  <file>MapPane.qml</file>
+	  <file>SmallMapPane.qml</file>
     <file>FixtureButton.qml</file>
-
-    <file>MainBackend.qml</file> 	  
-	</qresource>
+	  <!-- BACKEND PAGE -->
+    <file>MainBackend.qml</file>
+    <!-- SETTINGS PAGE -->
+	  <file>Settings.qml</file>
+  </qresource>
 </RCC>
