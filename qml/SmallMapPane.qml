@@ -24,14 +24,9 @@ ColumnLayout
 
 		value: 1
 
-		ToolTip.visible: hovered
-		ToolTip.delay: 1000
-		ToolTip.text: qsTr("Change the dimmer of selection")
+		ToolTip.visible: pressed
+		ToolTip.text: Math.floor(value*100)
 
-		onValueChanged:
-		{
-			console.log("value is " + value)
-			FixturesModel.Master = value
-		}	
+		onValueChanged: FixturesModel.Master = value
 	}
 }

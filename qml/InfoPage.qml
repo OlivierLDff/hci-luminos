@@ -51,7 +51,7 @@ Pane
 							onClicked: FixturesModel.ModelMode = Mode.EConsumptionMode_Weather
 							ButtonGroup.group: radioButtonGroup
 
-							ToolTip.visible: hovered | down
+							ToolTip.visible: hovered | pressed
 							ToolTip.delay: 500
 							ToolTip.text: qsTr("The output dimmer will depend on the lux sensor")
 						}
@@ -61,7 +61,7 @@ Pane
 							text: "Eco"
 							onClicked: FixturesModel.ModelMode = Mode.EConsumptionMode_Eco
 							ButtonGroup.group: radioButtonGroup
-							ToolTip.visible: hovered | down
+							ToolTip.visible: hovered | pressed
 							ToolTip.delay: 500
 							ToolTip.text: qsTr("The output dimmer is divide by 2")
 						}
@@ -71,7 +71,7 @@ Pane
 							text: "Full"
 							onClicked: FixturesModel.ModelMode = Mode.EConsumptionMode_Full
 							ButtonGroup.group: radioButtonGroup
-							ToolTip.visible: hovered | down
+							ToolTip.visible: hovered | pressed
 							ToolTip.delay: 500
 							ToolTip.text: qsTr("The dimmer isn't affected")
 						}
@@ -91,21 +91,12 @@ Pane
 					anchors.horizontalCenter: parent.horizontalCenter
 					orientation: Qt.Vertical
 					
-					value: 0
+					value: 1
 
-					ToolTip.visible: hovered
-					ToolTip.delay: 1000
-					ToolTip.text: qsTr("Change the dimmer of selection")
+					ToolTip.visible: pressed
+					ToolTip.text: Math.floor(value*100)
 
-					onValueChanged:
-					{
-						console.log("value is " + value)
-						FixturesModel.Master = value
-					}	
-					Component.onCompleted:
-					{
-						master.value=FixturesModel.Master 
-					}
+					onValueChanged: FixturesModel.Master = value
 				}			
 			}				
 		}

@@ -181,11 +181,9 @@ Set IOS_PLATFORM to OS to build for Device
      * [x] Dimmer per fixture
      * [x] Deselect fixture after having done something and reselect-> bShouldDeselectAll
      * [x] Pinch in and out
-* [ ] Settings Page
-     * [ ] Choose network adapter
-     * [ ] Find Network Adapter with friendly name
-     * [ ] Change
-     * [ ] Emit network failure -> update network adapter static list
+* [x] Settings Page
+     * [x] Choose network adapter
+     * [x] Find Network Adapter with friendly name
 * [x] C++ backend
      * [x] 6 fixture rgb
      * [x] Artnode Broadcast to 255.255.255.255 universe 1
