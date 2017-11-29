@@ -141,6 +141,7 @@ class FixturesModel : public QAbstractListModel
 	Q_PROPERTY(bool ArtnetOutput READ GetArtnetOutput WRITE SetArtnetOutput NOTIFY ArtnetOutputChanged)
 	Q_PROPERTY(QStringList AdapterList READ GetAdapterList WRITE SetAdapterList NOTIFY AdapterListChanged)
 	Q_PROPERTY(qint32 ArtnetAdapterIndex READ GetArtnetAdapterIndex WRITE SetArtnetAdapterIndex NOTIFY ArtnetAdapterIndexChanged)
+	Q_PROPERTY(qint32 EcoMultiplier READ GetEcoMultiplier WRITE SetEcoMultiplier NOTIFY EcoMultiplierChanged)
 
 	// ─────────────────────────────────────────────────────────────
 	// 					CONSTRUCTOR / DESTRUCTOR					 
@@ -177,12 +178,18 @@ public:
 	/** \brief current consumption mode, used in the run frunction to multiply the dimmer of every fixtures */
 	qint32 GetModelMode() const;
 	void SetModelMode(qint32 comsumptionMode);
+
+	qint32 GetEcoMultiplier() const;
+	void SetEcoMultiplier(const qint32 ecoMultiplier);
+
 signals:
 	void ModelModeChanged(qint32 comsumptionMode);
+	void EcoMultiplierChanged(qint32 value);
 private:
 	class SensorModel * Sensor;
 	qint32 ModelMode;
 	bool bProgrammerChanged;
+	qint32 EcoMultiplier;
 
 	// ─────────────────────────────────────────────────────────────
 	// 						FIXTURE MODEL	 					 
@@ -233,45 +240,19 @@ public:
 		return AdapterList;
 	}
 
-	void SetAdapterList(const QStringList& adapterList)
-	{
-		AdapterList = adapterList;
-		emit AdapterListChanged(adapterList);
-	}	
+	void SetAdapterList(const QStringList& adapterList);
 signals:
 	void AdapterListChanged(QStringList value);
 private:
 	QStringList AdapterList;
 
 public:
-	qint32 GetArtnetAdapterIndex()
-	{
-		adapterip = Node.GetNetworkAdapter().Ipv4ToString();
-		std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
-		for (size_t i = 0; i < list.size(); ++i)
-			if (adapterip == list[i].Ipv4ToString())
-				return (qint32)i;
-		return (qint32)list.size();
-	}
-
-	void SetArtnetAdapterIndex(const qint32 artnetAdapterIndex)
-	{
-		std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
-		if(artnetAdapterIndex >= 0 && artnetAdapterIndex < list.size())
-		{
-			if (adapterip != list[artnetAdapterIndex].Ipv4ToString())
-				Node.SetNetworkAdapter(&list[artnetAdapterIndex]);
-		}
-		else
-		{
-			NetworkAdapterV4 a;
-			Node.SetNetworkAdapter(&a);
-		}
-		emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
-	}
-	std::string adapterip;
+	qint32 GetArtnetAdapterIndex();
+	void SetArtnetAdapterIndex(const qint32 artnetAdapterIndex);
 signals:
 	void ArtnetAdapterIndexChanged(qint32 value);
+private:
+	std::string AdapterIp;
 
 
 	// ─────────────────────────────────────────────────────────────

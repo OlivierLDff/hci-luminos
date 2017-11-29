@@ -235,10 +235,8 @@ void FixturesModel::Run(IThreadArg* threadArg)
 	s->Wait();
 	while (bIsRunning)
 	{	
-		if(adapterip != Node.GetNetworkAdapter().Ipv4ToString())
-		{
-			emit ArtnetAdapterIndexChanged(GetArtnetAdapterIndex());
-		}
+		if(AdapterIp != Node.GetNetworkAdapter().Ipv4ToString())
+			emit ArtnetAdapterIndexChanged(GetArtnetAdapterIndex()); //check network deconnection
 			
 //_________________PROTECT THE UNIVERSE IN WRITE MODE_________________________
 		Universe->ProtectUniverseWrite(); //Take MUTEX
@@ -271,7 +269,7 @@ double FixturesModel::GetDimmerMultiplier() const
 {
 	switch(ModelMode)
 	{
-	case ModeClass::EConsumptionMode_Eco: return 0.5f;
+	case ModeClass::EConsumptionMode_Eco: return ((double)EcoMultiplier)/100.f;
 	case ModeClass::EConsumptionMode_Weather: return 1.f-Sensor->GetLux()/20000;
 	case ModeClass::EConsumptionMode_Full: return 1.f;
 	default: ;
@@ -288,6 +286,16 @@ void FixturesModel::SetModelMode(qint32 comsumptionMode)
 {
 	ModelMode = comsumptionMode;
 	emit ModelModeChanged(comsumptionMode);
+}
+
+qint32 FixturesModel::GetEcoMultiplier() const
+{
+	return EcoMultiplier;
+}
+
+void FixturesModel::SetEcoMultiplier(const qint32 ecoMultiplier)
+{
+	EcoMultiplier = ecoMultiplier;
 }
 
 void FixturesModel::SetColorFromPicker(double angle, double white)
@@ -457,6 +465,38 @@ void FixturesModel::SetArtnetOutput(const bool value)
 	if (value) Node.ActivateOutput();
 	else Node.DeactivateOutput();
 	emit ArtnetOutputChanged(value);
+}
+
+void FixturesModel::SetAdapterList(const QStringList& adapterList)
+{
+	AdapterList = adapterList;
+	emit AdapterListChanged(adapterList);
+}
+
+qint32 FixturesModel::GetArtnetAdapterIndex()
+{
+	AdapterIp = Node.GetNetworkAdapter().Ipv4ToString();
+	std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+	for (size_t i = 0; i < list.size(); ++i)
+		if (AdapterIp == list[i].Ipv4ToString())
+			return (qint32)i;
+	return (qint32)list.size();
+}
+
+void FixturesModel::SetArtnetAdapterIndex(const qint32 artnetAdapterIndex)
+{
+	std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+	if (artnetAdapterIndex >= 0 && artnetAdapterIndex < list.size())
+	{
+		if (AdapterIp != list[artnetAdapterIndex].Ipv4ToString())
+			Node.SetNetworkAdapter(&list[artnetAdapterIndex]);
+	}
+	else
+	{
+		NetworkAdapterV4 a;
+		Node.SetNetworkAdapter(&a);
+	}
+	emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
 }
 
 void FixturesModel::AddFixture(const uint16_t address, const double x, const double y)

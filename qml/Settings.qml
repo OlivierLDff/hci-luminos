@@ -51,6 +51,7 @@ Page
 	
 		ColumnLayout 
 		{
+			id: layout
 			anchors.right: parent.right
 			anchors.left: parent.left
 			SwitchDelegate 
@@ -85,7 +86,40 @@ Page
 					ToolTip.text: qsTr("Network adapter for Artnet")
 					currentIndex: FixturesModel.ArtnetAdapterIndex
 				}		
-			}	
+			}
+			MenuSeparator 
+			{
+				padding: 0
+				topPadding: 12
+				bottomPadding: 12
+				Layout.fillWidth: true
+				contentItem: Rectangle 
+				{
+					//implicitWidth: layout.width
+					implicitHeight: 1
+					
+					color: "#1E000000"
+				}
+			}
+			RowLayout
+			{
+				spacing : 10
+				Layout.fillWidth: true
+				Label
+				{
+					text: "Economic %"
+				}
+				SpinBox 
+				{
+					id: box
+					value: 50
+					to: 100
+					from: 0
+					//anchors.horizontalCenter: parent.horizontalCenter
+					editable: true
+					onValueChanged: FixturesModel.EcoMultiplier = value
+				}
+			}
 		}
 	}
 }
