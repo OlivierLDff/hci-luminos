@@ -51,13 +51,16 @@ Pane
 				//width: Math.max(flick.contentWidth, flick.width)
 				//height: Math.max(flick.contentHeight, flick.height)
 				anchors.fill:parent
+				pinch.target : restaurantMap
 
 				property real initialWidth
 				property real initialHeight
+
 				onPinchStarted: 
 				{
 					initialWidth = flick.contentWidth
 					initialHeight = flick.contentHeight
+					//console.log("pinch start")
 				}
 
 				onPinchUpdated: 
@@ -66,73 +69,93 @@ Pane
 					flick.contentX += pinch.previousCenter.x - pinch.center.x
 					flick.contentY += pinch.previousCenter.y - pinch.center.y
 
+					/*console.log("pinch.previousCenter.x : " + pinch.previousCenter.x + "pinch.previousCenter.y : " + pinch.previousCenter.y)
+					console.log("pinch.center.x : " + pinch.center.x + "pinch.center.y : " + pinch.center.y)
+					console.log("pinch.center.x : " + pinch.center.x + "pinch.center.y : " + pinch.center.y)
+					console.log("pinch.scale : " + pinch.scale)*/
+
 					// resize content
-					flick.resizeContent(initialWidth * pinch.scale, initialHeight * pinch.scale, pinch.center)
+					var newW = initialWidth * pinch.scale
+					var newH = initialHeight * pinch.scale
+					var s = Math.min(flick.width, flick.height)
+					if(newW > 730) newW = 730
+					else if(newW<s) newW = s
+					if(newH > 730) newH = 730
+					else if(newH<s) newH = s
+					flick.resizeContent(newW, newH, pinch.center)
 				}
 				onPinchFinished: 
 				{
 					// Move its content within bounds.
 					flick.returnToBounds()
+					//console.log("pinch finished")
 				}
-			}
-			MouseArea 
-			{
-				anchors.fill: parent
-				width: Math.max(flick.contentWidth, flick.width)
-				height: Math.max(flick.contentHeight, flick.height)
-				//onClicked:// console.log(flick.contentX)
-				onWheel: 
+				/*Rectangle
 				{
-					flick.resizeContent(flick.contentWidth + wheel.angleDelta.y/2, flick.contentHeight + wheel.angleDelta.y/2, Qt.point(wheel.x, wheel.y))
-					/*restaurantMap.scale += restaurantMap.scale * wheel.angleDelta.y/1200;
-					if(restaurantMap.scale < 0.7) restaurantMap.scale = 0.7
-					else if(restaurantMap.scale > 1) restaurantMap.scale = 1*/
-					flick.returnToBounds()
-					//console.log("contentWidth : " + flick.contentWidth)
-
-                }
-            }
-			Image 
-			{
-				id: restaurantMap
-				anchors.fill: parent
-				//Behavior on scale { PropertyAnimation {properties: "scale"; easing.type: Easing.InQuad } }
-				source: "RestaurantMap"
-            }
-			/*Slider
-			{
-				id: slid
-				x: flick.contentWidth*0.2
-				y: flick.contentHeight*0.35
-			}
-			FixtureButton
-			{
-				property real xPos: 0.3
-				property real yPos: 0.3
-				dim : slid.value
-				scale : flick.contentWidth/730
-
-				x: flick.contentWidth*xPos - width/2
-				y: flick.contentHeight*yPos - height/2
-			}*/
-			Repeater 
-			{
-				model: FixturesModel
-				FixtureButton
+					color: "trans"
+				}*/
+				Image 
 				{
-					dim : model.dimmer/255
-					scale : flick.contentWidth/730
-					selected: model.selected
-
-					color: model.color 
-					colorBack1: model.colorBack1
-					colorBack2: model.colorBack2
-
-					x: flick.contentWidth*model.x - width/2
-					y: flick.contentHeight*model.y - height/2
-					onClicked: FixturesModel.SelectOrDeselectFixture(model.index)//console.log(model.index)
+					id: restaurantMap
+					//anchors.fill: parent
+					width: flick.contentWidth
+					height: flick.contentHeight
+					//Behavior on scale { PropertyAnimation {properties: "scale"; easing.type: Easing.InQuad } }
+					source: "RestaurantMap"
 				}
-			}
+				MouseArea 
+				{
+					anchors.fill: parent
+					width: Math.max(flick.contentWidth, flick.width)
+					height: Math.max(flick.contentHeight, flick.height)
+					//onClicked:// console.log(flick.contentX)
+					onWheel: 
+					{
+						var newW = flick.contentWidth + wheel.angleDelta.y/2
+						var newH = flick.contentHeight + wheel.angleDelta.y/2
+						var s = Math.min(flick.width, flick.height)
+						if(newW > 730) newW = 730
+						else if(newW<s) newW = s
+						if(newH > 730) newH = 730
+						else if(newH<s) newH = s
+						flick.resizeContent(newW, newH, Qt.point(wheel.x, wheel.y))
+						/*restaurantMap.scale += restaurantMap.scale * wheel.angleDelta.y/1200;
+						if(restaurantMap.scale < 0.7) restaurantMap.scale = 0.7
+						else if(restaurantMap.scale > 1) restaurantMap.scale = 1*/
+						flick.returnToBounds()
+						console.log("contentWidth : " + flick.width)
+
+					}
+					onDoubleClicked:
+					{
+						console.log("double click : " + flick.contentWidth + " " + flick.width)
+						var s = Math.min(flick.width, flick.height)
+						if(flick.contentWidth === flick.width || flick.contentHeight === flick.height)
+							flick.resizeContent(730, 730, Qt.point(0, 0))
+						else
+							flick.resizeContent(s,s, Qt.point(mouse.x, mouse.y))									
+						flick.returnToBounds()
+					}
+				}
+				Repeater 
+				{
+					model: FixturesModel
+					FixtureButton
+					{
+						dim : model.dimmer/255
+						scale : flick.contentWidth/730
+						selected: model.selected
+
+						color: model.color 
+						colorBack1: model.colorBack1
+						colorBack2: model.colorBack2
+
+						x: flick.contentWidth*model.x - width/2
+						y: flick.contentHeight*model.y - height/2
+						onClicked: FixturesModel.SelectOrDeselectFixture(model.index)//console.log(model.index)
+					}
+				}		
+			}	
 		}
 	}
 }
