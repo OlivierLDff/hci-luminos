@@ -43,7 +43,7 @@ Pane
 				}
 				onClicked: FixturesModel.SetFx(FxType.Lin)
 
-				ToolTip.visible: hovered | down
+				ToolTip.visible: hovered | pressed
 				ToolTip.delay: 1000
 				ToolTip.text: qsTr("Linear down dimmer effect")
 			}
@@ -61,7 +61,7 @@ Pane
 				}
 				onClicked: FixturesModel.SetFx(FxType.Sin)
 
-				ToolTip.visible: hovered | down
+				ToolTip.visible: hovered | pressed
 				ToolTip.delay: 1000
 				ToolTip.text: qsTr("Sinus dimmer effect")
 			}
@@ -77,7 +77,7 @@ Pane
 					anchors.centerIn: parent
 					source: "Shuffle"
 				}
-				ToolTip.visible: hovered | down
+				ToolTip.visible: hovered | pressed
 				ToolTip.delay: 1000
 				ToolTip.text: qsTr("Random dimmer effect")
 				onClicked: FixturesModel.SetFx(FxType.Random)
@@ -94,8 +94,8 @@ Pane
 					anchors.centerIn: parent
 					source: "Rainbow"
 				}
-				ToolTip.visible: hovered | down
-				ToolTip.delay: 1000
+				ToolTip.visible: hovered | pressed
+				//ToolTip.delay: 1000
 				ToolTip.text: qsTr("Rainbow color effect")
 				onClicked: FixturesModel.SetFx(FxType.Rainbow)
 			}

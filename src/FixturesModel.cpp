@@ -235,10 +235,8 @@ void FixturesModel::Run(IThreadArg* threadArg)
 	s->Wait();
 	while (bIsRunning)
 	{	
-		if(adapterip != Node.GetNetworkAdapter().Ipv4ToString())
-		{
-			emit ArtnetAdapterIndexChanged(GetArtnetAdapterIndex());
-		}
+		if(AdapterIp != Node.GetNetworkAdapter().Ipv4ToString())
+			emit ArtnetAdapterIndexChanged(GetArtnetAdapterIndex()); //check network deconnection
 			
 //_________________PROTECT THE UNIVERSE IN WRITE MODE_________________________
 		Universe->ProtectUniverseWrite(); //Take MUTEX
@@ -271,7 +269,7 @@ double FixturesModel::GetDimmerMultiplier() const
 {
 	switch(ModelMode)
 	{
-	case ModeClass::EConsumptionMode_Eco: return 0.5f;
+	case ModeClass::EConsumptionMode_Eco: return ((double)EcoMultiplier)/100.f;
 	case ModeClass::EConsumptionMode_Weather: return 1.f-Sensor->GetLux()/20000;
 	case ModeClass::EConsumptionMode_Full: return 1.f;
 	default: ;
@@ -288,6 +286,16 @@ void FixturesModel::SetModelMode(qint32 comsumptionMode)
 {
 	ModelMode = comsumptionMode;
 	emit ModelModeChanged(comsumptionMode);
+}
+
+qint32 FixturesModel::GetEcoMultiplier() const
+{
+	return EcoMultiplier;
+}
+
+void FixturesModel::SetEcoMultiplier(const qint32 ecoMultiplier)
+{
+	EcoMultiplier = ecoMultiplier;
 }
 
 void FixturesModel::SetColorFromPicker(double angle, double white)
@@ -457,6 +465,12 @@ void FixturesModel::SetArtnetOutput(const bool value)
 	if (value) Node.ActivateOutput();
 	else Node.DeactivateOutput();
 	emit ArtnetOutputChanged(value);
+}
+
+void FixturesModel::SetAdapterList(const QStringList& adapterList)
+{
+	AdapterList = adapterList;
+	emit AdapterListChanged(adapterList);
 }
 
 void FixturesModel::AddFixture(const uint16_t address, const double x, const double y)
