@@ -260,14 +260,17 @@ public:
 		if(artnetAdapterIndex >= 0 && artnetAdapterIndex < list.size())
 		{
 			if (adapterip != list[artnetAdapterIndex].Ipv4ToString())
+			{
 				Node.SetNetworkAdapter(&list[artnetAdapterIndex]);
+				emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
+			}			
 		}
 		else
 		{
 			NetworkAdapterV4 a;
 			Node.SetNetworkAdapter(&a);
+			emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
 		}
-		emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
 	}
 	std::string adapterip;
 signals:
