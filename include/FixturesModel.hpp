@@ -66,7 +66,7 @@ public:
 class Fixture : public QObject
 {
 public:
-	Fixture(const uint16_t addr, const double x, const double y, QObject * parent = nullptr) : QObject(parent), cooldown(0), fxtime(0), Red(255), Green(0), Blue(0), Dimmer(0), Address(addr), bSelected(false), x(x), y(y), fx(FxType::None) {}
+	Fixture(const uint16_t addr, const double x, const double y, QObject * parent = nullptr) : QObject(parent), cooldown(0), fxtime(0), Red(255), Green(200), Blue(150), Dimmer(255), Address(addr), bSelected(false), x(x), y(y), fx(FxType::None) {}
 	~Fixture() {}
 
 	uint8_t GetRed() const;

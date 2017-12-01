@@ -107,22 +107,15 @@ Page
         width: Math.min(window.width, window.height) / 3 * 2
         contentHeight: aboutColumn.height
 
-        Column {
+        Column 
+		{
             id: aboutColumn
             spacing: 20
 
-            Label {
+            Label 
+			{
                 width: aboutDialog.availableWidth
-                text: "The Qt Quick Controls 2 module delivers the next generation user interface controls based on Qt Quick."
-                wrapMode: Label.Wrap
-                font.pixelSize: 12
-            }
-
-            Label {
-                width: aboutDialog.availableWidth
-                text: "In comparison to the desktop-oriented Qt Quick Controls 1, Qt Quick Controls 2 "
-                    + "are an order of magnitude simpler, lighter and faster, and are primarily targeted "
-                    + "towards embedded and mobile platforms."
+                text: "Luminos App is the perfect lighting control system for small businesses and private houses."
                 wrapMode: Label.Wrap
                 font.pixelSize: 12
             }

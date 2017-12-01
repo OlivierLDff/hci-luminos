@@ -177,7 +177,8 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	ModelMode(ModeClass::EConsumptionMode_Eco),
 	bProgrammerChanged(false),
 	SelectionSize(0),
-	Master(1.f)
+	Master(1.f),
+	EcoMultiplier(50)
 	//, AdapterList(new QStringList())
 {
 	ModeClass::declareQML();

@@ -118,6 +118,7 @@ Page
 					//anchors.horizontalCenter: parent.horizontalCenter
 					editable: true
 					onValueChanged: FixturesModel.EcoMultiplier = value
+					Component.onCompleted: value = FixturesModel.EcoMultiplier
 				}
 			}
 		}
