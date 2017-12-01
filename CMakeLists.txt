@@ -89,7 +89,7 @@ set (CMAKE_CXX_STANDARD 11) #required by Qt5
 
 # Set cmake prefix path to help search and windows, 
 # this is ugly but avoid setting PATH for windows compilation
-if(${QT_DIR} AND !${CMAKE_PREFIX_PATH})
+if(QT_DIR AND NOT CMAKE_PREFIX_PATH)
 	set(CMAKE_PREFIX_PATH ${QT_DIR})
 endif()
 
