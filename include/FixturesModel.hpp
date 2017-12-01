@@ -56,8 +56,8 @@ public:
 	};
 	Q_ENUMS(EFxType) //Declare the enum
 
-					 // Must be called only ONCE!!!
-		static void declareQML()
+	// Must be called only ONCE!!!
+	static void declareQML()
 	{
 		qmlRegisterType<FxType>("LuminosModel", 1, 0, "FxType");
 	}
@@ -247,36 +247,9 @@ private:
 	QStringList AdapterList;
 
 public:
-
-	qint32 GetArtnetAdapterIndex()
-	{
-		adapterip = Node.GetNetworkAdapter().Ipv4ToString();
-		std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
-		for (size_t i = 0; i < list.size(); ++i)
-			if (adapterip == list[i].Ipv4ToString())
-				return (qint32)i;
-		return (qint32)list.size();
-	}
-
-	void SetArtnetAdapterIndex(const qint32 artnetAdapterIndex)
-	{
-		std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
-		if(artnetAdapterIndex >= 0 && artnetAdapterIndex < list.size())
-		{
-			if (adapterip != list[artnetAdapterIndex].Ipv4ToString())
-			{
-				Node.SetNetworkAdapter(&list[artnetAdapterIndex]);
-				emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
-			}			
-		}
-		else
-		{
-			NetworkAdapterV4 a;
-			Node.SetNetworkAdapter(&a);
-			emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
-		}
-	}
-	std::string adapterip;
+	qint32 GetArtnetAdapterIndex();
+	void SetArtnetAdapterIndex(const qint32 artnetAdapterIndex);
+	std::string Adapterip;
 
 signals:
 	void ArtnetAdapterIndexChanged(qint32 value);

@@ -474,6 +474,35 @@ void FixturesModel::SetAdapterList(const QStringList& adapterList)
 	emit AdapterListChanged(adapterList);
 }
 
+qint32 FixturesModel::GetArtnetAdapterIndex()
+{
+	Adapterip = Node.GetNetworkAdapter().Ipv4ToString();
+	std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+	for (size_t i = 0; i < list.size(); ++i)
+		if (Adapterip == list[i].Ipv4ToString())
+			return (qint32)i;
+	return (qint32)list.size();
+}
+
+void FixturesModel::SetArtnetAdapterIndex(const qint32 artnetAdapterIndex)
+{
+	std::vector<NetworkAdapterV4> list = GetAllNetworkAdaptersV4();
+	if (artnetAdapterIndex >= 0 && artnetAdapterIndex < list.size())
+	{
+		if (Adapterip != list[artnetAdapterIndex].Ipv4ToString())
+		{
+			Node.SetNetworkAdapter(&list[artnetAdapterIndex]);
+			emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
+		}
+	}
+	else
+	{
+		NetworkAdapterV4 a;
+		Node.SetNetworkAdapter(&a);
+		emit ArtnetAdapterIndexChanged(artnetAdapterIndex);
+	}
+}
+
 void FixturesModel::AddFixture(const uint16_t address, const double x, const double y)
 {
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());

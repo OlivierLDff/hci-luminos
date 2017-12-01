@@ -12,7 +12,7 @@ ApplicationWindow
 	height: 480
 	title:"Luminos App"
 	minimumWidth: mainPage.implicitWidth
-	minimumHeight: mainPage.implicitHeight
+	minimumHeight: 300
 
 	Material.primary : Material.color(Material.Red)
 	Material.accent : Material.color(Material.Orange)
