@@ -1,6 +1,10 @@
 # Luminos App
 
-Luminos app is blabla
+Luminos app have been developed during ERASMUS semester in budapest.
+
+![./images](./images/screenshoot2.png)
+
+![./images](./images/screenshoot.png)
 
 ## Platforms
 

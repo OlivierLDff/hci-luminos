@@ -211,7 +211,7 @@ ApplicationWindow
 			Dial
 			{
 				id: luxDial
-				value: 20000
+				value: 5000
 				from: 0
 				to: 20000
 				Layout.fillWidth: true	

@@ -83,6 +83,11 @@ Page
                         text: "Settings"
 						onTriggered: root.StackView.view.push("Settings.qml", { })
                     }
+					/*MenuItem 
+					{
+                        text: "Backend"
+                        onTriggered: root.StackView.view.push("MainBackend.qml", { })
+                    }*/
                     MenuItem 
 					{
                         text: "About"

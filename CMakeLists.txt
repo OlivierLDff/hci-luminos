@@ -34,6 +34,7 @@ cmake_minimum_required(VERSION 2.8.12) #minimum version required by Qt (http://d
 # Backend :
 # C:/Users/olivi/AppData/Local/Android/Sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe uninstall org.HCI.LuminosBackendApp && C:/Users/olivi/AppData/Local/Android/Sdk/platform-tools/adb.exe install ./build/outputs/apk/build-android-back-debug.apk
 
+# C:/Qt/Qt5.9.2/5.9.2/msvc2017_64/bin/windeployqt.exe --release --verbose 2 . --no-patchqt
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │						  PROJECT SETTINGS							 │
@@ -225,15 +226,32 @@ if(ANDROID AND NOT ${ANDROID_BACK})
 		BUILDTOOLS_REVISION "27.0.1")
 elseif(WIN32) # Check if we are on Windows
 	if(MSVC) # Check if we are using the Visual Studio compiler
+
+#[[	# find the Qt root directory
+	if(NOT Qt5Core_DIR)
+		find_package(Qt5Core REQUIRED)
+	endif()
+	get_filename_component(QT_MSVC_QT_ROOT "${Qt5Core_DIR}/../../.." ABSOLUTE)
+	message(STATUS "Found Qt for Android: ${QT_MSVC_QT_ROOT}")]]
+
 	set_target_properties(${UI_PROJECT_NAME} PROPERTIES
 		WIN32_EXECUTABLE YES
 		LINK_FLAGS "/ENTRY:mainCRTStartup"
 		)
+#[[
+	add_custom_target(
+		coucou
+		ALL
+		DEPENDS ${UI_PROJECT_NAME}		
+		COMMAND ${QT_MSVC_QT_ROOT}/bin//windeployqt.exe --verbose 2
+		--output ${CMAKE_CURRENT_BINARY_DIR} 
+		)]]
+
 	elseif(CMAKE_COMPILER_IS_GNUCXX)
 		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
 	else()
 		message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
-	endif(MSVC)
+	endif()
 elseif(APPLE)
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 		MACOSX_BUNDLE YES

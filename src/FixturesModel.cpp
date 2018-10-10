@@ -174,7 +174,7 @@ FixturesModel::FixturesModel(SensorModel* sensor, QObject* parent) :
 	Universe(DmxManager.GetDmxUniverse(1)),
 #endif
 	Sensor(sensor), //Link to sensor class
-	ModelMode(ModeClass::EConsumptionMode_Eco),
+	ModelMode(ModeClass::EConsumptionMode_Weather),
 	bProgrammerChanged(false),
 	SelectionSize(0),
 	Master(1.f),
@@ -271,7 +271,7 @@ double FixturesModel::GetDimmerMultiplier() const
 	switch(ModelMode)
 	{
 	case ModeClass::EConsumptionMode_Eco: return ((double)EcoMultiplier)/100.f;
-	case ModeClass::EConsumptionMode_Weather: return 1.f-Sensor->GetLux()/20000;
+	case ModeClass::EConsumptionMode_Weather: return 1.f - ((double)Sensor->GetLux()/20000.f);
 	case ModeClass::EConsumptionMode_Full: return 1.f;
 	default: ;
 	}
